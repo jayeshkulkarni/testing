@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
+  <reporter-output>
+    <line>
+      <![CDATA[Executing testcases in Firefox.....!!!]]>
+    </line>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="18872" started-at="2017-07-27T14:04:24Z" finished-at="2017-07-27T14:04:43Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="18872" started-at="2017-07-27T14:04:24Z" finished-at="2017-07-27T14:04:43Z">
+      <class name="com.acellere.admin.Subsystem.createSubsystem">
+        <test-method status="PASS" signature="initDriver()[pri:0, instance:com.acellere.admin.Subsystem.createSubsystem@28d25987]" name="initDriver" is-config="true" duration-ms="13986" started-at="2017-07-27T19:34:24Z" finished-at="2017-07-27T19:34:38Z">
+          <reporter-output>
+            <line>
+              <![CDATA[Executing testcases in Firefox.....!!!]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- initDriver -->
+        <test-method status="PASS" signature="addSubsystem()[pri:0, instance:com.acellere.admin.Subsystem.createSubsystem@28d25987]" name="addSubsystem" duration-ms="4863" started-at="2017-07-27T19:34:38Z" finished-at="2017-07-27T19:34:43Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- addSubsystem -->
+      </class> <!-- com.acellere.admin.Subsystem.createSubsystem -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite" verbose="2" parallel="none">
+
+	<!-- <listeners> <listener class-name="ListenersClass.TestNGListner"></listener> 
+		</listeners> -->
+
+	
+
+ 
+
+	<test name="RegisterTenant">
+		<classes>
+			<class name="com.acellere.explorer.common.RegisterTenant" />
+		</classes>
+	</test>
+
+	<test name="Login">
+		<classes>
+			<class name="com.acellere.explorer.common.GammaLogin" />
+		</classes>
+	</test>
+	
+	<test name="project">
+		<classes>
+			<class name="com.acellere.admin.project.createProject" />
+		</classes>
+	</test>
+	
+	<test name="subSystem">
+		<classes>
+			<class name="com.acellere.admin.Subsystem.createSubsystem" />
+		</classes>
+	</test>
+	
+	
+	
+	<test name="Logout">
+		<classes>
+			<class name="com.acellere.explorer.common.GammaLogout" />
+		</classes>
+	</test>
+
+
+<!-- 	<test name="Project"> -->
+<!-- 		<classes> -->
+<!-- 			<class name="Project.ProjectListNew" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
+
+<!-- 	<test name="Subsystem Overview Panel"> -->
+<!-- 		<classes> -->
+<!-- 			<class name="SubSystemOverviewPanel.SubSystemOverviewPanelNew" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
+
+<!-- 	<test name="SubSystemDashboard"> -->
+<!-- 		<classes> -->
+<!-- 			<class name="SubSystemDashboard.SubSystemDashboard" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
+
+
+<!-- 	<test name="Code Issue Distribution"> -->
+<!-- 		<classes> -->
+<!-- 			<class name="CodeIssues.CodeIssueDist" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
+
+
+
+<!-- 	<test name="Components"> -->
+<!-- 		<classes> -->
+<!-- 			<class name="Components.Components" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
+
+
+<!-- 	<test name="Design Issue Distribution"> -->
+<!-- 		<classes> -->
+<!-- 			<class name="DesignIssues.DesignIssueDist" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
+
+
+<!-- 	<test name="Duplication Distribution"> -->
+<!-- 		<classes> -->
+<!-- 			<class name="Duplication.DuplicationDist" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
+
+<!-- 	<test name="Heatmap"> -->
+<!-- 		<classes> -->
+<!-- 			<class name="HeatMap.Heatmap" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
+
+<!-- 	<test name="Hotspot"> -->
+<!-- 		<classes> -->
+<!-- 			<class name="HotSpot.HotSpotPage" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
+
+<!-- 	<test name="Issues"> -->
+<!-- 		<classes> -->
+<!-- 			<class name="Issues.IssuesPage" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
+
+
+<!-- 	<test name="KpiDashboard"> -->
+<!-- 		<classes> -->
+<!-- 			<class name="KpiDashboard.KpiPage" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
+
+<!-- 	<test name="Metrics Distribution"> -->
+<!-- 		<classes> -->
+<!-- 			<class name="Metrics.MetricsDist" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
+
+
+<!-- 	<test name="Team List"> -->
+<!-- 		<classes> -->
+<!-- 			<class name="Teams.TeamList" /> -->
+<!-- 		</classes> -->
+<!-- 	</test> -->
+
+
+	
+
+</suite>
