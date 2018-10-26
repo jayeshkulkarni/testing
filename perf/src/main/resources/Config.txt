@@ -1,0 +1,2 @@
+//URL,USERNAME,PASSWORD,GIT_URL,LANGUAGE,BRANCH/TAG,PROJECT,REPONAME,INCREMENTAL
+https://mygamma.gamma-staging.com,<username>,<password>,https://github.com/react-tools/react-move.git,javascript,refs/heads/master,TestStaging1.5.0.1,repo_1_5_0_1_a1,false
