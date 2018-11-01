@@ -111,8 +111,8 @@ public class Main implements Callable<Boolean> {
 					continue;
 				String[] parameters = st.split(",");
 				gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
-						parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],
-						Boolean.parseBoolean(parameters[8]), Boolean.parseBoolean(arguments[2])));
+						parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],parameters[8],
+						Boolean.parseBoolean(parameters[9]), Boolean.parseBoolean(arguments[2])));
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
