@@ -62,35 +62,35 @@ public class GammaAPI implements Callable<Boolean> {
 			semaphore.acquire();
 			login();
 			addProject();
-			if (addRepoToProject()) {
+			if (addRemoteRepoToProject()) {
 				getSubsystems();
 				linkProjectwithRepo();
 			} else {
 				getSubsystemUUID();
 			}
 			semaphore.release();
-			if (!fetchResults) {
-				if (scanRepo()) {
-					boolean flag = true;
-					do {
-						flag = isRepoAnalysisFinished();
-						Thread.sleep(10000);
-					} while (flag);
-					if (getRepoAnalysis()) {
-						System.out.println("Report generated for repo :" + repoName);
-					} else {
-						System.out.println("Error occured in report generation of repo :" + repoName);
-					}
-				} else {
-					return false;
-				}
-			} else {
-				if (getLastRepoAnalysis() && getRepoAnalysis()) {
-					System.out.println("Report fetched for repo :" + repoName);
-				} else {
-					System.out.println("Error occured in fetching report  of repo :" + repoName);
-				}
-			}
+//			if (!fetchResults) {
+//				if (scanRepo()) {
+//					boolean flag = true;
+//					do {
+//						flag = isRepoAnalysisFinished();
+//						Thread.sleep(10000);
+//					} while (flag);
+//					if (getRepoAnalysis()) {
+//						System.out.println("Report generated for repo :" + repoName);
+//					} else {
+//						System.out.println("Error occured in report generation of repo :" + repoName);
+//					}
+//				} else {
+//					return false;
+//				}
+//			} else {
+//				if (getLastRepoAnalysis() && getRepoAnalysis()) {
+//					System.out.println("Report fetched for repo :" + repoName);
+//				} else {
+//					System.out.println("Error occured in fetching report  of repo :" + repoName);
+//				}
+//			}
 
 			return true;
 		} catch (Exception e) {
@@ -313,8 +313,7 @@ public class GammaAPI implements Callable<Boolean> {
 			return true;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			values.put("analysisFinalStep", "GAMMA_SERVER_ERROR");
-			return false;
+			return true;
 		}
 	}
 
@@ -415,13 +414,10 @@ public class GammaAPI implements Callable<Boolean> {
 	public boolean scanRepo() {
 		try {
 			String apiUrl = null;
-			Calendar calendar = Calendar.getInstance();
 			apiUrl = baseUrl + "/gamma/api/analysis/analysesubsystem";
 			Response response = httpPost(apiUrl,
 					"{\r\n" + "	\"subsystem_uid\": \"" + values.get("subsystemUUId") + "\",\r\n"
-							+ "	\"branch_name\": \"" + branch + "\",\r\n" + "	\"snapshot_label\" : \"" + "snap_"
-							+ calendar.get(Calendar.HOUR_OF_DAY) + "_" + calendar.get(Calendar.MINUTE) + "_"
-							+ calendar.get(Calendar.MILLISECOND) + "\",\r\n" + "	\"fast_scan\": \"" + incremental
+							+ "	\"branch_name\": \"" + branch + "\",\r\n" + "	\"snapshot_label\" : \"" + branch + "\",\r\n" + "	\"fast_scan\": \"" + incremental
 							+ "\"\r\n" + "}");
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
@@ -481,26 +477,34 @@ public class GammaAPI implements Callable<Boolean> {
 			String apiurl = null;
 			apiurl = baseUrl + "/gamma/api/repository/addsubsystem";
 			String uuid = UUID.randomUUID().toString();
+			String json = "{\r\n" + "	\"subsystem_name\": \"" + repoName + "\",\r\n" + "	\"subsystem_uid\": \""
+					+ uuid + "\",\r\n" + "	\"branch_name\": \"refs/heads/master\",\r\n" + "	\"language_name\": \""
+					+ language + "\",\r\n" + "	\"url\": \"\",\r\n" + "	\"account_type\": \"remote\",\r\n"
+					+ "	\"user_name\": \"\",\r\n" + "	\"password\": \"\",\r\n" + "	\"ssh_key\": \"\",\r\n"
+					+ "	\"ssh_password\": \"\",\r\n" + "	\"account_id\":\"\",\r\n"
+					+ "	\"authentication_mode\": \"P\"\r\n" + "}";
+
+			// Building request using requestSpecBuilder
 			RequestSpecBuilder builder = new RequestSpecBuilder();
 
 			// Setting API's body
-			// builder.setBody(body);
+			builder.setBody(json);
 			if (values.get("bearerToken") != null) {
 				builder.addHeader(HttpHeaders.AUTHORIZATION, values.get("bearerToken"));
 				builder.addHeader("Accept", "*/*");
 				builder.addHeader("Connection", "keep-alive");
 			}
 			// Setting content type as application/json or application/xml
-			builder.setContentType("application/x-www-form-urlencoded; charset=UTF-8");
+			builder.setContentType("application/json");
 
 			RequestSpecification requestSpec = builder.build();
 
 			// Making post request with authentication, leave blank in case there
 			// are no credentials- basic("","")
-			Response response = RestAssured.given().spec(requestSpec).formParam("subsystem_name", repoName)
-					.formParam("account_type", "remote").formParam("authentication_mode", "P").when().post(apiurl);
+			Response response = RestAssured.given().spec(requestSpec).when().post(apiurl);
 			JsonPath jsonpath = new JsonPath(response.getBody().asString());
 			values.put("subsystemId", jsonpath.getString("subsystem_id"));
+			values.put("subsystemUUId", uuid);
 			values.put("subsystemUUId", uuid);
 			return true;
 		} catch (Exception e) {
@@ -508,7 +512,6 @@ public class GammaAPI implements Callable<Boolean> {
 			return false;
 		}
 	}
-//	=Remote1&branch_name=&language_name=java&url=&user_name=&password=&account_id=&account_type=remote&authentication_mode=P&ssh_key=&ssh_password=
 	public boolean addRepoToProject() {
 		try {
 			String apiurl = null;
