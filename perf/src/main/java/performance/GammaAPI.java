@@ -40,17 +40,21 @@ public class GammaAPI implements Callable<Boolean> {
 	private String projectName;
 	private String repoName;
 	private String repoType;
+	private String repoUserName;
+	private String repoPassword;	
 	private boolean incremental;
 	private boolean fetchResults;
 
 	public GammaAPI(String baseUrl, ApachePOIExcelWrite apachePOIExcelWrite, String userName, String password,
-			String gitUrl, String language, String branch, String projectName, String repoName, String repoType,
+			String gitUrl,String repoUserName,String repoPassword, String language, String branch, String projectName, String repoName, String repoType,
 			boolean incremental, boolean fetchResults) {
 		this.baseUrl = baseUrl;
 		this.apachePOIExcelWrite = apachePOIExcelWrite;
 		this.userName = userName;
 		this.password = password;
 		this.gitUrl = gitUrl;
+		this.repoUserName=repoUserName;
+		this.repoPassword=repoPassword;		
 		this.language = language;
 		this.branch = branch;
 		this.projectName = projectName;
@@ -484,60 +488,47 @@ public class GammaAPI implements Callable<Boolean> {
 		}
 	}
 
-	public boolean addRemoteRepoToProject() {
-		try {
-			String apiurl = null;
-			apiurl = baseUrl + "/gamma/api/repository/addsubsystem";
-			String uuid = UUID.randomUUID().toString();
-			RequestSpecBuilder builder = new RequestSpecBuilder();
-
-			// Setting API's body
-			// builder.setBody(body);
-			if (values.get("bearerToken") != null) {
-				builder.addHeader(HttpHeaders.AUTHORIZATION, values.get("bearerToken"));
-				builder.addHeader("Accept", "*/*");
-				builder.addHeader("Connection", "keep-alive");
-			}
-			// Setting content type as application/json or application/xml
-			builder.setContentType("application/x-www-form-urlencoded; charset=UTF-8");
-
-			RequestSpecification requestSpec = builder.build();
-
-			// Making post request with authentication, leave blank in case there
-			// are no credentials- basic("","")
-			Response response = RestAssured.given().spec(requestSpec).formParam("subsystem_name", repoName)
-					.formParam("account_type", "remote").formParam("authentication_mode", "P").when().post(apiurl);
-			JsonPath jsonpath = new JsonPath(response.getBody().asString());
-			values.put("subsystemId", jsonpath.getString("subsystem_id"));
-			values.put("subsystemUUId", uuid);
-			return true;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return false;
-		}
-	}
-
-//	public String encodeBase64(String input) {
-//		
-//		String keyStr="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-//		char t;
-//		char n,r,i,s,o,u,a;
-//		char f=0;
-//		e=Base64.getEncoder().._utf8_encode(e);
-//		while(f<e.length){
-//			n=e.charCodeAt(f++);
-//			r=e.charCodeAt(f++);
-//			i=e.charCodeAt(f++);
-//			s=n>>2;
-//		o=(n&3)<<4|r>>4;
-//		u=(r&15)<<2|i>>6;
-//		a=i&63;
-//		if(isNaN(r)){u=a=64}
-//		else if(isNaN(i)){
-//			a=64}
-//		t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)
-//		}return t}		
+//	public boolean addRemoteRepoToProject() {
+//		try {
+//			String apiurl = null;
+//			apiurl = baseUrl + "/gamma/api/repository/addsubsystem";
+//			String uuid = UUID.randomUUID().toString();
+//			String json = "{\r\n" + "	\"subsystem_name\": \"" + repoName + "\",\r\n" + "	\"subsystem_uid\": \""
+//					+ uuid + "\",\r\n" + "	\"branch_name\": \"refs/heads/master\",\r\n" + "	\"language_name\": \""
+//					+ language + "\",\r\n" + "	\"url\": \"\",\r\n" + "	\"account_type\": \"remote\",\r\n"
+//					+ "	\"user_name\": \"\",\r\n" + "	\"password\": \"\",\r\n" + "	\"ssh_key\": \"\",\r\n"
+//					+ "	\"ssh_password\": \"\",\r\n" + "	\"account_id\":\"\",\r\n"
+//					+ "	\"authentication_mode\": \"P\"\r\n" + "}";
+//
+//			// Building request using requestSpecBuilder
+//			RequestSpecBuilder builder = new RequestSpecBuilder();
+//
+//			// Setting API's body
+//			builder.setBody(json);
+//			if (values.get("bearerToken") != null) {
+//				builder.addHeader(HttpHeaders.AUTHORIZATION, values.get("bearerToken"));
+//				builder.addHeader("Accept", "*/*");
+//				builder.addHeader("Connection", "keep-alive");
+//			}
+//			// Setting content type as application/json or application/xml
+//			builder.setContentType("application/json");
+//
+//			RequestSpecification requestSpec = builder.build();
+//
+//			// Making post request with authentication, leave blank in case there
+//			// are no credentials- basic("","")
+//			Response response = RestAssured.given().spec(requestSpec).when().post(apiurl);
+//			JsonPath jsonpath = new JsonPath(response.getBody().asString());
+//			values.put("subsystemId", jsonpath.getString("subsystem_id"));
+//			values.put("subsystemUUId", uuid);
+//			values.put("subsystemUUId", uuid);
+//			return true;
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//			return false;
+//		}
 //	}
+
 
 	public boolean addRepoToProject() {
 		try {
@@ -546,6 +537,7 @@ public class GammaAPI implements Callable<Boolean> {
 			repoType = repoType.toLowerCase();
 			String json = null;
 			String uuid = UUID.randomUUID().toString();
+			new String(Base64.getEncoder().encodeToString("Acellere@1".getBytes()));
 			switch (repoType) {
 			case "git":
 				json = "{\r\n" + "	\"subsystem_name\": \"" + repoName + "\",\r\n" + "	\"subsystem_uid\": \"" + uuid
@@ -576,6 +568,12 @@ public class GammaAPI implements Callable<Boolean> {
 				break;
 
 			case "remote":
+				json ="{\r\n" + "	\"subsystem_name\": \"" + repoName + "\",\r\n" + "	\"subsystem_uid\": \""
+						+ uuid + "\",\r\n" + "	\"branch_name\": \"refs/heads/master\",\r\n" + "	\"language_name\": \""
+						+ language + "\",\r\n" + "	\"url\": \"\",\r\n" + "	\"account_type\": \"remote\",\r\n"
+						+ "	\"user_name\": \"\",\r\n" + "	\"password\": \"\",\r\n" + "	\"ssh_key\": \"\",\r\n"
+						+ "	\"ssh_password\": \"\",\r\n" + "	\"account_id\":\"\",\r\n"
+						+ "	\"authentication_mode\": \"P\"\r\n" + "}";
 				break;
 
 			default:
