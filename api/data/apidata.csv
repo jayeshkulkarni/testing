@@ -1,0 +1,2 @@
+gammaURL_IP,gammaPort,gammaUsername,gammaPassword,repoType,repoName,repoUrl,repoBranchOrTag,repoLanguage,username,password,authMode,projectPath,sshKey,passphrase,accountId,projectKey,testCycleKey,testCaseKey
+192.168.2.236,3000,chandrashekhar.bhosale@acellere.com,admin1234,git,java_structurizr_,https://github.com/1shekhar/java_structurizr,refs/heads/master,java,username,,P,,,,,GPR,GPR-R1,GPR-T100
