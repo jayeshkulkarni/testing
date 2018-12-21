@@ -25,7 +25,7 @@ public class Main implements Callable<Boolean> {
 		System.out.println("Usage : java -jar Scan.jar -f <config file1>,<config file2>....<config fileN>  ");
 		System.out.println("Usage : -c Config file  ");
 		System.out.println("Usage : -s Sequential execution of Config files  ");
-		System.out.println("Usage : -f Parallel fetching of last repo scan  ");
+		System.out.println("Usage : -f Parallel fetching Scan Results  ");
 	}
 
 	public static void main(String args[]) {
@@ -111,8 +111,8 @@ public class Main implements Callable<Boolean> {
 					continue;
 				String[] parameters = st.split(",");
 				gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
-						parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],parameters[8],
-						Boolean.parseBoolean(parameters[9]), Boolean.parseBoolean(arguments[2])));
+						parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],parameters[8],parameters[9],parameters[10],
+						Boolean.parseBoolean(parameters[11]), Boolean.parseBoolean(arguments[2])));
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -139,7 +139,7 @@ public class Main implements Callable<Boolean> {
 				e.printStackTrace();
 			}
 		}
-		apachePOIExcelWrite.storeResults();
+		apachePOIExcelWrite.storeResultsInCSVFormat();
 		executor.shutdown();
 	}
 

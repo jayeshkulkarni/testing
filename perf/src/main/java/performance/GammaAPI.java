@@ -1,6 +1,14 @@
 package performance;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.ProcessBuilder.Redirect;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +23,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 
 import org.apache.http.HttpHeaders;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.builder.RequestSpecBuilder;
 import com.jayway.restassured.path.json.JsonPath;
@@ -25,10 +37,16 @@ import com.jayway.restassured.specification.RequestSpecification;
 import groovy.json.JsonException;
 
 public class GammaAPI implements Callable<Boolean> {
+	public static final String GIT = "git";
+	public static final String ZIP = "zip";
+	public static final String SVN = "svn";
+	public static final String REMOTE = "remote";
+	public static final String WINDOWS_GAMMA_SCANNER = "C:\\ProgramData\\Gamma\\corona\\scanboxwrapper\\bin\\gammascanner.bat";
+	public static final String LINUX_GAMMA_SCANNER = "//opt//Gamma//corona//scanboxwrapper//bin//gammascanner";
 	private static Semaphore semaphore = new Semaphore(1);
 	private ConcurrentHashMap<String, String> values = new ConcurrentHashMap<>();
 	private String baseUrl;
-	private int columnCount = 24;
+	private int columnCount = 25;
 	private String language;
 	private List<String> steps, started_on;
 	private Object[] results;
@@ -41,20 +59,21 @@ public class GammaAPI implements Callable<Boolean> {
 	private String repoName;
 	private String repoType;
 	private String repoUserName;
-	private String repoPassword;	
+	private String repoPassword;
 	private boolean incremental;
 	private boolean fetchResults;
+	private long remoteRepoTimeStamp;
 
 	public GammaAPI(String baseUrl, ApachePOIExcelWrite apachePOIExcelWrite, String userName, String password,
-			String gitUrl,String repoUserName,String repoPassword, String language, String branch, String projectName, String repoName, String repoType,
-			boolean incremental, boolean fetchResults) {
+			String gitUrl, String repoUserName, String repoPassword, String language, String branch, String projectName,
+			String repoName, String repoType, boolean incremental, boolean fetchResults) {
 		this.baseUrl = baseUrl;
 		this.apachePOIExcelWrite = apachePOIExcelWrite;
 		this.userName = userName;
 		this.password = password;
 		this.gitUrl = gitUrl;
-		this.repoUserName=repoUserName;
-		this.repoPassword=repoPassword;		
+		this.repoUserName = repoUserName;
+		this.repoPassword = repoPassword;
 		this.language = language;
 		this.branch = branch;
 		this.projectName = projectName;
@@ -79,11 +98,13 @@ public class GammaAPI implements Callable<Boolean> {
 			semaphore.release();
 			if (!fetchResults) {
 				if (scanRepo()) {
-					boolean flag = true;
+					boolean flag = false;
 					do {
 						flag = isRepoAnalysisFinished();
-						Thread.sleep(10000);
-					} while (flag);
+						if (!flag) {
+							Thread.sleep(10000);
+						}
+					} while (!flag);
 					if (getRepoAnalysis()) {
 						System.out.println("Report generated for repo :" + repoName);
 					} else {
@@ -99,7 +120,6 @@ public class GammaAPI implements Callable<Boolean> {
 					System.out.println("Error occured in fetching report  of repo :" + repoName);
 				}
 			}
-
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -214,7 +234,11 @@ public class GammaAPI implements Callable<Boolean> {
 			results[11] = getdiff("RELEVANCE_RUN_MODULES_SUCCESS", "RELEVANCE_RUN_MODULES_START");
 			results[12] = getdiff("ANALYSER_RUN_CHECKS_SUCCESS", "RELEVANCE_RUN_MODULES_SUCCESS");
 			results[13] = getdiff("ANALYSER_CONSOLIDATION_SUCCESS", "ANALYSER_RUN_CHECKS_SUCCESS");
-			results[14] = getdiff("SCANBOX_CLEANUP_SUCCESS", "QUEUED");
+			if (repoType.equalsIgnoreCase(REMOTE)) {
+				results[14] = remoteRepoTimeStamp / 1000;
+			} else {
+				results[14] = getdiff("SCANBOX_CLEANUP_SUCCESS", "QUEUED");
+			}
 			if (getQualityRatings() && values.get("analysisFinalStep").equalsIgnoreCase("SCANBOX_CLEANUP_SUCCESS")) {
 				results[15] = values.get("cloneRating");
 				results[16] = values.get("codeQualityRating");
@@ -226,6 +250,7 @@ public class GammaAPI implements Callable<Boolean> {
 				results[21] = baseUrl;
 				results[22] = userName;
 				results[23] = password;
+				results[24] = values.get("subsystemUUId");
 				apachePOIExcelWrite.addResults(results);
 				return true;
 
@@ -240,6 +265,7 @@ public class GammaAPI implements Callable<Boolean> {
 				results[21] = baseUrl;
 				results[22] = userName;
 				results[23] = password;
+				results[24] = values.get("subsystemUUId");
 				apachePOIExcelWrite.addResults(results);
 				return false;
 			}
@@ -302,33 +328,44 @@ public class GammaAPI implements Callable<Boolean> {
 	}
 
 	public boolean isRepoAnalysisFinished() {
-		try {
-			String apiUrl = null;
-			apiUrl = baseUrl + "/gamma/api/analysis/getLatestAnalysisStatus?subsystem_uid="
-					+ values.get("subsystemUUId");
-			Response response = httpGet(apiUrl);
-			if (response.getStatusCode() != 200) {
-				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
-			}
-			JsonPath jsonpath = new JsonPath(response.getBody().asString());
-			List<String> states = new ArrayList<String>(Arrays.asList("SCANBOX_CLEANUP_SUCCESS", "SCM_EXTRACTION_FAIL",
-					"ANALYSER_STARTUP_FAIL", "PARSER_PARSING_FAIL", "SCANBOX_PARSING_FAIL",
-					"ANALYSER_COLLECT_METRICS_FAIL", "CLONE_DETECTOR_RUN_MODULES_FAIL", "UNIT_TESTS_RUN_MODULES_FAIL",
-					"COVERAGE_RUN_MODULES_FAIL", "CODE_ISSUES_RUN_MODULES_FAIL", "RELEVANCE_RUN_MODULES_FAIL",
-					"ANALYSER_CONSOLIDATION_FAIL", "ANALYSER_FAILED", "DATA_PUBLISHING_FAILED",
-					"ANALYSER_NOT_REACHABLE", "SCANBOX_NOT_REACHABLE", "FAILED", "FAIL", "ABORTED", "ABORT", "ABORTING",
-					"Aborting", "CANCEL", "CANCELLED", "SCANBOX_CLEANUP_FAIL", "SCANBOX_CLEANUP_ABORT",
-					"GAMMA_LOC_ERROR", "CONTEXT_NOT_FOUND", "GAMMA_SERVER_ERROR", "JIRA_SERVER_ERROR"));
 
-			if (states.contains(jsonpath.getString("current_step"))) {
-				values.put("analysisReqId", jsonpath.getString("analysis_req_id"));
-				values.put("analysisFinalStep", jsonpath.getString("current_step"));
+		if (repoType.equalsIgnoreCase(REMOTE)) {
+			try {
+				values.put("analysisFinalStep", "SCANBOX_CLEANUP_SUCCESS");
+				return isRemoteScanFinished();
+			} catch (IOException e) {
+				return true;
+			}
+		} else {
+			try {
+				String apiUrl = null;
+				apiUrl = baseUrl + "/gamma/api/analysis/getLatestAnalysisStatus?subsystem_uid="
+						+ values.get("subsystemUUId");
+				Response response = httpGet(apiUrl);
+				if (response.getStatusCode() != 200) {
+					System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
+				}
+				JsonPath jsonpath = new JsonPath(response.getBody().asString());
+				List<String> states = new ArrayList<String>(Arrays.asList("SCANBOX_CLEANUP_SUCCESS",
+						"SCM_EXTRACTION_FAIL", "ANALYSER_STARTUP_FAIL", "PARSER_PARSING_FAIL", "SCANBOX_PARSING_FAIL",
+						"ANALYSER_COLLECT_METRICS_FAIL", "CLONE_DETECTOR_RUN_MODULES_FAIL",
+						"UNIT_TESTS_RUN_MODULES_FAIL", "COVERAGE_RUN_MODULES_FAIL", "CODE_ISSUES_RUN_MODULES_FAIL",
+						"RELEVANCE_RUN_MODULES_FAIL", "ANALYSER_CONSOLIDATION_FAIL", "ANALYSER_FAILED",
+						"DATA_PUBLISHING_FAILED", "ANALYSER_NOT_REACHABLE", "SCANBOX_NOT_REACHABLE", "FAILED", "FAIL",
+						"ABORTED", "ABORT", "ABORTING", "Aborting", "CANCEL", "CANCELLED", "SCANBOX_CLEANUP_FAIL",
+						"SCANBOX_CLEANUP_ABORT", "GAMMA_LOC_ERROR", "CONTEXT_NOT_FOUND", "GAMMA_SERVER_ERROR",
+						"JIRA_SERVER_ERROR", "CONTEXT_NOT_FOUND"));
+
+				if (states.contains(jsonpath.getString("current_step"))) {
+					values.put("analysisReqId", jsonpath.getString("analysis_req_id"));
+					values.put("analysisFinalStep", jsonpath.getString("current_step"));
+					return true;
+				}
+				return false;
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
 				return false;
 			}
-			return true;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return true;
 		}
 	}
 
@@ -427,24 +464,28 @@ public class GammaAPI implements Callable<Boolean> {
 	}
 
 	public boolean scanRepo() {
-		try {
-			String apiUrl = null;
-			apiUrl = baseUrl + "/gamma/api/analysis/analysesubsystem";
-			Response response = httpPost(apiUrl,
-					"{\r\n" + "	\"subsystem_uid\": \"" + values.get("subsystemUUId") + "\",\r\n"
-							+ "	\"branch_name\": \"" + branch + "\",\r\n" + "	\"snapshot_label\" : \"" +branch
-							 + "\",\r\n" + "	\"fast_scan\": \"" + incremental
-							+ "\"\r\n" + "}");
-			if (response.getStatusCode() != 200) {
-				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
-			} else {
-				System.out.println("Scan started for repo : " + repoName);
+		if (repoType.equalsIgnoreCase(REMOTE)) {
+			return startRemoteScan();
+		} else {
+			try {
+				String apiUrl = null;
+				apiUrl = baseUrl + "/gamma/api/analysis/analysesubsystem";
+				Response response = httpPost(apiUrl,
+						"{\r\n" + "	\"subsystem_uid\": \"" + values.get("subsystemUUId") + "\",\r\n"
+								+ "	\"branch_name\": \"" + branch + "\",\r\n" + "	\"snapshot_label\" : \"" + branch
+								+ "\",\r\n" + "	\"fast_scan\": \"" + incremental + "\"\r\n" + "}");
+				if (response.getStatusCode() != 200) {
+					System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
+				} else {
+					System.out.println("Scan started for repo : " + repoName);
+				}
+				return true;
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				return false;
 			}
-			return true;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return false;
 		}
+
 	}
 
 	public boolean linkProjectwithRepo() {
@@ -488,47 +529,51 @@ public class GammaAPI implements Callable<Boolean> {
 		}
 	}
 
-//	public boolean addRemoteRepoToProject() {
-//		try {
-//			String apiurl = null;
-//			apiurl = baseUrl + "/gamma/api/repository/addsubsystem";
-//			String uuid = UUID.randomUUID().toString();
-//			String json = "{\r\n" + "	\"subsystem_name\": \"" + repoName + "\",\r\n" + "	\"subsystem_uid\": \""
-//					+ uuid + "\",\r\n" + "	\"branch_name\": \"refs/heads/master\",\r\n" + "	\"language_name\": \""
-//					+ language + "\",\r\n" + "	\"url\": \"\",\r\n" + "	\"account_type\": \"remote\",\r\n"
-//					+ "	\"user_name\": \"\",\r\n" + "	\"password\": \"\",\r\n" + "	\"ssh_key\": \"\",\r\n"
-//					+ "	\"ssh_password\": \"\",\r\n" + "	\"account_id\":\"\",\r\n"
-//					+ "	\"authentication_mode\": \"P\"\r\n" + "}";
-//
-//			// Building request using requestSpecBuilder
-//			RequestSpecBuilder builder = new RequestSpecBuilder();
-//
-//			// Setting API's body
-//			builder.setBody(json);
-//			if (values.get("bearerToken") != null) {
-//				builder.addHeader(HttpHeaders.AUTHORIZATION, values.get("bearerToken"));
-//				builder.addHeader("Accept", "*/*");
-//				builder.addHeader("Connection", "keep-alive");
-//			}
-//			// Setting content type as application/json or application/xml
-//			builder.setContentType("application/json");
-//
-//			RequestSpecification requestSpec = builder.build();
-//
-//			// Making post request with authentication, leave blank in case there
-//			// are no credentials- basic("","")
-//			Response response = RestAssured.given().spec(requestSpec).when().post(apiurl);
-//			JsonPath jsonpath = new JsonPath(response.getBody().asString());
-//			values.put("subsystemId", jsonpath.getString("subsystem_id"));
-//			values.put("subsystemUUId", uuid);
-//			values.put("subsystemUUId", uuid);
-//			return true;
-//		} catch (Exception e) {
-//			System.out.println(e.getMessage());
-//			return false;
-//		}
-//	}
-
+	// public boolean addRemoteRepoToProject() {
+	// try {
+	// String apiurl = null;
+	// apiurl = baseUrl + "/gamma/api/repository/addsubsystem";
+	// String uuid = UUID.randomUUID().toString();
+	// String json = "{\r\n" + " \"subsystem_name\": \"" + repoName + "\",\r\n" + "
+	// \"subsystem_uid\": \""
+	// + uuid + "\",\r\n" + " \"branch_name\": \"refs/heads/master\",\r\n" + "
+	// \"language_name\": \""
+	// + language + "\",\r\n" + " \"url\": \"\",\r\n" + " \"account_type\":
+	// \"remote\",\r\n"
+	// + " \"user_name\": \"\",\r\n" + " \"password\": \"\",\r\n" + " \"ssh_key\":
+	// \"\",\r\n"
+	// + " \"ssh_password\": \"\",\r\n" + " \"account_id\":\"\",\r\n"
+	// + " \"authentication_mode\": \"P\"\r\n" + "}";
+	//
+	// // Building request using requestSpecBuilder
+	// RequestSpecBuilder builder = new RequestSpecBuilder();
+	//
+	// // Setting API's body
+	// builder.setBody(json);
+	// if (values.get("bearerToken") != null) {
+	// builder.addHeader(HttpHeaders.AUTHORIZATION, values.get("bearerToken"));
+	// builder.addHeader("Accept", "*/*");
+	// builder.addHeader("Connection", "keep-alive");
+	// }
+	// // Setting content type as application/json or application/xml
+	// builder.setContentType("application/json");
+	//
+	// RequestSpecification requestSpec = builder.build();
+	//
+	// // Making post request with authentication, leave blank in case there
+	// // are no credentials- basic("","")
+	// Response response =
+	// RestAssured.given().spec(requestSpec).when().post(apiurl);
+	// JsonPath jsonpath = new JsonPath(response.getBody().asString());
+	// values.put("subsystemId", jsonpath.getString("subsystem_id"));
+	// values.put("subsystemUUId", uuid);
+	// values.put("subsystemUUId", uuid);
+	// return true;
+	// } catch (Exception e) {
+	// System.out.println(e.getMessage());
+	// return false;
+	// }
+	// }
 
 	public boolean addRepoToProject() {
 		try {
@@ -537,17 +582,20 @@ public class GammaAPI implements Callable<Boolean> {
 			repoType = repoType.toLowerCase();
 			String json = null;
 			String uuid = UUID.randomUUID().toString();
-			new String(Base64.getEncoder().encodeToString("Acellere@1".getBytes()));
+
 			switch (repoType) {
-			case "git":
+			case GIT:
+				repoUserName = new String(Base64.getEncoder().encodeToString(repoUserName.getBytes()));
+				repoPassword = new String(Base64.getEncoder().encodeToString(repoPassword.getBytes()));
 				json = "{\r\n" + "	\"subsystem_name\": \"" + repoName + "\",\r\n" + "	\"subsystem_uid\": \"" + uuid
 						+ "\",\r\n" + "	\"branch_name\": \"refs/heads/master\",\r\n" + "	\"language_name\": \""
 						+ language + "\",\r\n" + "	\"url\": \"" + gitUrl + "\",\r\n"
-						+ "	\"account_type\": \"git\",\r\n" + "	\"user_name\": \"\",\r\n" + "	\"password\": \"\",\r\n"
-						+ "	\"ssh_key\": \"\",\r\n" + "	\"ssh_password\": \"\",\r\n" + "	\"account_id\":\"\",\r\n"
+						+ "	\"account_type\": \"git\",\r\n" + "	\"user_name\": \"" + repoUserName + "\",\r\n"
+						+ "	\"password\": \"" + repoPassword + "\",\r\n" + "	\"ssh_key\": \"\",\r\n"
+						+ "	\"ssh_password\": \"\",\r\n" + "	\"account_id\":\"\",\r\n"
 						+ "	\"authentication_mode\": \"P\"\r\n" + "}";
 				break;
-			case "zip":
+			case ZIP:
 				fileUpload(gitUrl);
 				json = "{\r\n" + "	\"subsystem_name\": \"" + repoName + "\",\r\n" + "	\"subsystem_uid\": \"" + uuid
 						+ "\",\r\n" + "	\"branch_name\": \"" + values.get("originalName") + "\",\r\n"
@@ -558,18 +606,21 @@ public class GammaAPI implements Callable<Boolean> {
 						+ "	\"authentication_mode\": \"P\"\r\n" + "}";
 				break;
 
-			case "svn":
+			case SVN:
+				repoUserName = new String(Base64.getEncoder().encodeToString(repoUserName.getBytes()));
+				repoPassword = new String(Base64.getEncoder().encodeToString(repoPassword.getBytes()));
 				json = "{\r\n" + "	\"subsystem_name\": \"" + repoName + "\",\r\n" + "	\"subsystem_uid\": \"" + uuid
 						+ "\",\r\n" + "	\"branch_name\": \"refs/heads/master\",\r\n" + "	\"language_name\": \""
 						+ language + "\",\r\n" + "	\"url\": \"" + gitUrl + "\",\r\n"
-						+ "	\"account_type\": \"svn\",\r\n" + "	\"user_name\": \"\",\r\n" + "	\"password\": \"\",\r\n"
-						+ "	\"ssh_key\": \"\",\r\n" + "	\"ssh_password\": \"\",\r\n" + "	\"account_id\":\"\",\r\n"
+						+ "	\"account_type\": \"svn\",\r\n" + "	\"user_name\": \"" + repoUserName + "\",\r\n"
+						+ "	\"password\": \"" + repoPassword + "\",\r\n" + "	\"ssh_key\": \"\",\r\n"
+						+ "	\"ssh_password\": \"\",\r\n" + "	\"account_id\":\"\",\r\n"
 						+ "	\"authentication_mode\": \"P\"\r\n" + "}";
 				break;
 
-			case "remote":
-				json ="{\r\n" + "	\"subsystem_name\": \"" + repoName + "\",\r\n" + "	\"subsystem_uid\": \""
-						+ uuid + "\",\r\n" + "	\"branch_name\": \"refs/heads/master\",\r\n" + "	\"language_name\": \""
+			case REMOTE:
+				json = "{\r\n" + "	\"subsystem_name\": \"" + repoName + "\",\r\n" + "	\"subsystem_uid\": \"" + uuid
+						+ "\",\r\n" + "	\"branch_name\": \"refs/heads/master\",\r\n" + "	\"language_name\": \""
 						+ language + "\",\r\n" + "	\"url\": \"\",\r\n" + "	\"account_type\": \"remote\",\r\n"
 						+ "	\"user_name\": \"\",\r\n" + "	\"password\": \"\",\r\n" + "	\"ssh_key\": \"\",\r\n"
 						+ "	\"ssh_password\": \"\",\r\n" + "	\"account_id\":\"\",\r\n"
@@ -615,8 +666,7 @@ public class GammaAPI implements Callable<Boolean> {
 	public boolean deleteProject() {
 		try {
 
-			String apiUrl = null;
-			apiUrl = baseUrl + "/gamma/api/project/deleteproject?project_id=" + values.get("projectId");
+			String apiUrl = baseUrl + "/gamma/api/project/deleteproject?project_id=" + values.get("projectId");
 			Response response = httpGet(apiUrl);
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
@@ -720,4 +770,93 @@ public class GammaAPI implements Callable<Boolean> {
 		}
 	}
 
+	public boolean isRemoteScanFinished() throws IOException {
+		BufferedReader br = null;
+		try {
+			String OS = System.getProperty("os.name").toLowerCase();
+			String logFile = null;
+			if ((OS.indexOf("win") >= 0)) {
+				logFile = repoUserName + "\\scan.log";
+			} else {
+				logFile = repoUserName + "//scan.log";
+			}
+			String successMessage = "Notifying Gamma to publish data for subsystem " + values.get("subsystemUUId");
+			br = new BufferedReader(new FileReader(new File(logFile)));
+			String line = "";
+			while ((line = br.readLine()) != null) {
+				if (line.contains(successMessage)) {
+					remoteRepoTimeStamp = (Calendar.getInstance().getTimeInMillis() - remoteRepoTimeStamp);
+					return true;
+				}
+			}
+			return false;
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+			return true;
+		} finally {
+			br.close();
+		}
+	}
+
+	public boolean startRemoteScan() {
+		try {
+			String apiUrl = baseUrl + "/gamma/api/repository/downloadrepositoryscanconfig?subsystem_uid="
+					+ values.get("subsystemUUId");
+			Response response = httpGet(apiUrl);
+			if (response.getStatusCode() != 200) {
+				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
+			}
+			JSONObject jsonObject = new JSONObject(response.getBody().asString());
+			JSONObject gammaAccess = jsonObject.getJSONObject("gammaAccess");
+			gammaAccess.put("url", baseUrl);
+			gammaAccess.put("userName", userName);
+			gammaAccess.put("password", password);
+			JSONObject repositories = jsonObject.getJSONArray("repositories").getJSONObject(0);
+			repositories.put("dataDir", gitUrl);
+			JSONObject sources = repositories.getJSONObject("repository").getJSONObject("sources");
+			sources.put("baseDir", repoUserName);
+			String OS = System.getProperty("os.name").toLowerCase();
+			String fileName = null, gammaScanner = null, logFile = null;
+			if ((OS.indexOf("win") >= 0)) {
+				gammaScanner = WINDOWS_GAMMA_SCANNER;
+				fileName = repoUserName + "\\gamma.json";
+				logFile = repoUserName + "\\scan.log";
+			} else {
+				gammaScanner = LINUX_GAMMA_SCANNER;
+				fileName = repoUserName + "//gamma.json";
+				logFile = repoUserName + "//scan.log";
+			}
+			File file=new File(logFile);
+			if(file.exists()) {
+				file.delete();
+			}
+			// Write into the file
+			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(fileName)));
+			bw.write(jsonObject.toString());
+			bw.close();
+			System.out.println("Successfully updated gamma config json object to file at path : " + fileName + "...!!");
+			System.out.println("Note log file path : " + logFile + "...!!");
+			// Start the scan
+			String[] cmdArray = new String[5];
+			// first argument is the program we want to open
+			cmdArray[0] = gammaScanner;
+
+			cmdArray[1] = "-c";
+
+			// second argument is a json file
+			cmdArray[2] = fileName;
+			cmdArray[3] = ">";
+			// third argument is a log file
+			cmdArray[4] = logFile;
+
+			Runtime.getRuntime().exec(cmdArray);
+			System.out.println("Remote scan started for repo : " + repoName + "..");
+			remoteRepoTimeStamp = Calendar.getInstance().getTimeInMillis();
+			Thread.sleep(100);
+			return true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
 }
