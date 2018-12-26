@@ -1,2 +1,2 @@
-gammaURL_IP,gammaPort,gammaUsername,gammaPassword,repoType,repoName,repoUrl,repoBranchOrTag,repoLanguage,username,password,authMode,projectPath,sshKey,passphrase,accountId,projectKey,testCycleKey
-192.168.2.54,3000,restapi2.54@mygamma.io,admin1234,git,java_structurizr_,https://github.com/1shekhar/java_structurizr,refs/heads/master,java,username,,P,,,,,GPR,GPR-R7
+repoType,repoName,repoUrl,repoBranchOrTag,repoLanguage,username,password,authMode,projectPath,sshKey,passphrase,accountId,projectKey,testCycleKey
+git,java_structurizr_,https://github.com/1shekhar/java_structurizr,refs/heads/master,java,username,,P,,,,,GPR,GPR-R7
