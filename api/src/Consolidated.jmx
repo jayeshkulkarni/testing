@@ -12112,6 +12112,968 @@ else
             </hashTree>
           </hashTree>
         </hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="KPIs APIs Controller" enabled="false">
+          <boolProp name="TransactionController.parent">true</boolProp>
+        </TransactionController>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Bearer ${AccessToken}</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Add new kpi" enabled="false">
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Add new KPI" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="kpiName" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">${kpiName}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    <stringProp name="Argument.name">kpiName</stringProp>
+                  </elementProp>
+                  <elementProp name="kpiDescription" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">${kpiDescription}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    <stringProp name="Argument.name">kpiDescription</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${BASE_URL}/kpis/</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <boolProp name="resetInterpreter">false</boolProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="script">String kpiName = &quot;CreateKpi_&quot;+&quot;${__Random(1,4450)}&quot;;
+vars.put(&quot;kpiName&quot;,kpiName);
+
+String kpiDescription = &quot;This_Kpi_Is_&quot;+&quot;${__Random(1,4450)}&quot;;
+vars.put(&quot;kpiDescription&quot;,kpiDescription);
+</stringProp>
+              </BeanShellPreProcessor>
+              <hashTree/>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="false">
+                <stringProp name="RegexExtractor.useHeaders">code</stringProp>
+                <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
+                <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 201 Assertion" enabled="false">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49587">201</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="false">
+                <boolProp name="resetInterpreter">false</boolProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="script">if(${Response_Code}==200)
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
+	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
+}
+else
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
+	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
+}
+</stringProp>
+              </BeanShellPostProcessor>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Get list of all kpis" enabled="true">
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get list of KPIs" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${BASE_URL}/kpis/</stringProp>
+              <stringProp name="HTTPSampler.method">GET</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">kpi_id</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs">$..kpi_id</stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers">0</stringProp>
+                <stringProp name="JSONPostProcessor.defaultValues">Unable_To_Extract_KPI_ID</stringProp>
+                <stringProp name="Sample.scope">all</stringProp>
+              </JSONPostProcessor>
+              <hashTree/>
+            </hashTree>
+            <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="false">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">if(${Response_Code}==200)
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
+	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
+}
+else
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
+	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
+}
+</stringProp>
+            </BeanShellPostProcessor>
+            <hashTree/>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="false">
+              <stringProp name="RegexExtractor.useHeaders">code</stringProp>
+              <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
+              <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
+              <stringProp name="RegexExtractor.match_number">1</stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="false">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Extract LoggedIn UserID" enabled="false">
+              <stringProp name="JSONPostProcessor.referenceNames">_UserID</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.userList[0].userId</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">0</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">Unable_To_Extract_UserID</stringProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="JIRA_TestCase_Status_Update" enabled="false">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;projectKey&quot;: &quot;${projectKey}&quot;,&#xd;
+  &quot;testCaseKey&quot;: &quot;GPR-T139&quot;,&#xd;
+  &quot;testCycleKey&quot;: &quot;${testCycleKey}&quot;,&#xd;
+  &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
+  &quot;testScriptResults&quot;: [&#xd;
+    {&#xd;
+      &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
+      &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
+      &quot;actualResult&quot;: &quot;Status Code: ${Response_Code}&quot;      &#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
+  &quot;executionTime&quot;: 60000,&#xd;
+  &quot;userKey&quot;: &quot;saurabh.patil&quot;,&#xd;
+  &quot;comment&quot;: &quot;GPR-T139 ${Jira_Comment}&quot;&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port">443</stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${JIRA_API}/tm4j/v2/testexecutions</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">Authorization</stringProp>
+                    <stringProp name="Header.value">Bearer ${JIRA_ACCESSTOKEN}</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">content-type</stringProp>
+                    <stringProp name="Header.value">application/json</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion : Status Code" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49587">201</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Edit kpi" enabled="true">
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Edit single KPI" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="kpiName" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">${kpiName}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    <stringProp name="Argument.name">kpiName</stringProp>
+                  </elementProp>
+                  <elementProp name="kpiDescription" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">${kpiDescription}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    <stringProp name="Argument.name">kpiDescription</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/${BASE_URL}/kpis/${kpi_id}</stringProp>
+              <stringProp name="HTTPSampler.method">PUT</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <boolProp name="resetInterpreter">false</boolProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="script">String kpiName = &quot;German_&quot;+&quot;${__Random(1,100)}&quot;;
+vars.put(&quot;kpiName&quot;,kpiName);
+
+String kpiDescription = &quot;German_&quot;+&quot;${__Random(1,450)}&quot;;
+vars.put(&quot;EditedDescription&quot;,kpiDescription);</stringProp>
+              </BeanShellPreProcessor>
+              <hashTree/>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="false">
+                <stringProp name="RegexExtractor.useHeaders">code</stringProp>
+                <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
+                <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="false">
+                <boolProp name="resetInterpreter">false</boolProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="script">if(${Response_Code}==200)
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
+	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
+}
+else
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
+	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
+}
+</stringProp>
+              </BeanShellPostProcessor>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="false">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49586">200</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="JIRA_TestCase_Status_Update" enabled="false">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;projectKey&quot;: &quot;${projectKey}&quot;,&#xd;
+  &quot;testCaseKey&quot;: &quot;GPR-T139&quot;,&#xd;
+  &quot;testCycleKey&quot;: &quot;${testCycleKey}&quot;,&#xd;
+  &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
+  &quot;testScriptResults&quot;: [&#xd;
+    {&#xd;
+      &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
+      &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
+      &quot;actualResult&quot;: &quot;Status Code: ${Response_Code}&quot;      &#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
+  &quot;executionTime&quot;: 60000,&#xd;
+  &quot;userKey&quot;: &quot;saurabh.patil&quot;,&#xd;
+  &quot;comment&quot;: &quot;GPR-T139 ${Jira_Comment}&quot;&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port">443</stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${JIRA_API}/tm4j/v2/testexecutions</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">Authorization</stringProp>
+                    <stringProp name="Header.value">Bearer ${JIRA_ACCESSTOKEN}</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">content-type</stringProp>
+                    <stringProp name="Header.value">application/json</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion : Status Code" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49587">201</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Delete kpi" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">false</boolProp>
+          </TransactionController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Delete KPI" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/${BASE_URL}/kpis/${kpi_id}</stringProp>
+              <stringProp name="HTTPSampler.method">DELETE</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="false">
+                <stringProp name="RegexExtractor.useHeaders">code</stringProp>
+                <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
+                <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="false">
+                <boolProp name="resetInterpreter">false</boolProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="script">if(${Response_Code}==200)
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
+	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
+}
+else
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
+	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
+}
+</stringProp>
+              </BeanShellPostProcessor>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="false">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49586">200</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="JIRA_TestCase_Status_Update" enabled="false">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;projectKey&quot;: &quot;${projectKey}&quot;,&#xd;
+  &quot;testCaseKey&quot;: &quot;GPR-T139&quot;,&#xd;
+  &quot;testCycleKey&quot;: &quot;${testCycleKey}&quot;,&#xd;
+  &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
+  &quot;testScriptResults&quot;: [&#xd;
+    {&#xd;
+      &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
+      &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
+      &quot;actualResult&quot;: &quot;Status Code: ${Response_Code}&quot;      &#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
+  &quot;executionTime&quot;: 60000,&#xd;
+  &quot;userKey&quot;: &quot;saurabh.patil&quot;,&#xd;
+  &quot;comment&quot;: &quot;GPR-T139 ${Jira_Comment}&quot;&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port">443</stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${JIRA_API}/tm4j/v2/testexecutions</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">Authorization</stringProp>
+                    <stringProp name="Header.value">Bearer ${JIRA_ACCESSTOKEN}</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">content-type</stringProp>
+                    <stringProp name="Header.value">application/json</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion : Status Code" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49587">201</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Show Kpi data For Given KPI ID" enabled="true">
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Show KPI data" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${BASE_URL}/kpis/${kpi_id}</stringProp>
+              <stringProp name="HTTPSampler.method">GET</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree/>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Get rules for kpi for given kpi ID" enabled="true">
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get rules for KPI" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${BASE_URL}/kpis/${kpi_id}/rules</stringProp>
+              <stringProp name="HTTPSampler.method">GET</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+                <stringProp name="JSONPostProcessor.referenceNames">kpi_Rules</stringProp>
+                <stringProp name="JSONPostProcessor.jsonPathExprs"></stringProp>
+                <stringProp name="JSONPostProcessor.match_numbers">0</stringProp>
+                <stringProp name="JSONPostProcessor.defaultValues">Not_found</stringProp>
+              </JSONPostProcessor>
+              <hashTree/>
+            </hashTree>
+            <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="false">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">if(${Response_Code}==200)
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
+	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
+}
+else
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
+	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
+}
+</stringProp>
+            </BeanShellPostProcessor>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="false">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="false">
+              <stringProp name="RegexExtractor.useHeaders">code</stringProp>
+              <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
+              <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
+              <stringProp name="RegexExtractor.match_number">1</stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="JIRA_TestCase_Status_Update" enabled="false">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;projectKey&quot;: &quot;${projectKey}&quot;,&#xd;
+  &quot;testCaseKey&quot;: &quot;GPR-T139&quot;,&#xd;
+  &quot;testCycleKey&quot;: &quot;${testCycleKey}&quot;,&#xd;
+  &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
+  &quot;testScriptResults&quot;: [&#xd;
+    {&#xd;
+      &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
+      &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
+      &quot;actualResult&quot;: &quot;Status Code: ${Response_Code}&quot;      &#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
+  &quot;executionTime&quot;: 60000,&#xd;
+  &quot;userKey&quot;: &quot;saurabh.patil&quot;,&#xd;
+  &quot;comment&quot;: &quot;GPR-T139 ${Jira_Comment}&quot;&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port">443</stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${JIRA_API}/tm4j/v2/testexecutions</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">Authorization</stringProp>
+                    <stringProp name="Header.value">Bearer ${JIRA_ACCESSTOKEN}</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">content-type</stringProp>
+                    <stringProp name="Header.value">application/json</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion : Status Code" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49587">201</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Delete rule from kpi for given kpi ID" enabled="true">
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Delete rule from KPI" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/${BASE_URL}/kpis/${kpi_id}/rules?searchString=:&amp;startIndex=:&amp;stopIndex=</stringProp>
+              <stringProp name="HTTPSampler.method">DELETE</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="false">
+                <stringProp name="RegexExtractor.useHeaders">code</stringProp>
+                <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
+                <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="false">
+                <boolProp name="resetInterpreter">false</boolProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="script">if(${Response_Code}==200)
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
+	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
+}
+else
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
+	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
+}
+</stringProp>
+              </BeanShellPostProcessor>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="false">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49586">200</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="JIRA_TestCase_Status_Update" enabled="false">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;projectKey&quot;: &quot;${projectKey}&quot;,&#xd;
+  &quot;testCaseKey&quot;: &quot;GPR-T139&quot;,&#xd;
+  &quot;testCycleKey&quot;: &quot;${testCycleKey}&quot;,&#xd;
+  &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
+  &quot;testScriptResults&quot;: [&#xd;
+    {&#xd;
+      &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
+      &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
+      &quot;actualResult&quot;: &quot;Status Code: ${Response_Code}&quot;      &#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
+  &quot;executionTime&quot;: 60000,&#xd;
+  &quot;userKey&quot;: &quot;saurabh.patil&quot;,&#xd;
+  &quot;comment&quot;: &quot;GPR-T139 ${Jira_Comment}&quot;&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port">443</stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${JIRA_API}/tm4j/v2/testexecutions</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">Authorization</stringProp>
+                    <stringProp name="Header.value">Bearer ${JIRA_ACCESSTOKEN}</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">content-type</stringProp>
+                    <stringProp name="Header.value">application/json</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion : Status Code" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49587">201</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Add rules to KPIS APIs" enabled="true">
+            <boolProp name="TransactionController.parent">true</boolProp>
+          </TransactionController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Add rules to KPI of given id" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/${BASE_URL}/kpis/${kpi_id}/rules?searchString=:&amp;startIndex=:&amp;stopIndex=</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree/>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Get language specific list of rules" enabled="false">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">false</boolProp>
+          </TransactionController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get language specific list of rules" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/${BASE_URL}/kpis/rules?orderBy=:&amp;searchString=:&amp;inCriticality=:&amp;inLanguages=:&amp;inTool=:&amp;startIndex=:&amp;stopIndex=</stringProp>
+              <stringProp name="HTTPSampler.method">GET</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="false">
+                <stringProp name="RegexExtractor.useHeaders">code</stringProp>
+                <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
+                <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
+                <stringProp name="RegexExtractor.template">$1$</stringProp>
+                <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
+                <stringProp name="RegexExtractor.match_number">1</stringProp>
+              </RegexExtractor>
+              <hashTree/>
+              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="false">
+                <boolProp name="resetInterpreter">false</boolProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="script">if(${Response_Code}==200)
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
+	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
+}
+else
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
+	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
+}
+</stringProp>
+              </BeanShellPostProcessor>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="false">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49586">200</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">16</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="JIRA_TestCase_Status_Update" enabled="false">
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">{&#xd;
+  &quot;projectKey&quot;: &quot;${projectKey}&quot;,&#xd;
+  &quot;testCaseKey&quot;: &quot;GPR-T139&quot;,&#xd;
+  &quot;testCycleKey&quot;: &quot;${testCycleKey}&quot;,&#xd;
+  &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
+  &quot;testScriptResults&quot;: [&#xd;
+    {&#xd;
+      &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
+      &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
+      &quot;actualResult&quot;: &quot;Status Code: ${Response_Code}&quot;      &#xd;
+    }&#xd;
+  ],&#xd;
+  &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
+  &quot;executionTime&quot;: 60000,&#xd;
+  &quot;userKey&quot;: &quot;saurabh.patil&quot;,&#xd;
+  &quot;comment&quot;: &quot;GPR-T139 ${Jira_Comment}&quot;&#xd;
+}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain"></stringProp>
+              <stringProp name="HTTPSampler.port">443</stringProp>
+              <stringProp name="HTTPSampler.protocol">https</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${JIRA_API}/tm4j/v2/testexecutions</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                <collectionProp name="HeaderManager.headers">
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">Authorization</stringProp>
+                    <stringProp name="Header.value">Bearer ${JIRA_ACCESSTOKEN}</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="Header">
+                    <stringProp name="Header.name">content-type</stringProp>
+                    <stringProp name="Header.value">application/json</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </HeaderManager>
+              <hashTree/>
+              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion : Status Code" enabled="true">
+                <collectionProp name="Asserion.test_strings">
+                  <stringProp name="49587">201</stringProp>
+                </collectionProp>
+                <stringProp name="Assertion.custom_message"></stringProp>
+                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+                <boolProp name="Assertion.assume_success">false</boolProp>
+                <intProp name="Assertion.test_type">8</intProp>
+              </ResponseAssertion>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+        </hashTree>
         <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Projects APIs Controller" enabled="false">
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
@@ -23832,1045 +24794,6 @@ else
                 </ResponseAssertion>
                 <hashTree/>
               </hashTree>
-            </hashTree>
-          </hashTree>
-        </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="KPIs APIs Controller" enabled="false">
-          <boolProp name="TransactionController.parent">true</boolProp>
-        </TransactionController>
-        <hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Add new kpi" enabled="false">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">false</boolProp>
-          </TransactionController>
-          <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Add new KPI" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="kpiName" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{$kpiName}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">kpiName</stringProp>
-                  </elementProp>
-                  <elementProp name="kpiDescription" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{$kpiDescription}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">kpiDescription</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${BASE_URL}/kpis/</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="true">
-                <stringProp name="RegexExtractor.useHeaders">code</stringProp>
-                <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
-                <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
-                <stringProp name="RegexExtractor.template">$1$</stringProp>
-                <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
-                <stringProp name="RegexExtractor.match_number">1</stringProp>
-              </RegexExtractor>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 201 Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49587">201</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
-                <boolProp name="resetInterpreter">false</boolProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="script">if(${Response_Code}==200)
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
-	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
-}
-else
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
-	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
-}
-</stringProp>
-              </BeanShellPostProcessor>
-              <hashTree/>
-            </hashTree>
-            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
-              <boolProp name="resetInterpreter">false</boolProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="script">String kpiName = &quot;createkpiVikrant_&quot;+&quot;${__Random(1,4450)}&quot;;
-vars.put(&quot;kpiName&quot;,kpiName);
-
-String kpiDescription = &quot;Thiskpiisvikrasnt_&quot;+&quot;${__Random(1,4450)}&quot;;
-vars.put(&quot;kpiDescription&quot;,kpiDescription);
-</stringProp>
-            </BeanShellPreProcessor>
-            <hashTree/>
-          </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Get list of all kpis" enabled="true">
-            <boolProp name="TransactionController.parent">true</boolProp>
-          </TransactionController>
-          <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-              <collectionProp name="HeaderManager.headers">
-                <elementProp name="" elementType="Header">
-                  <stringProp name="Header.name">Authorization</stringProp>
-                  <stringProp name="Header.value">Bearer ${AccessToken}</stringProp>
-                </elementProp>
-              </collectionProp>
-            </HeaderManager>
-            <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get list of KPIs" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments"/>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${BASE_URL}/kpis/</stringProp>
-              <stringProp name="HTTPSampler.method">GET</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="false">
-                <stringProp name="JSONPostProcessor.referenceNames">kpi_id </stringProp>
-                <stringProp name="JSONPostProcessor.jsonPathExprs">$..kpi_id</stringProp>
-                <stringProp name="JSONPostProcessor.match_numbers">0</stringProp>
-                <stringProp name="JSONPostProcessor.defaultValues">Unable_To_Extract_KPI_ID</stringProp>
-                <stringProp name="Sample.scope">all</stringProp>
-              </JSONPostProcessor>
-              <hashTree/>
-            </hashTree>
-            <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="false">
-              <boolProp name="resetInterpreter">false</boolProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="script">if(${Response_Code}==200)
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
-	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
-}
-else
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
-	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
-}
-</stringProp>
-            </BeanShellPostProcessor>
-            <hashTree/>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="false">
-              <stringProp name="RegexExtractor.useHeaders">code</stringProp>
-              <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
-              <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
-              <stringProp name="RegexExtractor.template">$1$</stringProp>
-              <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
-              <stringProp name="RegexExtractor.match_number">1</stringProp>
-            </RegexExtractor>
-            <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="false">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="49586">200</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-              <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Extract LoggedIn UserID" enabled="false">
-              <stringProp name="JSONPostProcessor.referenceNames">_UserID</stringProp>
-              <stringProp name="JSONPostProcessor.jsonPathExprs">$.userList[0].userId</stringProp>
-              <stringProp name="JSONPostProcessor.match_numbers">0</stringProp>
-              <stringProp name="JSONPostProcessor.defaultValues">Unable_To_Extract_UserID</stringProp>
-            </JSONPostProcessor>
-            <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="JIRA_TestCase_Status_Update" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&#xd;
-  &quot;projectKey&quot;: &quot;${projectKey}&quot;,&#xd;
-  &quot;testCaseKey&quot;: &quot;GPR-T139&quot;,&#xd;
-  &quot;testCycleKey&quot;: &quot;${testCycleKey}&quot;,&#xd;
-  &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
-  &quot;testScriptResults&quot;: [&#xd;
-    {&#xd;
-      &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
-      &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
-      &quot;actualResult&quot;: &quot;Status Code: ${Response_Code}&quot;      &#xd;
-    }&#xd;
-  ],&#xd;
-  &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
-  &quot;executionTime&quot;: 60000,&#xd;
-  &quot;userKey&quot;: &quot;saurabh.patil&quot;,&#xd;
-  &quot;comment&quot;: &quot;GPR-T139 ${Jira_Comment}&quot;&#xd;
-}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port">443</stringProp>
-              <stringProp name="HTTPSampler.protocol">https</stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${JIRA_API}/tm4j/v2/testexecutions</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="" elementType="Header">
-                    <stringProp name="Header.name">Authorization</stringProp>
-                    <stringProp name="Header.value">Bearer ${JIRA_ACCESSTOKEN}</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Header">
-                    <stringProp name="Header.name">content-type</stringProp>
-                    <stringProp name="Header.value">application/json</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion : Status Code" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49587">201</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-          </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Edit kpi" enabled="false">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">false</boolProp>
-          </TransactionController>
-          <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Edit single KPI" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="kpiName" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{$kpiName}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">kpiName</stringProp>
-                  </elementProp>
-                  <elementProp name="kpiDescription" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{$kpiDescription}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">kpiDescription</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/${BASE_URL}/kpis/${kpi_id}</stringProp>
-              <stringProp name="HTTPSampler.method">PUT</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
-                <boolProp name="resetInterpreter">false</boolProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="script">String kpiName = &quot;German_&quot;+&quot;${__Random(1,100)}&quot;;
-vars.put(&quot;kpiName&quot;,kpiName);
-
-String kpiDescription = &quot;German_&quot;+&quot;${__Random(1,450)}&quot;;
-vars.put(&quot;EditedDescription&quot;,kpiDescription);</stringProp>
-              </BeanShellPreProcessor>
-              <hashTree/>
-              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="true">
-                <stringProp name="RegexExtractor.useHeaders">code</stringProp>
-                <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
-                <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
-                <stringProp name="RegexExtractor.template">$1$</stringProp>
-                <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
-                <stringProp name="RegexExtractor.match_number">1</stringProp>
-              </RegexExtractor>
-              <hashTree/>
-              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
-                <boolProp name="resetInterpreter">false</boolProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="script">if(${Response_Code}==200)
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
-	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
-}
-else
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
-	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
-}
-</stringProp>
-              </BeanShellPostProcessor>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49586">200</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="JIRA_TestCase_Status_Update" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&#xd;
-  &quot;projectKey&quot;: &quot;${projectKey}&quot;,&#xd;
-  &quot;testCaseKey&quot;: &quot;GPR-T139&quot;,&#xd;
-  &quot;testCycleKey&quot;: &quot;${testCycleKey}&quot;,&#xd;
-  &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
-  &quot;testScriptResults&quot;: [&#xd;
-    {&#xd;
-      &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
-      &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
-      &quot;actualResult&quot;: &quot;Status Code: ${Response_Code}&quot;      &#xd;
-    }&#xd;
-  ],&#xd;
-  &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
-  &quot;executionTime&quot;: 60000,&#xd;
-  &quot;userKey&quot;: &quot;saurabh.patil&quot;,&#xd;
-  &quot;comment&quot;: &quot;GPR-T139 ${Jira_Comment}&quot;&#xd;
-}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port">443</stringProp>
-              <stringProp name="HTTPSampler.protocol">https</stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${JIRA_API}/tm4j/v2/testexecutions</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="" elementType="Header">
-                    <stringProp name="Header.name">Authorization</stringProp>
-                    <stringProp name="Header.value">Bearer ${JIRA_ACCESSTOKEN}</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Header">
-                    <stringProp name="Header.name">content-type</stringProp>
-                    <stringProp name="Header.value">application/json</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion : Status Code" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49587">201</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-          </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Delete kpi" enabled="false">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">false</boolProp>
-          </TransactionController>
-          <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Delete KPI" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments"/>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/${BASE_URL}/kpis/${kpi_id}</stringProp>
-              <stringProp name="HTTPSampler.method">DELETE</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="true">
-                <stringProp name="RegexExtractor.useHeaders">code</stringProp>
-                <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
-                <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
-                <stringProp name="RegexExtractor.template">$1$</stringProp>
-                <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
-                <stringProp name="RegexExtractor.match_number">1</stringProp>
-              </RegexExtractor>
-              <hashTree/>
-              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
-                <boolProp name="resetInterpreter">false</boolProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="script">if(${Response_Code}==200)
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
-	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
-}
-else
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
-	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
-}
-</stringProp>
-              </BeanShellPostProcessor>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49586">200</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="JIRA_TestCase_Status_Update" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&#xd;
-  &quot;projectKey&quot;: &quot;${projectKey}&quot;,&#xd;
-  &quot;testCaseKey&quot;: &quot;GPR-T139&quot;,&#xd;
-  &quot;testCycleKey&quot;: &quot;${testCycleKey}&quot;,&#xd;
-  &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
-  &quot;testScriptResults&quot;: [&#xd;
-    {&#xd;
-      &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
-      &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
-      &quot;actualResult&quot;: &quot;Status Code: ${Response_Code}&quot;      &#xd;
-    }&#xd;
-  ],&#xd;
-  &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
-  &quot;executionTime&quot;: 60000,&#xd;
-  &quot;userKey&quot;: &quot;saurabh.patil&quot;,&#xd;
-  &quot;comment&quot;: &quot;GPR-T139 ${Jira_Comment}&quot;&#xd;
-}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port">443</stringProp>
-              <stringProp name="HTTPSampler.protocol">https</stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${JIRA_API}/tm4j/v2/testexecutions</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="" elementType="Header">
-                    <stringProp name="Header.name">Authorization</stringProp>
-                    <stringProp name="Header.value">Bearer ${JIRA_ACCESSTOKEN}</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Header">
-                    <stringProp name="Header.name">content-type</stringProp>
-                    <stringProp name="Header.value">application/json</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion : Status Code" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49587">201</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-          </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Show kpi data for given kpi ID" enabled="false">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">false</boolProp>
-          </TransactionController>
-          <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Show KPI data " enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments"/>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/${BASE_URL}/kpi/{kpiId}</stringProp>
-              <stringProp name="HTTPSampler.method">GET</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="true">
-                <stringProp name="RegexExtractor.useHeaders">code</stringProp>
-                <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
-                <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
-                <stringProp name="RegexExtractor.template">$1$</stringProp>
-                <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
-                <stringProp name="RegexExtractor.match_number">1</stringProp>
-              </RegexExtractor>
-              <hashTree/>
-              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
-                <boolProp name="resetInterpreter">false</boolProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="script">if(${Response_Code}==200)
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
-	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
-}
-else
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
-	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
-}
-</stringProp>
-              </BeanShellPostProcessor>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49586">200</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="JIRA_TestCase_Status_Update" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&#xd;
-  &quot;projectKey&quot;: &quot;${projectKey}&quot;,&#xd;
-  &quot;testCaseKey&quot;: &quot;GPR-T139&quot;,&#xd;
-  &quot;testCycleKey&quot;: &quot;${testCycleKey}&quot;,&#xd;
-  &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
-  &quot;testScriptResults&quot;: [&#xd;
-    {&#xd;
-      &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
-      &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
-      &quot;actualResult&quot;: &quot;Status Code: ${Response_Code}&quot;      &#xd;
-    }&#xd;
-  ],&#xd;
-  &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
-  &quot;executionTime&quot;: 60000,&#xd;
-  &quot;userKey&quot;: &quot;saurabh.patil&quot;,&#xd;
-  &quot;comment&quot;: &quot;GPR-T139 ${Jira_Comment}&quot;&#xd;
-}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port">443</stringProp>
-              <stringProp name="HTTPSampler.protocol">https</stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${JIRA_API}/tm4j/v2/testexecutions</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="" elementType="Header">
-                    <stringProp name="Header.name">Authorization</stringProp>
-                    <stringProp name="Header.value">Bearer ${JIRA_ACCESSTOKEN}</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Header">
-                    <stringProp name="Header.name">content-type</stringProp>
-                    <stringProp name="Header.value">application/json</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion : Status Code" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49587">201</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-          </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Get rules for kpi for given kpi ID" enabled="false">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">false</boolProp>
-          </TransactionController>
-          <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get rules for KPI" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments"/>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/${BASE_URL}/api/v1/kpis/${kpi_id}/rules </stringProp>
-              <stringProp name="HTTPSampler.method">GET</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="true">
-                <stringProp name="RegexExtractor.useHeaders">code</stringProp>
-                <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
-                <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
-                <stringProp name="RegexExtractor.template">$1$</stringProp>
-                <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
-                <stringProp name="RegexExtractor.match_number">1</stringProp>
-              </RegexExtractor>
-              <hashTree/>
-              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
-                <boolProp name="resetInterpreter">false</boolProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="script">if(${Response_Code}==200)
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
-	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
-}
-else
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
-	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
-}
-</stringProp>
-              </BeanShellPostProcessor>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49586">200</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="JIRA_TestCase_Status_Update" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&#xd;
-  &quot;projectKey&quot;: &quot;${projectKey}&quot;,&#xd;
-  &quot;testCaseKey&quot;: &quot;GPR-T139&quot;,&#xd;
-  &quot;testCycleKey&quot;: &quot;${testCycleKey}&quot;,&#xd;
-  &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
-  &quot;testScriptResults&quot;: [&#xd;
-    {&#xd;
-      &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
-      &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
-      &quot;actualResult&quot;: &quot;Status Code: ${Response_Code}&quot;      &#xd;
-    }&#xd;
-  ],&#xd;
-  &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
-  &quot;executionTime&quot;: 60000,&#xd;
-  &quot;userKey&quot;: &quot;saurabh.patil&quot;,&#xd;
-  &quot;comment&quot;: &quot;GPR-T139 ${Jira_Comment}&quot;&#xd;
-}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port">443</stringProp>
-              <stringProp name="HTTPSampler.protocol">https</stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${JIRA_API}/tm4j/v2/testexecutions</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="" elementType="Header">
-                    <stringProp name="Header.name">Authorization</stringProp>
-                    <stringProp name="Header.value">Bearer ${JIRA_ACCESSTOKEN}</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Header">
-                    <stringProp name="Header.name">content-type</stringProp>
-                    <stringProp name="Header.value">application/json</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion : Status Code" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49587">201</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-          </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Delete rule from kpi for given kpi ID" enabled="false">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">false</boolProp>
-          </TransactionController>
-          <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Delete rule from KPI" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments"/>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/${BASE_URL}/kpis/{kpiId}/rules?searchString=:&amp;startIndex=:&amp;stopIndex=</stringProp>
-              <stringProp name="HTTPSampler.method">DELETE</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="true">
-                <stringProp name="RegexExtractor.useHeaders">code</stringProp>
-                <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
-                <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
-                <stringProp name="RegexExtractor.template">$1$</stringProp>
-                <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
-                <stringProp name="RegexExtractor.match_number">1</stringProp>
-              </RegexExtractor>
-              <hashTree/>
-              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
-                <boolProp name="resetInterpreter">false</boolProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="script">if(${Response_Code}==200)
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
-	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
-}
-else
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
-	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
-}
-</stringProp>
-              </BeanShellPostProcessor>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49586">200</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="JIRA_TestCase_Status_Update" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&#xd;
-  &quot;projectKey&quot;: &quot;${projectKey}&quot;,&#xd;
-  &quot;testCaseKey&quot;: &quot;GPR-T139&quot;,&#xd;
-  &quot;testCycleKey&quot;: &quot;${testCycleKey}&quot;,&#xd;
-  &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
-  &quot;testScriptResults&quot;: [&#xd;
-    {&#xd;
-      &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
-      &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
-      &quot;actualResult&quot;: &quot;Status Code: ${Response_Code}&quot;      &#xd;
-    }&#xd;
-  ],&#xd;
-  &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
-  &quot;executionTime&quot;: 60000,&#xd;
-  &quot;userKey&quot;: &quot;saurabh.patil&quot;,&#xd;
-  &quot;comment&quot;: &quot;GPR-T139 ${Jira_Comment}&quot;&#xd;
-}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port">443</stringProp>
-              <stringProp name="HTTPSampler.protocol">https</stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${JIRA_API}/tm4j/v2/testexecutions</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="" elementType="Header">
-                    <stringProp name="Header.name">Authorization</stringProp>
-                    <stringProp name="Header.value">Bearer ${JIRA_ACCESSTOKEN}</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Header">
-                    <stringProp name="Header.name">content-type</stringProp>
-                    <stringProp name="Header.value">application/json</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion : Status Code" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49587">201</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-          </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Get language specific list of rules" enabled="false">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">false</boolProp>
-          </TransactionController>
-          <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get language specific list of rules" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments"/>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/${BASE_URL}/kpis/rules?orderBy=:&amp;searchString=:&amp;inCriticality=:&amp;inLanguages=:&amp;inTool=:&amp;startIndex=:&amp;stopIndex=</stringProp>
-              <stringProp name="HTTPSampler.method">GET</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="true">
-                <stringProp name="RegexExtractor.useHeaders">code</stringProp>
-                <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
-                <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
-                <stringProp name="RegexExtractor.template">$1$</stringProp>
-                <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
-                <stringProp name="RegexExtractor.match_number">1</stringProp>
-              </RegexExtractor>
-              <hashTree/>
-              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
-                <boolProp name="resetInterpreter">false</boolProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="script">if(${Response_Code}==200)
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
-	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
-}
-else
-{
-	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
-	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
-}
-</stringProp>
-              </BeanShellPostProcessor>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49586">200</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">16</intProp>
-              </ResponseAssertion>
-              <hashTree/>
-            </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="JIRA_TestCase_Status_Update" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">{&#xd;
-  &quot;projectKey&quot;: &quot;${projectKey}&quot;,&#xd;
-  &quot;testCaseKey&quot;: &quot;GPR-T139&quot;,&#xd;
-  &quot;testCycleKey&quot;: &quot;${testCycleKey}&quot;,&#xd;
-  &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
-  &quot;testScriptResults&quot;: [&#xd;
-    {&#xd;
-      &quot;statusName&quot;: &quot;${Jira_Status}&quot;,&#xd;
-      &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
-      &quot;actualResult&quot;: &quot;Status Code: ${Response_Code}&quot;      &#xd;
-    }&#xd;
-  ],&#xd;
-  &quot;actualEndDate&quot;: &quot;${__time(yyyy-MM-dd&apos;T&apos;hh:mm:ss&apos;Z&apos;)}&quot;,&#xd;
-  &quot;executionTime&quot;: 60000,&#xd;
-  &quot;userKey&quot;: &quot;saurabh.patil&quot;,&#xd;
-  &quot;comment&quot;: &quot;GPR-T139 ${Jira_Comment}&quot;&#xd;
-}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port">443</stringProp>
-              <stringProp name="HTTPSampler.protocol">https</stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">${JIRA_API}/tm4j/v2/testexecutions</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="" elementType="Header">
-                    <stringProp name="Header.name">Authorization</stringProp>
-                    <stringProp name="Header.value">Bearer ${JIRA_ACCESSTOKEN}</stringProp>
-                  </elementProp>
-                  <elementProp name="" elementType="Header">
-                    <stringProp name="Header.name">content-type</stringProp>
-                    <stringProp name="Header.value">application/json</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-              <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion : Status Code" enabled="true">
-                <collectionProp name="Asserion.test_strings">
-                  <stringProp name="49587">201</stringProp>
-                </collectionProp>
-                <stringProp name="Assertion.custom_message"></stringProp>
-                <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-                <boolProp name="Assertion.assume_success">false</boolProp>
-                <intProp name="Assertion.test_type">8</intProp>
-              </ResponseAssertion>
-              <hashTree/>
             </hashTree>
           </hashTree>
         </hashTree>
