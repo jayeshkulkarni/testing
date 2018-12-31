@@ -110,6 +110,10 @@ public class Main implements Callable<Boolean> {
 				if (st.startsWith("//") || st.trim().length() == 0)
 					continue;
 				String[] parameters = st.split(",");
+				if(parameters.length!=12) {
+					System.out.println(" Invalid number of parameters in config. Please check the configuration file ");
+					System.exit(1);
+				}
 				gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
 						parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],parameters[8],parameters[9],parameters[10],
 						Boolean.parseBoolean(parameters[11]), Boolean.parseBoolean(arguments[2])));

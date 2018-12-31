@@ -101,11 +101,11 @@ public class ApachePOIExcelWrite {
 			String OS = System.getProperty("os.name").toLowerCase();
 			String fileName = null;
 			if ((OS.indexOf("win") >= 0)) {
-				fileName = System.getProperty("user.dir") + "\\" + FILE_NAME + "_" + calendar.get(Calendar.MONTH) + "_"
+				fileName = System.getProperty("user.dir") + "\\" + FILE_NAME + "_" + (calendar.get(Calendar.MONTH)+1) + "_"
 						+ calendar.get(Calendar.DAY_OF_MONTH) + "_" + calendar.get(Calendar.HOUR_OF_DAY) + "_"
 						+ calendar.get(Calendar.MINUTE) + ".xlsx";
 			} else {
-				fileName = System.getProperty("user.dir") + "//" + FILE_NAME + "_" + calendar.get(Calendar.MONTH) + "_"
+				fileName = System.getProperty("user.dir") + "//" + FILE_NAME + "_" + (calendar.get(Calendar.MONTH)+1) + "_"
 						+ calendar.get(Calendar.DAY_OF_MONTH) + "_" + calendar.get(Calendar.HOUR_OF_DAY) + "_"
 						+ calendar.get(Calendar.MINUTE) + ".xlsx";
 			}
@@ -128,11 +128,11 @@ public class ApachePOIExcelWrite {
 			String OS = System.getProperty("os.name").toLowerCase();
 			String fileName = null;
 			if ((OS.indexOf("win") >= 0)) {
-				fileName = System.getProperty("user.dir") + "\\" + FILE_NAME + "_" + calendar.get(Calendar.MONTH) + "_"
+				fileName = System.getProperty("user.dir") + "\\" + FILE_NAME + "_" + (calendar.get(Calendar.MONTH)+1) + "_"
 						+ calendar.get(Calendar.DAY_OF_MONTH) + "_" + calendar.get(Calendar.HOUR_OF_DAY) + "_"
 						+ calendar.get(Calendar.MINUTE) + ".csv";
 			} else {
-				fileName = System.getProperty("user.dir") + "//" + FILE_NAME + "_" + calendar.get(Calendar.MONTH) + "_"
+				fileName = System.getProperty("user.dir") + "//" + FILE_NAME + "_" + (calendar.get(Calendar.MONTH)+1) + "_"
 						+ calendar.get(Calendar.DAY_OF_MONTH) + "_" + calendar.get(Calendar.HOUR_OF_DAY) + "_"
 						+ calendar.get(Calendar.MINUTE) + ".csv";
 			}
