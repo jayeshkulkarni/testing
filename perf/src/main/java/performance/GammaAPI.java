@@ -313,7 +313,7 @@ public class GammaAPI implements Callable<Boolean> {
 					System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 				}
 				JsonPath jsonpath = new JsonPath(response.getBody().asString());
-				values.put("projectId", jsonpath.getString("project_id"));
+				values.put("projectId", jsonpath.getString("projectId"));
 				return true;
 			} else {
 				return true;
