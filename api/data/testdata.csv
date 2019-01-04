@@ -1,2 +1,2 @@
 repoType,repoName,repoUrl,repoBranchOrTag,repoLanguage,username,password,authMode,projectPath,sshKey,passphrase,accountId,projectKey,testCycleKey
-git,java_structurizr_,https://github.com/1shekhar/java_structurizr,refs/heads/master,java,username,,P,,,,,GPR,GPR-R7
+git,laserjim_,https://github.com/laserjim/vget.git,refs/heads/master,java,username,,P,,,,,GPR,GPR-R7
