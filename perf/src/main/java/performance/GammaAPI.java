@@ -485,7 +485,7 @@ public class GammaAPI implements Callable<Boolean> {
 					+ values.get("subsystemUUId");
 			Response response = httpGet(apiUrl);
 			if (response.getStatusCode() != 200) {
-				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
+				System.out.println("Last repoanalysis:"+" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 			}
 			JsonPath jsonpath = new JsonPath(response.getBody().asString());
 			if (jsonpath.getList("analysis_req_id").size() != 0) {
@@ -497,7 +497,7 @@ public class GammaAPI implements Callable<Boolean> {
 				return false;
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("Last repoanalysis:"+e.getMessage());
 			values.put("analysisFinalStep", "GAMMA_SERVER_ERROR");
 			return false;
 		}
@@ -511,6 +511,7 @@ public class GammaAPI implements Callable<Boolean> {
 			Response response = httpGet(apiUrl);
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
+				return false;
 			}
 			JsonPath jsonpath = new JsonPath(response.getBody().asString());
 			List<String> projectSubsystems = jsonpath.getList("uid");
