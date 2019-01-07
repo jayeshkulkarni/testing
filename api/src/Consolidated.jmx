@@ -7080,7 +7080,7 @@ vars.put(&quot;newPass&quot;,&quot;newPassword&quot;+&quot;${__Random(1,100)}&qu
           <stringProp name="variableNames"></stringProp>
         </CSVDataSet>
         <hashTree/>
-        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="false">
           <collectionProp name="Arguments.arguments">
             <elementProp name="BASE_URL" elementType="Argument">
               <stringProp name="Argument.name">BASE_URL</stringProp>
@@ -7135,6 +7135,66 @@ vars.put(&quot;newPass&quot;,&quot;newPassword&quot;+&quot;${__Random(1,100)}&qu
             <elementProp name="gammaPassword" elementType="Argument">
               <stringProp name="Argument.name">gammaPassword</stringProp>
               <stringProp name="Argument.value">admin1234</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="(temp) User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="BASE_URL" elementType="Argument">
+              <stringProp name="Argument.name">BASE_URL</stringProp>
+              <stringProp name="Argument.value">api/v1</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="JIRA_API" elementType="Argument">
+              <stringProp name="Argument.name">JIRA_API</stringProp>
+              <stringProp name="Argument.value">https://api.adaptavist.io</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="JIRA_ACCESSTOKEN" elementType="Argument">
+              <stringProp name="Argument.name">JIRA_ACCESSTOKEN</stringProp>
+              <stringProp name="Argument.value">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250ZXh0Ijp7InV1aWQiOiJUN2YzNzB4Q3ciLCJhcGlHd0tleSI6IkN3UUE3UDl2Uk81WUJyY1JIS1cwaGFJVXUycW14cmViNTRDY01tNHciLCJiYXNlVXJsIjoiaHR0cHM6Ly9hY2VsbGVyZS5hdGxhc3NpYW4ubmV0IiwidXNlciI6eyJhY2NvdW50SWQiOiI1Yjk2N2U0ZWQ1ZjI3YzJjMTkzM2U0MTYiLCJkaXNwbGF5TmFtZSI6InNhdXJhYmhwYXRpbCIsInVzZXJLZXkiOiJzYXVyYWJoLnBhdGlsIiwidXNlcm5hbWUiOiJzYXVyYWJoLnBhdGlsIn19LCJpYXQiOjE1NDUxMTk3NjUsImV4cCI6MTU3NjY3NzM2NSwiaXNzIjoiY29tLmthbm9haC50ZXN0LW1hbmFnZXIiLCJzdWIiOiJqaXJhOjExNDIyNDU2In0.WUIzgEFSRl26IM8SwfO4ugFy2BCG1TpreBWDaYPIy74</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="cloud_gammaURL_IP" elementType="Argument">
+              <stringProp name="Argument.name">cloud_gammaURL_IP</stringProp>
+              <stringProp name="Argument.value">52.57.33.221</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="cloud_gammaPort" elementType="Argument">
+              <stringProp name="Argument.name">cloud_gammaPort</stringProp>
+              <stringProp name="Argument.value">3000</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="cloud_gammaUsername" elementType="Argument">
+              <stringProp name="Argument.name">cloud_gammaUsername</stringProp>
+              <stringProp name="Argument.value">admin@mygamma.io</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="cloud_gammaPassword" elementType="Argument">
+              <stringProp name="Argument.name">cloud_gammaPassword</stringProp>
+              <stringProp name="Argument.value">admin</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="gammaURL_IP" elementType="Argument">
+              <stringProp name="Argument.name">gammaURL_IP</stringProp>
+              <stringProp name="Argument.value">192.168.3.109</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="gammaPort" elementType="Argument">
+              <stringProp name="Argument.name">gammaPort</stringProp>
+              <stringProp name="Argument.value">3000</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="gammaUsername" elementType="Argument">
+              <stringProp name="Argument.name">gammaUsername</stringProp>
+              <stringProp name="Argument.value">saurabh.patil_01@mygamma.io</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="gammaPassword" elementType="Argument">
+              <stringProp name="Argument.name">gammaPassword</stringProp>
+              <stringProp name="Argument.value">gamma123</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
@@ -7474,7 +7534,7 @@ else
             <hashTree/>
           </hashTree>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Users APIs Controller" enabled="false">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Users APIs Controller" enabled="true">
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
         <hashTree>
@@ -20916,7 +20976,7 @@ else
             </hashTree>
           </hashTree>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Repositories APIs Controller" enabled="true">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Repositories APIs Controller" enabled="false">
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
         <hashTree>
@@ -25654,7 +25714,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Quality Gate Profile" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Quality Gate Profile" enabled="false">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -26710,7 +26770,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Trends" enabled="true">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Trends" enabled="false">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -27104,7 +27164,7 @@ String scanRepoTimeStamp = &quot;${__time()}&quot;;
 
 vars.put(&quot;scanRepoTimeStamp&quot;,scanRepoTimeStamp);
 
-Thread.sleep(55000);
+Thread.sleep(65000);
 </stringProp>
                   </BeanShellPostProcessor>
                   <hashTree/>
@@ -27142,6 +27202,7 @@ Thread.sleep(55000);
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">sortBy</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="orderBy" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27149,6 +27210,7 @@ Thread.sleep(55000);
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">orderBy</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="limit" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27156,6 +27218,7 @@ Thread.sleep(55000);
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">limit</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="offset" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27163,6 +27226,7 @@ Thread.sleep(55000);
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">offset</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                     </collectionProp>
                   </elementProp>
@@ -27298,6 +27362,7 @@ else
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">sortBy</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="orderBy" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27305,6 +27370,7 @@ else
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">orderBy</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="limit" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27312,6 +27378,7 @@ else
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">limit</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="offset" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27319,6 +27386,7 @@ else
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">offset</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                     </collectionProp>
                   </elementProp>
@@ -27403,6 +27471,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">sortBy</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="orderBy" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27410,6 +27479,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">orderBy</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="limit" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27417,6 +27487,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">limit</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="offset" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27424,6 +27495,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">offset</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                     </collectionProp>
                   </elementProp>
@@ -27508,6 +27580,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">sortBy</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="orderBy" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27515,6 +27588,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">orderBy</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="limit" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27522,6 +27596,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">limit</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="offset" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27529,6 +27604,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">offset</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                     </collectionProp>
                   </elementProp>
@@ -27613,6 +27689,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">sortBy</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="orderBy" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27620,6 +27697,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">orderBy</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="limit" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27627,6 +27705,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">limit</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="offset" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27634,6 +27713,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">offset</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                     </collectionProp>
                   </elementProp>
@@ -27718,6 +27798,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">sortBy</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="orderBy" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27725,6 +27806,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">orderBy</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="limit" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27732,6 +27814,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">limit</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="offset" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -27739,6 +27822,7 @@ vars.put(&quot;_trendscodequality&quot;,codequality);</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">offset</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                     </collectionProp>
                   </elementProp>
@@ -28253,7 +28337,7 @@ vars.put(&quot;_trendsloc_comments&quot;,loc_comments);
                   <hashTree/>
                 </hashTree>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Delete repository " enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Delete repository " enabled="false">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments"/>
                 </elementProp>
@@ -28309,7 +28393,7 @@ else
                 </BeanShellPostProcessor>
                 <hashTree/>
               </hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Delete project " enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Delete project " enabled="false">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments"/>
                 </elementProp>
@@ -28379,24 +28463,27 @@ else
                     <collectionProp name="Arguments.arguments">
                       <elementProp name="repositoryId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${repositoryId}</stringProp>
+                        <stringProp name="Argument.value">${_repoIdUGlobal}</stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">repositoryId</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="snapshotId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${snapshotId}</stringProp>
+                        <stringProp name="Argument.value"></stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">snapshotId</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                       <elementProp name="nodeId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${nodeId}</stringProp>
+                        <stringProp name="Argument.value"></stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">nodeId</stringProp>
+                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
                       </elementProp>
                     </collectionProp>
                   </elementProp>
@@ -28404,7 +28491,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/hotspots/count</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoIdUGlobal}/hotspots/count</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
