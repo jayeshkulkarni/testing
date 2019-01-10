@@ -7080,7 +7080,7 @@ vars.put(&quot;newPass&quot;,&quot;newPassword&quot;+&quot;${__Random(1,100)}&qu
           <stringProp name="variableNames"></stringProp>
         </CSVDataSet>
         <hashTree/>
-        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="false">
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
           <collectionProp name="Arguments.arguments">
             <elementProp name="BASE_URL" elementType="Argument">
               <stringProp name="Argument.name">BASE_URL</stringProp>
@@ -7119,7 +7119,7 @@ vars.put(&quot;newPass&quot;,&quot;newPassword&quot;+&quot;${__Random(1,100)}&qu
             </elementProp>
             <elementProp name="gammaURL_IP" elementType="Argument">
               <stringProp name="Argument.name">gammaURL_IP</stringProp>
-              <stringProp name="Argument.value">192.168.2.87</stringProp>
+              <stringProp name="Argument.value">192.168.2.113</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="gammaPort" elementType="Argument">
@@ -7129,72 +7129,12 @@ vars.put(&quot;newPass&quot;,&quot;newPassword&quot;+&quot;${__Random(1,100)}&qu
             </elementProp>
             <elementProp name="gammaUsername" elementType="Argument">
               <stringProp name="Argument.name">gammaUsername</stringProp>
-              <stringProp name="Argument.value">1600@mygamma.io</stringProp>
+              <stringProp name="Argument.value">ubuntu@mygamma.io</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="gammaPassword" elementType="Argument">
               <stringProp name="Argument.name">gammaPassword</stringProp>
               <stringProp name="Argument.value">admin1234</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-          </collectionProp>
-        </Arguments>
-        <hashTree/>
-        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="(temp) User Defined Variables" enabled="true">
-          <collectionProp name="Arguments.arguments">
-            <elementProp name="BASE_URL" elementType="Argument">
-              <stringProp name="Argument.name">BASE_URL</stringProp>
-              <stringProp name="Argument.value">api/v1</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="JIRA_API" elementType="Argument">
-              <stringProp name="Argument.name">JIRA_API</stringProp>
-              <stringProp name="Argument.value">https://api.adaptavist.io</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="JIRA_ACCESSTOKEN" elementType="Argument">
-              <stringProp name="Argument.name">JIRA_ACCESSTOKEN</stringProp>
-              <stringProp name="Argument.value">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250ZXh0Ijp7InV1aWQiOiJUN2YzNzB4Q3ciLCJhcGlHd0tleSI6IkN3UUE3UDl2Uk81WUJyY1JIS1cwaGFJVXUycW14cmViNTRDY01tNHciLCJiYXNlVXJsIjoiaHR0cHM6Ly9hY2VsbGVyZS5hdGxhc3NpYW4ubmV0IiwidXNlciI6eyJhY2NvdW50SWQiOiI1Yjk2N2U0ZWQ1ZjI3YzJjMTkzM2U0MTYiLCJkaXNwbGF5TmFtZSI6InNhdXJhYmhwYXRpbCIsInVzZXJLZXkiOiJzYXVyYWJoLnBhdGlsIiwidXNlcm5hbWUiOiJzYXVyYWJoLnBhdGlsIn19LCJpYXQiOjE1NDUxMTk3NjUsImV4cCI6MTU3NjY3NzM2NSwiaXNzIjoiY29tLmthbm9haC50ZXN0LW1hbmFnZXIiLCJzdWIiOiJqaXJhOjExNDIyNDU2In0.WUIzgEFSRl26IM8SwfO4ugFy2BCG1TpreBWDaYPIy74</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="cloud_gammaURL_IP" elementType="Argument">
-              <stringProp name="Argument.name">cloud_gammaURL_IP</stringProp>
-              <stringProp name="Argument.value">52.57.33.221</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="cloud_gammaPort" elementType="Argument">
-              <stringProp name="Argument.name">cloud_gammaPort</stringProp>
-              <stringProp name="Argument.value">3000</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="cloud_gammaUsername" elementType="Argument">
-              <stringProp name="Argument.name">cloud_gammaUsername</stringProp>
-              <stringProp name="Argument.value">admin@mygamma.io</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="cloud_gammaPassword" elementType="Argument">
-              <stringProp name="Argument.name">cloud_gammaPassword</stringProp>
-              <stringProp name="Argument.value">admin</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="gammaURL_IP" elementType="Argument">
-              <stringProp name="Argument.name">gammaURL_IP</stringProp>
-              <stringProp name="Argument.value">192.168.3.109</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="gammaPort" elementType="Argument">
-              <stringProp name="Argument.name">gammaPort</stringProp>
-              <stringProp name="Argument.value">3000</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="gammaUsername" elementType="Argument">
-              <stringProp name="Argument.name">gammaUsername</stringProp>
-              <stringProp name="Argument.value">saurabh.patil_01@mygamma.io</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="gammaPassword" elementType="Argument">
-              <stringProp name="Argument.name">gammaPassword</stringProp>
-              <stringProp name="Argument.value">gamma123</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
@@ -7534,7 +7474,7 @@ else
             <hashTree/>
           </hashTree>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Users APIs Controller" enabled="true">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Users APIs Controller" enabled="false">
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
         <hashTree>
@@ -20976,7 +20916,7 @@ else
             </hashTree>
           </hashTree>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Repositories APIs Controller" enabled="false">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Repositories APIs Controller" enabled="true">
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
         <hashTree>
@@ -20993,7 +20933,7 @@ else
             <boolProp name="TransactionController.parent">true</boolProp>
           </TransactionController>
           <hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Project and Repository Operations  - Global Access" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Project and Repository Operations  - Global Access" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -21344,7 +21284,7 @@ else
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.protocol"></stringProp>
                 <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoIdUGlobal}/scan</stringProp>
+                <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/scan</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
                 <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -21408,7 +21348,7 @@ Thread.sleep(50000);
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Add and Scan New Repository" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Add and Scan New Repository" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -22638,7 +22578,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Show all repositories for a tenant" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Show all repositories for a tenant" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -22816,7 +22756,7 @@ else
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Upload Repository Zip" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Upload Repository Zip" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -23499,7 +23439,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Get single repository details " enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Get single repository details " enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -23627,7 +23567,7 @@ else
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Edit existing repository " enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Edit existing repository " enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -24621,7 +24561,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Get Scan Details" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Get Scan Details" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -25714,7 +25654,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Quality Gate Profile" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Quality Gate Profile" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -26770,7 +26710,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Trends" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Trends" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -28450,7 +28390,7 @@ else
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="HotSpots" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="HotSpots" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -28461,14 +28401,6 @@ else
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Show hotspots count for given repository uid " enabled="true">
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                     <collectionProp name="Arguments.arguments">
-                      <elementProp name="repositoryId" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${_repoIdUGlobal}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                        <stringProp name="Argument.name">repositoryId</stringProp>
-                        <stringProp name="HTTPArgument.content_type">application/json</stringProp>
-                      </elementProp>
                       <elementProp name="snapshotId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
                         <stringProp name="Argument.value"></stringProp>
@@ -28491,7 +28423,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoIdUGlobal}/hotspots/count</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/hotspots/count</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -28613,23 +28545,16 @@ else
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Show hotspots count for given repository uid " enabled="true">
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                     <collectionProp name="Arguments.arguments">
-                      <elementProp name="repositoryId" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${repositoryId}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                        <stringProp name="Argument.name">repositoryId</stringProp>
-                      </elementProp>
                       <elementProp name="snapshotId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${snapshotId}</stringProp>
+                        <stringProp name="Argument.value"></stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">snapshotId</stringProp>
                       </elementProp>
                       <elementProp name="nodeId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${nodeId}</stringProp>
+                        <stringProp name="Argument.value"></stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">nodeId</stringProp>
@@ -28640,7 +28565,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/hotspots</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/hotspots</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -28756,7 +28681,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="CodeIssues" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="CodeIssues" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -28767,23 +28692,16 @@ else
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Show code issues count for given repository uid " enabled="true">
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                     <collectionProp name="Arguments.arguments">
-                      <elementProp name="repositoryId" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${repositoryId}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                        <stringProp name="Argument.name">repositoryId</stringProp>
-                      </elementProp>
                       <elementProp name="snapshotId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${snapshotId}</stringProp>
+                        <stringProp name="Argument.value"></stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">snapshotId</stringProp>
                       </elementProp>
                       <elementProp name="nodeId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${nodeId}</stringProp>
+                        <stringProp name="Argument.value"></stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">nodeId</stringProp>
@@ -28794,7 +28712,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/hotspots/count</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/hotspots/count</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -28916,13 +28834,6 @@ else
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Show hotspots summary for given repository uid " enabled="true">
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                     <collectionProp name="Arguments.arguments">
-                      <elementProp name="repositoryId" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${repositoryId}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                        <stringProp name="Argument.name">repositoryId</stringProp>
-                      </elementProp>
                       <elementProp name="snapshotId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
                         <stringProp name="Argument.value">${snapshotId}</stringProp>
@@ -28943,7 +28854,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/hotspots</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/hotspots</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -29059,7 +28970,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="DesignIssues" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="DesignIssues" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -29070,13 +28981,6 @@ else
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Show design issues count for given repository uid " enabled="true">
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                     <collectionProp name="Arguments.arguments">
-                      <elementProp name="repositoryId" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${repositoryId}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                        <stringProp name="Argument.name">repositoryId</stringProp>
-                      </elementProp>
                       <elementProp name="snapshotId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
                         <stringProp name="Argument.value">${snapshotId}</stringProp>
@@ -29097,7 +29001,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/designissues/count</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/designissues/count</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -29246,7 +29150,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/designissues</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/designissues</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -29362,7 +29266,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Components" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Components" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -29373,23 +29277,16 @@ else
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Show component count for given repository uid " enabled="true">
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                     <collectionProp name="Arguments.arguments">
-                      <elementProp name="repositoryId" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${repositoryId}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                        <stringProp name="Argument.name">repositoryId</stringProp>
-                      </elementProp>
                       <elementProp name="snapshotId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${snapshotId}</stringProp>
+                        <stringProp name="Argument.value"></stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">snapshotId</stringProp>
                       </elementProp>
                       <elementProp name="nodeId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${nodeId}</stringProp>
+                        <stringProp name="Argument.value"></stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">nodeId</stringProp>
@@ -29400,7 +29297,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">${BASE_URL}/repositories/{repositoryUid}/components/count</stringProp>
+                  <stringProp name="HTTPSampler.path">${BASE_URL}/repositories/${_repoUIdGlobal}/components/count</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -29516,7 +29413,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Duplication" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Duplication" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -29554,7 +29451,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/duplication</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/duplication</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -29670,7 +29567,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Metrics" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Metrics" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -29681,23 +29578,16 @@ else
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Show available metric values for given repository uid " enabled="true">
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                     <collectionProp name="Arguments.arguments">
-                      <elementProp name="repositoryId" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${repositoryId}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                        <stringProp name="Argument.name">repositoryId</stringProp>
-                      </elementProp>
                       <elementProp name="snapshotId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${snapshotId}</stringProp>
+                        <stringProp name="Argument.value"></stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">snapshotId</stringProp>
                       </elementProp>
                       <elementProp name="nodeId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${nodeId}</stringProp>
+                        <stringProp name="Argument.value"></stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">nodeId</stringProp>
@@ -29708,7 +29598,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/metrics</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/metrics</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -29830,23 +29720,16 @@ else
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Show Metric violations for given input parameters " enabled="true">
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                     <collectionProp name="Arguments.arguments">
-                      <elementProp name="repositoryId" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${repositoryId}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                        <stringProp name="Argument.name">repositoryId</stringProp>
-                      </elementProp>
                       <elementProp name="snapshotId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${snapshotId}</stringProp>
+                        <stringProp name="Argument.value"></stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">snapshotId</stringProp>
                       </elementProp>
                       <elementProp name="nodeId" elementType="HTTPArgument">
                         <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${nodeId}</stringProp>
+                        <stringProp name="Argument.value"></stringProp>
                         <stringProp name="Argument.metadata">=</stringProp>
                         <boolProp name="HTTPArgument.use_equals">true</boolProp>
                         <stringProp name="Argument.name">nodeId</stringProp>
@@ -29857,7 +29740,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/metrics/violations</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/metrics/violations</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -29973,7 +29856,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Repository Metadata" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Repository Metadata" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -29983,35 +29866,13 @@ else
               <hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get design issues details for given repository. " enabled="true">
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="repositoryId" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${repositoryId}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                        <stringProp name="Argument.name">repositoryId</stringProp>
-                      </elementProp>
-                      <elementProp name="snapshotId" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${snapshotId}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                        <stringProp name="Argument.name">snapshotId</stringProp>
-                      </elementProp>
-                      <elementProp name="nodeId" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${nodeId}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                        <stringProp name="Argument.name">nodeId</stringProp>
-                      </elementProp>
-                    </collectionProp>
+                    <collectionProp name="Arguments.arguments"/>
                   </elementProp>
                   <stringProp name="HTTPSampler.domain"></stringProp>
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/metadata/designissues?snapshotId=?nodeId=?nodeType=</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/metadata/designissues?snapshotId=?nodeId=?nodeType=</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -30132,35 +29993,13 @@ else
               <hashTree>
                 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get code issues details for given repository. " enabled="true">
                   <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                    <collectionProp name="Arguments.arguments">
-                      <elementProp name="repositoryId" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${repositoryId}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                        <stringProp name="Argument.name">repositoryId</stringProp>
-                      </elementProp>
-                      <elementProp name="snapshotId" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${snapshotId}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                        <stringProp name="Argument.name">snapshotId</stringProp>
-                      </elementProp>
-                      <elementProp name="nodeId" elementType="HTTPArgument">
-                        <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                        <stringProp name="Argument.value">${nodeId}</stringProp>
-                        <stringProp name="Argument.metadata">=</stringProp>
-                        <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                        <stringProp name="Argument.name">nodeId</stringProp>
-                      </elementProp>
-                    </collectionProp>
+                    <collectionProp name="Arguments.arguments"/>
                   </elementProp>
                   <stringProp name="HTTPSampler.domain"></stringProp>
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/metadata/codeissues?snapshotId=?nodeId=?nodeType=  </stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/metadata/codeissues?snapshotId=?nodeId=?nodeType=  </stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -30287,7 +30126,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/metadata</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/metadata</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -30403,7 +30242,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Snapshots" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Snapshots" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -30455,7 +30294,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${repositoryUid}/snapshots?sortBy=:&amp;orderBy=:&amp;searchString=:&amp;offset=:&amp;limit=</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/snapshots?sortBy=:&amp;orderBy=:&amp;searchString=:&amp;offset=:&amp;limit=</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -30604,7 +30443,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${repositoryUid}/snapshots/{snapshotId}/status</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/snapshots/{snapshotId}/status</stringProp>
                   <stringProp name="HTTPSampler.method">PUT</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -30746,7 +30585,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${repositoryUid}/snapshots/{snapshotId}/label</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/snapshots/{snapshotId}/label</stringProp>
                   <stringProp name="HTTPSampler.method">PUT</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -30895,7 +30734,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${repositoryUid}/snapshots/{snapshotId}</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/snapshots/{snapshotId}</stringProp>
                   <stringProp name="HTTPSampler.method">PUT</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -31011,7 +30850,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Search" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Search" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -31042,7 +30881,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${repositoryUid}/search</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/search</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -31158,7 +30997,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Tasks" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Tasks" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -31189,7 +31028,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${repositoryUid}/search</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/search</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -31331,7 +31170,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/tasks</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/tasks</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -31466,7 +31305,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/tasks</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/tasks</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -31601,7 +31440,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/tasks/{taskId}</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/tasks/{taskId}</stringProp>
                   <stringProp name="HTTPSampler.method">PUT</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -31806,7 +31645,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${repositoryUid}/tasks/addtask</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/tasks/addtask</stringProp>
                   <stringProp name="HTTPSampler.method">POST</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -31941,7 +31780,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/tasks/{taskId}/comments</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/tasks/{taskId}/comments</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -32083,7 +31922,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/tasks/{taskId}/addcomment</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/tasks/{taskId}/addcomment</stringProp>
                   <stringProp name="HTTPSampler.method">POST</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -32225,7 +32064,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${repositoryUid}/tasks/{taskId}/resolve</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/tasks/{taskId}/resolve</stringProp>
                   <stringProp name="HTTPSampler.method">POST</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -32341,7 +32180,7 @@ else
                 </hashTree>
               </hashTree>
             </hashTree>
-            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Scan Config" enabled="false">
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Scan Config" enabled="true">
               <boolProp name="TransactionController.parent">true</boolProp>
             </TransactionController>
             <hashTree>
@@ -32357,7 +32196,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/{repositoryUid}/scans/config</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/scans/config</stringProp>
                   <stringProp name="HTTPSampler.method">GET</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -32492,7 +32331,7 @@ else
                   <stringProp name="HTTPSampler.port"></stringProp>
                   <stringProp name="HTTPSampler.protocol"></stringProp>
                   <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${repositoryUid}/scans/config</stringProp>
+                  <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repoUIdGlobal}/scan</stringProp>
                   <stringProp name="HTTPSampler.method">PUT</stringProp>
                   <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
                   <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
