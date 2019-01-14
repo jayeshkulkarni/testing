@@ -268,14 +268,14 @@ public class GammaAPI implements Callable<Boolean> {
 	public boolean isRepoExists() {
 		try {
 			String apiUrl = null;
-			apiUrl = baseUrl + "/api/v1/repositories?sortBy=repoName&searchTerm=" + repoName + "&limit=1&offset=0";
+			apiUrl = baseUrl + "/api/v1/repositories?sortBy=repositoryName&searchTerm=" + repoName + "&limit=1&offset=0";
 			Response response = httpGet(apiUrl);
 			if (response.getStatusCode() != 204 && response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 				return false;
 			}
 			JsonPath jsonpath = new JsonPath(response.getBody().asString());
-			repos = jsonpath.getList("repoName");
+			repos = jsonpath.getList("repositoryName");
 			if (repos.contains(repoName)) {
 				return true;
 			}
@@ -373,7 +373,7 @@ public class GammaAPI implements Callable<Boolean> {
 			} else {
 				results[14] = getdiff("SCANBOX_CLEANUP_SUCCESS", "QUEUED");
 			}
-			if (getQualityRatings() && values.get("analysisFinalStep").equalsIgnoreCase("SCANBOX_CLEANUP_SUCCESS")) {
+			if (values.get("analysisFinalStep").equalsIgnoreCase("SCANBOX_CLEANUP_SUCCESS")  &&  getQualityRatings()) {
 				results[15] = values.get("cloneRating");
 				results[16] = values.get("codeQualityRating");
 				results[17] = values.get("antiPatternRating");
@@ -464,7 +464,6 @@ public class GammaAPI implements Callable<Boolean> {
 				if (currentStates != null) {
 					for (int i = 0; i < currentStates.size(); i++) {
 						if (states.contains(currentStates.get(i))) {
-							// values.put("analysisReqId", jsonpath.getString("analysis_req_id"));
 							values.put("analysisFinalStep", currentStates.get(i));
 							return true;
 						}
@@ -481,16 +480,15 @@ public class GammaAPI implements Callable<Boolean> {
 	public boolean getLastRepoAnalysis() {
 		try {
 			String apiUrl = null;
-			apiUrl = baseUrl + "/gamma/api/repository/getsubsystemanalysishistorydata?subsystem_uid="
-					+ values.get("subsystemUUId");
+			apiUrl = baseUrl + "/api/v1/repositories/"+ values.get("subsystemUUId")+"/scans?sortBy=startTime&orderBy=desc";
 			Response response = httpGet(apiUrl);
 			if (response.getStatusCode() != 200) {
 				System.out.println("Last repoanalysis:"+" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 			}
 			JsonPath jsonpath = new JsonPath(response.getBody().asString());
-			if (jsonpath.getList("analysis_req_id").size() != 0) {
-				values.put("analysisReqId", jsonpath.getList("analysis_req_id").get(0).toString());
-				values.put("analysisFinalStep", "SCANBOX_CLEANUP_SUCCESS");
+			if (jsonpath.getList("scanStatus").size() > 0) {
+				values.put("scanId", jsonpath.getList("scanId").get(0).toString());
+				values.put("analysisFinalStep", jsonpath.getList("endMessage").get(0).toString());
 				return true;
 			} else {
 				System.out.println("Repo is yet to be scan");
@@ -533,7 +531,6 @@ public class GammaAPI implements Callable<Boolean> {
 		try {
 			String apiUrl = baseUrl + "/api/v1/projects/" + values.get("projectId")
 					+ "/repositories?sortBy=repositoryName&orderBy=ASC&searchTerm=" + repoName + "&offset=0&limit=1";
-			// System.out.println(apiurl);
 			Response response = httpGet(apiUrl);
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
@@ -591,9 +588,6 @@ public class GammaAPI implements Callable<Boolean> {
 		try {
 			String apiurl = null;
 			apiurl = baseUrl + "/api/v1/projects/" + values.get("projectId") + "/repositories/link";
-			// System.out.println(apiurl);
-			// String body="project_id="++"subsystem_id=["+values.get("subsystemId")+"]";
-			// Building request using requestSpecBuilder
 			RequestSpecBuilder builder = new RequestSpecBuilder();
 
 			// Setting API's body
@@ -616,14 +610,11 @@ public class GammaAPI implements Callable<Boolean> {
 			} else {
 				repoList = values.get("subSystemIds") + "," + values.get("subsystemUUId");
 			}
-			// System.out.println("subsystems linked : " + repoList);
 			Response response = RestAssured.given().spec(requestSpec).formParam("repositoryUids", repoList).when()
 					.post(apiurl);
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiurl + " return HTTP Code :" + response.getStatusCode());
 			}
-			// String loginResponse = response.getBody().asString();
-			// System.out.println(loginResponse);
 			return true;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
