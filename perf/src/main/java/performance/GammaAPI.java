@@ -34,6 +34,8 @@ public class GammaAPI implements Callable<Boolean> {
 	public static final String ZIP = "zip";
 	public static final String SVN = "svn";
 	public static final String REMOTE = "remote";
+	public static final String GITHUB = "github";	
+	public static final String BITBUCKET = "bitbucket";
 	public static final String WINDOWS_GAMMA_SCANNER = "C:\\ProgramData\\Gamma\\corona\\scanboxwrapper\\bin\\gammascanner.bat";
 	public static final String LINUX_GAMMA_SCANNER = "//opt//Gamma//corona//scanboxwrapper//bin//gammascanner";
 	private static Semaphore semaphore = new Semaphore(1);
@@ -558,13 +560,34 @@ public class GammaAPI implements Callable<Boolean> {
 
 	}
 
+	private boolean addVersionControlAccount(String json) {
+		try {
+			String apiUrl = null;
+			apiUrl = baseUrl + "/api/v1/versioncontrolaccounts";
+			Response response = httpPost(apiUrl, json);
+			if (response.getStatusCode() != 201) {
+				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
+				return false;
+			}
+			JsonPath jsonpath = new JsonPath(response.getBody().asString());
+			List<String> snapshotIds = jsonpath.getList("id");
+			List<String> subsystemIds = jsonpath.getList("subsystemId");
+			values.put("snapshotId", String.valueOf(snapshotIds.get(snapshotIds.size() - 1)));
+			values.put("subsystemId", String.valueOf(subsystemIds.get(snapshotIds.size() - 1)));
+			return true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+
 	private boolean getLocAndComponentCount() {
 		try {
 			getSnapshotId();
 			String apiUrl = baseUrl + "/api/views/repositories/" + values.get("subsystemUUId")
 					+ "/breadcrumb?repositoryId=" + values.get("subsystemId") + "&nodeId=-1&snapshotId="
 					+ values.get("snapshotId");
-			
+
 			Response response = httpGet(apiUrl);
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
@@ -583,7 +606,7 @@ public class GammaAPI implements Callable<Boolean> {
 			values.put("totalLoc", String.valueOf(jsonpath.getInt("total_loc")));
 			values.put("loc", String.valueOf(jsonpath.getInt("loc")));
 			values.put("components", String.valueOf(jsonpath.getInt("components")));
-		
+
 			return true;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -731,6 +754,22 @@ public class GammaAPI implements Callable<Boolean> {
 							+ "	\"authMode\": \"P\"\r\n" + "}";
 					break;
 
+					
+				case GITHUB : 
+
+					json = "{\r\n" + "	\"accountName\": \"" + repoName + "\",\r\n" + "	\"accountType\": \"1\",\r\n"
+							+ "	\"accountTypeName\": \"Github\",\r\n" + "	\"accountUrl\": \"https://github.com/\",\r\n"
+							+ "	\"userName\": \"\",\r\n" + "	\"pat\": \"\"" + repoPassword + "\"\",\r\n" + "}";
+					break;
+					
+				case BITBUCKET:
+
+					json = "{\r\n" + "	\"accountName\": \"" + repoName + "\",\r\n" + "	\"accountType\": \"2\",\r\n"
+							+ "	\"accountTypeName\": \"Bitbucket\",\r\n" + "	\"accountUrl\": \"https://bitbucket.org/\",\r\n"
+							+ "	\"userName\": \"\",\r\n" + "	\"pat\": \"\"" + repoPassword + "\"\",\r\n" + "}";
+					break;
+								
+					
 				default:
 					break;
 				}
