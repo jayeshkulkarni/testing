@@ -14,15 +14,15 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class ApachePOIExcelWrite {
+public class ResultWriter {
 	private Semaphore semaphore = new Semaphore(1);
-	private final String FILE_NAME = "Gamma_Scan_Report";
+	private final static String FILE_NAME = "Gamma_Scan_Report";
 	private Object[][] results;
 	private int count = 0, rowNum = 0;
-	private static int columnCount = 25;
+	public static int columnCount = 28;
 	private int repoSize = 0;
 
-	ApachePOIExcelWrite(int repoSize) {
+	ResultWriter(int repoSize) {
 		this.results = new Object[repoSize + 1][columnCount];
 		this.repoSize = repoSize;
 		results[0][0] = "Project_Name";
@@ -45,11 +45,15 @@ public class ApachePOIExcelWrite {
 		results[0][17] = "Design_Issues_Rating";
 		results[0][18] = "Metric_Rating";
 		results[0][19] = "Overall_Rating";
-		results[0][20] = "Scan_Result";
-		results[0][21] = "Machine_IP";
-		results[0][22] = "Gamma_UserName";
-		results[0][23] = "Gamma_Password";
-		results[0][24] = "SubsystemUID";
+		results[0][20] = "totalLoc";
+		results[0][21] = "loc";
+		results[0][22] = "components";
+		
+		results[0][23] = "Scan_Result";
+		results[0][24] = "Machine_IP";
+		results[0][25] = "Gamma_UserName";
+		results[0][26] = "Gamma_Password";
+		results[0][27] = "SubsystemUID";
 		this.count++;
 	}
 
