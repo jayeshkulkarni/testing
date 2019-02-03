@@ -24,7 +24,7 @@ public class Main implements Callable<Boolean> {
 		System.out.println("Usage : java -jar RepoScanner.jar -p <config file>  ");
 		System.out.println("Usage : java -jar RepoScanner.jar -s <config file1>,<config file2>....<config fileN>  ");
 		System.out.println("Usage : java -jar RepoScanner.jar -f <config file1>,<config file2>....<config fileN>  ");
-		System.out.println("Usage : java -jar RepoScanner.jar -a <config file>");
+		System.out.println("Usage : java -jar RepoScanner.jar -a <gammawebSitebaseURL> <gammawebsiteUserName> <gammawebsitepassword> <gammaURL> <gammaPassword>");
 		System.out.println("Parameter : -c Config file  ");
 		System.out.println("Parameter : -s Sequential execution of Config files  ");
 		System.out.println("Parameter : -f fetching Scan Results  ");
@@ -33,22 +33,33 @@ public class Main implements Callable<Boolean> {
 	}
 
 	public static void main(String args[]) {
-		if (args.length < 2 || args.length > 2) {
+		if (args.length < 2) {
 			printUsage();
 			System.exit(1);
 		}
+		if (args[0].equalsIgnoreCase("-a")) {
+			if (args.length != 6) {
+				printUsage();
+				System.exit(1);
+			}
+		} else {
+			if (args.length != 2) {
+				printUsage();
+				System.exit(1);
+			}
+		}
+
 		ThreadPoolExecutor executor = null;
 		String[] configFiles = null;
 		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
 		switch (args[0]) {
 		case "-a":
 		case "-A":
-			new Main(new String[] { "-a", args[1], "false" }).activateGamma(new String[] { "-a", args[1], "false" });
+			new GammaLicense(args[1], args[2], args[3], args[4], args[5]).activateGamma();
 			break;
 
 		case "-p":
 		case "-P":
-
 			executor.submit(new Main(new String[] { "-p", args[1], "false" }));
 			break;
 		case "-c":
@@ -85,66 +96,6 @@ public class Main implements Callable<Boolean> {
 		}
 		if (executor != null)
 			executor.shutdown();
-	}
-
-	private void activateGamma(String arguments[]) {
-		try {
-			System.out.println("path :" + System.getProperty("user.dir"));
-			File file = new File(arguments[1]);
-			if (!file.exists()) {
-				System.out.println("configuration file not found at path :" + arguments[1]);
-				System.exit(1);
-			} else {
-				System.out.println("configuration file found at path :" + arguments[1]);
-			}
-
-		} catch (Exception e2) {
-			System.out.println("Error occured while accessing configuration file : " + e2.getMessage());
-			System.exit(1);
-		}
-		ResultWriter resultWriter = null;
-		BufferedReader br = null;
-		int repoCounter = 0;
-		try {
-			File file = new File(arguments[1]);
-			br = new BufferedReader(new FileReader(file));
-			String st;
-			while ((st = br.readLine()) != null) {
-				if (st.startsWith("//") || st.trim().length() == 0) {
-					continue;
-				}
-				repoCounter++;
-			}
-			br.close();
-			br = new BufferedReader(new FileReader(file));
-			resultWriter = new ResultWriter(repoCounter);
-			while ((st = br.readLine()) != null) {
-				if (st.startsWith("//") || st.trim().length() == 0)
-					continue;
-				String[] parameters = st.split(",");
-				if (parameters.length != 12) {
-					System.out.println(" Invalid number of parameters in config. Please check the configuration file ");
-					System.exit(1);
-				}				
-				new GammaAPI(parameters[0], resultWriter, parameters[1], parameters[2], parameters[3],
-						parameters[4], parameters[5], parameters[6], parameters[7], parameters[8], parameters[9],
-						parameters[10], Boolean.parseBoolean(parameters[11]), Boolean.parseBoolean(arguments[2]))
-								.activateGamma();
-				System.exit(1);//exit when you activate the gamma.
-			}
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			System.out.println("Please check configuration file");
-			System.exit(1);
-		} finally {
-			try {
-				br.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.out.println("something went wrong while reading config file.");
-				System.exit(1);
-			}
-		}
 	}
 
 	public void scan(String arguments[]) {
