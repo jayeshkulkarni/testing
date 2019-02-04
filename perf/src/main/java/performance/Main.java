@@ -20,32 +20,57 @@ public class Main implements Callable<Boolean> {
 	}
 
 	public static void printUsage() {
-		System.out.println("Usage : java -jar Scan.jar -c <config file>  ");
-		System.out.println("Usage : java -jar Scan.jar -s <config file1>,<config file2>....<config fileN>  ");
-		System.out.println("Usage : java -jar Scan.jar -f <config file1>,<config file2>....<config fileN>  ");
-		System.out.println("Usage : -c Config file  ");
-		System.out.println("Usage : -s Sequential execution of Config files  ");
-		System.out.println("Usage : -f Parallel fetching of last repo scan  ");
+		System.out.println("Usage : java -jar RepoScanner.jar -c <config file>  ");
+		System.out.println("Usage : java -jar RepoScanner.jar -p <config file>  ");
+		System.out.println("Usage : java -jar RepoScanner.jar -s <config file1>,<config file2>....<config fileN>  ");
+		System.out.println("Usage : java -jar RepoScanner.jar -f <config file1>,<config file2>....<config fileN>  ");
+		System.out.println("Usage : java -jar RepoScanner.jar -a <gammawebSitebaseURL> <gammawebsiteUserName> <gammawebsitepassword> <gammaURL> <gammaPassword>");
+		System.out.println("Parameter : -c Config file  ");
+		System.out.println("Parameter : -s Sequential execution of Config files  ");
+		System.out.println("Parameter : -f fetching Scan Results  ");
+		System.out.println("Parameter : -p Sequential execution of repos in config file for performance testing.");
+		System.out.println("Parameter : -a Activate Gamma through CLI.");
 	}
 
 	public static void main(String args[]) {
-		if (args.length < 2 || args.length > 2) {
+		if (args.length < 2) {
 			printUsage();
 			System.exit(1);
 		}
+		if (args[0].equalsIgnoreCase("-a")) {
+			if (args.length != 6) {
+				printUsage();
+				System.exit(1);
+			}
+		} else {
+			if (args.length != 2) {
+				printUsage();
+				System.exit(1);
+			}
+		}
+
 		ThreadPoolExecutor executor = null;
 		String[] configFiles = null;
+		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
 		switch (args[0]) {
+		case "-a":
+		case "-A":
+			new GammaLicense(args[1], args[2], args[3], args[4], args[5]).activateGamma();
+			break;
+
+		case "-p":
+		case "-P":
+			executor.submit(new Main(new String[] { "-p", args[1], "false" }));
+			break;
 		case "-c":
 		case "-C":
-			executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+
 			executor.submit(new Main(new String[] { "-c", args[1], "false" }));
 			break;
 		case "-s":
 		case "-S":
 			List<Future<Boolean>> list = new ArrayList<Future<Boolean>>();
 			configFiles = args[1].split(",");
-			executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
 			for (int i = 0; i < configFiles.length; i++) {
 				list.add(executor.submit(new Main(new String[] { "-c", configFiles[i], "false" })));
 			}
@@ -60,7 +85,6 @@ public class Main implements Callable<Boolean> {
 		case "-f":
 		case "-F":
 			configFiles = args[1].split(",");
-			executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
 			for (int i = 0; i < configFiles.length; i++) {
 				executor.submit(new Main(new String[] { "-c", configFiles[i], "true" }));
 			}
@@ -90,7 +114,7 @@ public class Main implements Callable<Boolean> {
 			System.exit(1);
 		}
 		List<GammaAPI> gammaList = new ArrayList<GammaAPI>();
-		ApachePOIExcelWrite apachePOIExcelWrite = null;
+		ResultWriter apachePOIExcelWrite = null;
 		BufferedReader br = null;
 		int repoCounter = 0;
 		try {
@@ -105,14 +129,19 @@ public class Main implements Callable<Boolean> {
 			}
 			br.close();
 			br = new BufferedReader(new FileReader(file));
-			apachePOIExcelWrite = new ApachePOIExcelWrite(repoCounter);
+			apachePOIExcelWrite = new ResultWriter(repoCounter);
 			while ((st = br.readLine()) != null) {
 				if (st.startsWith("//") || st.trim().length() == 0)
 					continue;
 				String[] parameters = st.split(",");
+				if (parameters.length != 12) {
+					System.out.println(" Invalid number of parameters in config. Please check the configuration file ");
+					System.exit(1);
+				}
 				gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
-						parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],
-						Boolean.parseBoolean(parameters[8]), Boolean.parseBoolean(arguments[2])));
+						parameters[3], parameters[4], parameters[5], parameters[6], parameters[7], parameters[8],
+						parameters[9], parameters[10], Boolean.parseBoolean(parameters[11]),
+						Boolean.parseBoolean(arguments[2])));
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -127,7 +156,14 @@ public class Main implements Callable<Boolean> {
 				System.exit(1);
 			}
 		}
-		ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(gammaList.size());
+		ThreadPoolExecutor executor = null;
+		if (arguments[0].equalsIgnoreCase("-p")) {
+			executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+
+		} else {
+			executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(gammaList.size());
+
+		}
 		List<Future<Boolean>> list = new ArrayList<Future<Boolean>>();
 		for (int i = 0; i < repoCounter; i++) {
 			list.add(executor.submit(gammaList.get(i)));
@@ -139,7 +175,7 @@ public class Main implements Callable<Boolean> {
 				e.printStackTrace();
 			}
 		}
-		apachePOIExcelWrite.storeResults();
+		apachePOIExcelWrite.storeResultsInCSVFormat();
 		executor.shutdown();
 	}
 
