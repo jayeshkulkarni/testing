@@ -690,6 +690,8 @@ public class GammaAPI implements Callable<Boolean> {
 								+ "	\"pat\": \"" + repoPassword + "\"" + "}";
 						if (!addVersionControlAccount(json)) {
 							return false;
+						}else {
+						getVersionControlAccount("_github");
 						}
 					}
 
@@ -711,6 +713,8 @@ public class GammaAPI implements Callable<Boolean> {
 								+ repoUserName + "\",\r\n" + "	\"pat\": \"" + repoPassword + "\"" + "}";
 						if (!addVersionControlAccount(json)) {
 							return false;
+						}else {
+						getVersionControlAccount("_bitbucket");
 						}
 					}
 

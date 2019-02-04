@@ -46,7 +46,7 @@ public class ResultWriter {
 		results[0][18] = "Metric_Rating";
 		results[0][19] = "Overall_Rating";
 		results[0][20] = "totalLoc";
-		results[0][21] = "loc";
+		results[0][21] = "eloc";
 		results[0][22] = "components";
 		
 		results[0][23] = "Scan_Result";
