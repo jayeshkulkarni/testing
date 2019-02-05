@@ -37,7 +37,7 @@ public class GammaAPI implements Callable<Boolean> {
 	public static final String GITHUB = "github";
 	public static final String BITBUCKET = "bitbucket";
 	public static final String WINDOWS_GAMMA_SCANNER = "C:\\ProgramData\\Gamma\\corona\\scanboxwrapper\\bin\\gammascanner.bat";
-	public static final String LINUX_GAMMA_SCANNER = "//opt//Gamma//corona//scanboxwrapper//bin//gammascanner";
+	public static final String LINUX_GAMMA_SCANNER = "/opt/gamma/corona/scanboxwrapper/bin/gammascanner";
 	private static Semaphore semaphore = new Semaphore(1);
 	private ConcurrentHashMap<String, String> values = new ConcurrentHashMap<>();
 	private String baseUrl;
