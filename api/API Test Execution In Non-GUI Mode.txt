@@ -1,0 +1,46 @@
+****STEPS TO EXECUTE JMETER SCRIPT in non-GUI mode*****
+
+Prequisites::
+
+Host machine must have JMeter configured.
+
+1. Download JMeter from https://jmeter.apache.org/download_jmeter.cgi (Binary Release Zip)
+Extract downloaded zip to the API Test Project folder
+
+2. Set the environment variable JMETER_HOME pointing to "../bin/.." directory.
+For example,
+Windows Platform: %JMETER_HOME% = "C:/apache-jmeter-5.0/bin"
+Linux Platform: %JMETER_HOME% = "/home/acellere/apache-jmeter-5.0/bin"
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Steps::
+
+1. Create folder named 'api-test-data'.Create environment variable named 'API_TEST_DATA' pointing to '../api-test-data' folder location. Folder must have all write permissions.
+Place all test-data folders (CSV, IMG, JSON, ZIP) inside this folder.
+
+2. Create folder named 'api-test-report'. Create environment variable named 'API_TEST_REPORT' pointing to '../api-test-report' folder location. Folder must have all write permissions.
+
+3. Pull the latest code/script from GitHub 
+
+4. Execute the following command
+For Windows-
+%JMETER_HOME%/bin/jmeter -n -t <path_to_jmx_file>/<filename.jmx> -l %API_TEST_REPORT%/CSV_Report/APIs-TestStatus-Data.csv -e -o %API_TEST_REPORT%/HTML_Report -f
+
+For Linux-
+%JMETER_HOME%/bin/jmeter -n -t <path_to_jmx_file>/<filename.jmx> -l %API_TEST_REPORT%/CSV_Report/APIs-TestStatus-Data.csv -e -o %API_TEST_REPORT%/HTML_Report -f
+
+-n : tells JMeter to run in non-GUI mode
+-t : specifies the path to source .jmx script to run
+-l : log file name of JTL file to log sample results to (Here we are using CSV)
+-e : generate report dashboard after load test
+-o : output folder for report dashboard
+-f : force delete existing results files and web report folder if present before starting the test 
+
+
+For example, for Windows Environment-
+%JMETER_HOME%/bin/jmeter -n -t D:/Shekhar-Acellere/Automation/GitHub/gammatestautomation/api/src/Vagrant_Execution.jmx -l %API_TEST_REPORT%/CSV_Report/APIs-TestStatus-Data.csv -e -o %API_TEST_REPORT%/HTML_Report -f
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
