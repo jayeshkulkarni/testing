@@ -28,7 +28,6 @@ import com.jayway.restassured.specification.RequestSpecification;
 
 import groovy.json.JsonException;
 
-
 public class GammaAPI implements Callable<Boolean> {
 	public static final String GIT = "git";
 	public static final String ZIP = "zip";
@@ -37,7 +36,7 @@ public class GammaAPI implements Callable<Boolean> {
 	public static final String GITHUB = "github";
 	public static final String BITBUCKET = "bitbucket";
 	public static final String WINDOWS_GAMMA_SCANNER = "C:\\ProgramData\\Gamma\\corona\\scanboxwrapper\\bin\\gammascanner.bat";
-	public static final String LINUX_GAMMA_SCANNER = "//opt//Gamma//corona//scanboxwrapper//bin//gammascanner";
+	public static final String LINUX_GAMMA_SCANNER = "/opt/gamma/corona/scanboxwrapper/bin/gammascanner";
 	private static Semaphore semaphore = new Semaphore(1);
 	private ConcurrentHashMap<String, String> values = new ConcurrentHashMap<>();
 	private String baseUrl;
@@ -120,7 +119,6 @@ public class GammaAPI implements Callable<Boolean> {
 			return false;
 		}
 	}
-
 
 	private boolean login() {
 		try {
@@ -241,16 +239,18 @@ public class GammaAPI implements Callable<Boolean> {
 
 	private boolean getRepoAnalysis() {
 		try {
-
-			String apiUrl = null;
-			apiUrl = baseUrl + "/api/v1/repositories/" + values.get("subsystemUUId") + "/scans/" + values.get("scanId");
-			Response response = httpGet(apiUrl);
-			if (response.getStatusCode() != 200) {
-				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
+			if (!repoType.equalsIgnoreCase(REMOTE)) {
+				String apiUrl = null;
+				apiUrl = baseUrl + "/api/v1/repositories/" + values.get("subsystemUUId") + "/scans/"
+						+ values.get("scanId");
+				Response response = httpGet(apiUrl);
+				if (response.getStatusCode() != 200) {
+					System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
+				}
+				JsonPath jsonpath = new JsonPath(response.getBody().asString());
+				steps = jsonpath.getList("currentStep");
+				repos = jsonpath.getList("startTime");
 			}
-			JsonPath jsonpath = new JsonPath(response.getBody().asString());
-			steps = jsonpath.getList("currentStep");
-			repos = jsonpath.getList("startTime");
 			results = new Object[ResultWriter.columnCount];
 			for (int i = 0; i < ResultWriter.columnCount; i++) {
 				results[i] = new Object();
@@ -387,28 +387,33 @@ public class GammaAPI implements Callable<Boolean> {
 	}
 
 	private boolean getLastRepoAnalysis() {
-		try {
-			String apiUrl = null;
-			apiUrl = baseUrl + "/api/v1/repositories/" + values.get("subsystemUUId")
-					+ "/scans?sortBy=startTime&orderBy=desc";
-			Response response = httpGet(apiUrl);
-			if (response.getStatusCode() != 200) {
-				System.out.println("Last repoanalysis:" + " Warning : URL: " + apiUrl + " return HTTP Code :"
-						+ response.getStatusCode());
-			}
-			JsonPath jsonpath = new JsonPath(response.getBody().asString());
-			if (jsonpath.getList("scanStatus").size() > 0) {
-				values.put("scanId", jsonpath.getList("scanId").get(0).toString());
-				values.put("analysisFinalStep", jsonpath.getList("endMessage").get(0).toString());
-				return true;
-			} else {
-				System.out.println("Repo is yet to be scan");
+		if (repoType.equalsIgnoreCase(REMOTE)) {
+			values.put("analysisFinalStep", "SCANBOX_CLEANUP_SUCCESS");
+			return true;
+		} else {
+			try {
+				String apiUrl = null;
+				apiUrl = baseUrl + "/api/v1/repositories/" + values.get("subsystemUUId")
+						+ "/scans?sortBy=startTime&orderBy=desc";
+				Response response = httpGet(apiUrl);
+				if (response.getStatusCode() != 200) {
+					System.out.println("Last repoanalysis:" + " Warning : URL: " + apiUrl + " return HTTP Code :"
+							+ response.getStatusCode());
+				}
+				JsonPath jsonpath = new JsonPath(response.getBody().asString());
+				if (jsonpath.getList("scanStatus").size() > 0) {
+					values.put("scanId", jsonpath.getList("scanId").get(0).toString());
+					values.put("analysisFinalStep", jsonpath.getList("endMessage").get(0).toString());
+					return true;
+				} else {
+					System.out.println("Repo is yet to be scan");
+					return false;
+				}
+			} catch (Exception e) {
+				System.out.println("Last repoanalysis:" + e.getMessage());
+				values.put("analysisFinalStep", "GAMMA_SERVER_ERROR");
 				return false;
 			}
-		} catch (Exception e) {
-			System.out.println("Last repoanalysis:" + e.getMessage());
-			values.put("analysisFinalStep", "GAMMA_SERVER_ERROR");
-			return false;
 		}
 	}
 
@@ -690,8 +695,8 @@ public class GammaAPI implements Callable<Boolean> {
 								+ "	\"pat\": \"" + repoPassword + "\"" + "}";
 						if (!addVersionControlAccount(json)) {
 							return false;
-						}else {
-						getVersionControlAccount("_github");
+						} else {
+							getVersionControlAccount("_github");
 						}
 					}
 
@@ -713,8 +718,8 @@ public class GammaAPI implements Callable<Boolean> {
 								+ repoUserName + "\",\r\n" + "	\"pat\": \"" + repoPassword + "\"" + "}";
 						if (!addVersionControlAccount(json)) {
 							return false;
-						}else {
-						getVersionControlAccount("_bitbucket");
+						} else {
+							getVersionControlAccount("_bitbucket");
 						}
 					}
 
@@ -887,7 +892,7 @@ public class GammaAPI implements Callable<Boolean> {
 			} else {
 				logFile = repoUserName + "//scan.log";
 			}
-			String successMessage = "Notifying Gamma to publish data for subsystem " + values.get("subsystemUUId");
+			String successMessage = "Publish data notification sent successfully to GAMMA.";
 			br = new BufferedReader(new FileReader(new File(logFile)));
 			String line = "";
 			while ((line = br.readLine()) != null) {
@@ -929,13 +934,15 @@ public class GammaAPI implements Callable<Boolean> {
 				logFile = repoUserName + "\\scan.log";
 			} else {
 				gammaScanner = LINUX_GAMMA_SCANNER;
-				fileName = repoUserName + "//gamma.json";
-				logFile = repoUserName + "//scan.log";
+				fileName = repoUserName + "/gamma.json";
+				logFile = repoUserName + "/scan.log";
 			}
-			File file = new File(logFile);
-			if (file.exists()) {
-				file.delete();
+			File logFileHandler = new File(logFile);
+			if (logFileHandler.exists()) {
+				logFileHandler.delete();
 			}
+			// create log file
+			logFileHandler.createNewFile();
 			// Write into the file
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(fileName)));
 			bw.write(jsonObject.toString());
@@ -943,20 +950,16 @@ public class GammaAPI implements Callable<Boolean> {
 			System.out.println("Successfully updated gamma config json object to file at path : " + fileName + "...!!");
 			System.out.println("Note log file path : " + logFile + "...!!");
 			// Start the scan
-			String[] cmdArray = new String[5];
-			// first argument is the program we want to open
-			cmdArray[0] = gammaScanner;
+			String[] cmdArray = new String[2];
 
-			cmdArray[1] = "-c";
+			cmdArray[0] = "-c";
 
-			// second argument is a json file
-			cmdArray[2] = fileName;
-			cmdArray[3] = ">";
-			// third argument is a log file
-			cmdArray[4] = logFile;
+			// second argument is a gamma json file
+			cmdArray[1] = fileName;
 
-			Runtime.getRuntime().exec(cmdArray);
-			System.out.println("Remote scan started for repo : " + repoName + "..");
+			ProcessExec.executeProcessSync(gammaScanner, cmdArray, logFile);
+
+			System.out.println("Remote scan started for repo : " + repoName);
 			remoteRepoTimeStamp = Calendar.getInstance().getTimeInMillis();
 			Thread.sleep(100);
 			return true;
