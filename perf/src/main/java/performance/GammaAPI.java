@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -56,6 +57,37 @@ public class GammaAPI implements Callable<Boolean> {
 	private boolean incremental;
 	private boolean fetchResults;
 	private long remoteRepoTimeStamp;
+	private String jiraUserName;
+	private String jiraPassword;
+	private String jiraUrl;
+	private String jiraProjectKey;
+	private boolean enableTaskInsights;
+	private boolean enableRE;
+
+	public GammaAPI(String baseUrl, ResultWriter apachePOIExcelWrite, String userName, String password, String gitUrl,
+			String repoUserName, String repoPassword, String language, String branch, String projectName,
+			String repoName, String repoType, boolean incremental,boolean fetchResults,String jiraUserName,String jiraPassword,String jiraUrl,String jiraProjectKey,boolean enableTaskInsights,boolean enableRE) {
+		this.baseUrl = baseUrl;
+		this.apachePOIExcelWrite = apachePOIExcelWrite;
+		this.userName = userName;
+		this.password = password;
+		this.gitUrl = gitUrl;
+		this.repoUserName = repoUserName;
+		this.repoPassword = repoPassword;
+		this.language = language;
+		this.branch = branch;
+		this.projectName = projectName;
+		this.repoName = repoName;
+		this.repoType = repoType;
+		this.incremental = incremental;
+		this.fetchResults = fetchResults;
+		this.jiraUserName=jiraUserName;
+		this.jiraPassword=jiraPassword;
+		this.jiraUrl=jiraUrl;
+		this.jiraProjectKey=jiraProjectKey;
+		this.enableTaskInsights=enableTaskInsights;
+		this.enableRE=enableRE;
+	}
 
 	public GammaAPI(String baseUrl, ResultWriter apachePOIExcelWrite, String userName, String password, String gitUrl,
 			String repoUserName, String repoPassword, String language, String branch, String projectName,
@@ -75,7 +107,6 @@ public class GammaAPI implements Callable<Boolean> {
 		this.incremental = incremental;
 		this.fetchResults = fetchResults;
 	}
-
 	@Override
 	public Boolean call() throws Exception {
 		try {
@@ -137,7 +168,31 @@ public class GammaAPI implements Callable<Boolean> {
 			return false;
 		}
 	}
-
+	
+	private boolean integrateJira() {
+		try {
+			String apiurl = null;
+			apiurl = baseUrl + "/api/v1/repositories/"+values.get("subsystemUUId")+"/jira/validateproject";
+			String json = "{\r\n" + "	\"username\": \"" + Base64.getEncoder().encodeToString(
+		            jiraUserName.getBytes("utf-8")) + "\",\r\n" + "	\"password\": \""
+					+ Base64.getEncoder().encodeToString(
+				            jiraPassword.getBytes("utf-8")) + "\",\r\n" + "	\"project_key\": \""+jiraProjectKey+"\",\r\n"
+					+ "	\"host_url\": \"" + jiraUrl + "\",\r\n" + "	\"type\": \"restricted\",\r\n"
+					+ "	\"repository_uid\": \"" + values.get("subsystemUUId") + "\",\r\n" + "	\"repository_id\": \"" + values.get("subsystemId")
+					+ "\",\r\n" + "	\"repository_name\": \""+repoName+"\",\r\n" + "	\"taskInsightsCheckoxStatus\": \""+enableTaskInsights
+					+ "\" }";
+			Response response = httpPost(apiurl,json);
+			if (response.getStatusCode() != 200) {
+				System.out.println(" Warning : URL: " + apiurl + " return HTTP Code :" + response.getBody().asString());
+				return false;
+			}
+			return true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
 	private boolean isProjectExists(String name) {
 		try {
 			String apiUrl = null;
@@ -565,6 +620,9 @@ public class GammaAPI implements Callable<Boolean> {
 	}
 
 	private boolean scanRepo() {
+		if(enableRE) {
+			integrateJira();
+		}
 		if (repoType.equalsIgnoreCase(REMOTE)) {
 			return startRemoteScan();
 		} else {
@@ -700,7 +758,7 @@ public class GammaAPI implements Callable<Boolean> {
 						}
 					}
 
-					json = "{\r\n" + "	\"repoName\": \"" + repoName + "_github\",\r\n" + "	\"repoBranchOrTag\": \""
+					json = "{\r\n" + "	\"repoName\": \"" + repoName +  "\",\r\n	\"repoBranchOrTag\": \""
 							+ branch + "\",\r\n" + "	\"repoLanguage\": \"" + language + "\",\r\n"
 							+ "	\"repoUrl\": \"" + gitUrl + "\",\r\n" + "	\"repoType\": \"Github\",\r\n"
 							+ "	\"username\": \"\",\r\n" + "	\"password\": \"\",\r\n" + "	\"sshKey\": \"\",\r\n"
@@ -723,7 +781,7 @@ public class GammaAPI implements Callable<Boolean> {
 						}
 					}
 
-					json = "{\r\n" + "	\"repoName\": \"" + repoName + "_bitbucket\",\r\n" + "	\"repoBranchOrTag\": \""
+					json = "{\r\n" + "	\"repoName\": \"" + repoName +  "\",\r\n	\"repoBranchOrTag\": \""
 							+ branch + "\",\r\n" + "	\"repoLanguage\": \"" + language + "\",\r\n"
 							+ "	\"repoUrl\": \"" + gitUrl + "\",\r\n" + "	\"repoType\": \"Bitbucket\",\r\n"
 							+ "	\"username\": \"\",\r\n" + "	\"password\": \"\",\r\n" + "	\"sshKey\": \"\",\r\n"
