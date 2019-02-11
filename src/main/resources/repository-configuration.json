@@ -8,8 +8,8 @@
         {
             "dataDir": "",
             "repository": {
-                "uid": "${repositoryUID}",
-                "projectName": "Sample",
+                "uid": "437fef7da1a77dc21e87d795f423e066",
+                "projectName": "goldernOrb__03:19:59",
                 "languages": [
                     "JAVA"
                 ],
@@ -23,6 +23,37 @@
                 "includePaths": []
             },
             "modules": {
+                "codeissues": [
+                    {
+                        "name": "gamma_java",
+                        "enabled": true,
+                        "config": {
+                            "rules": [],
+                            "options": []
+                        }
+                    },
+                    {
+                        "name": "pmd",
+                        "enabled": true,
+                        "config": {
+                            "rules": [],
+                            "options": [
+                                {
+                                    "name": "javaVersion",
+                                    "type": "text",
+                                    "value": "1.8",
+                                    "required": false
+                                },
+                                {
+                                    "name": "ruleSets",
+                                    "type": "text",
+                                    "value": "rulesets/java/strictexception.xml,rulesets/java/basic.xml,rulesets/java/design.xml",
+                                    "required": true
+                                }
+                            ]
+                        }
+                    }
+                ],
                 "unittest": [
                     {
                         "name": "junit",
@@ -46,38 +77,12 @@
                         "enabled": true,
                         "config": {
                             "rules": [],
-                            "options": []
-                        }
-                    }
-                ],
-                "codeissues": [
-                    {
-                        "name": "pmd",
-                        "enabled": true,
-                        "config": {
-                            "rules": [],
                             "options": [
                                 {
-                                    "name": "javaVersion",
-                                    "type": "text",
-                                    "value": "1.8",
-                                    "required": false
-                                },
-                                {
-                                    "name": "ruleSets",
-                                    "type": "text",
-                                    "value": "rulesets/java/strictexception.xml,rulesets/java/basic.xml,rulesets/java/design.xml",
-                                    "required": true
+                                    "name": "mode",
+                                    "value": "git"
                                 }
                             ]
-                        }
-                    },
-                    {
-                        "name": "gamma_java",
-                        "enabled": true,
-                        "config": {
-                            "rules": [],
-                            "options": []
                         }
                     }
                 ]

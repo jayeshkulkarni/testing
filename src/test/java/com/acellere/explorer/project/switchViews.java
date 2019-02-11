@@ -16,7 +16,7 @@ import com.acellere.explorer.common.GammaLogin;
 import com.acellere.explorer.common.RegisterTenant;
 
 public class switchViews {
-	//private static Logger Log = Logger.getLogger(Log.class.getName());
+	// private static Logger Log = Logger.getLogger(Log.class.getName());
 	public static WebDriver driver;
 	public static WebDriverWait wdWait;
 	public static List<WebElement> dropdown;
@@ -25,38 +25,36 @@ public class switchViews {
 	public static String ele1;
 	public static String ele2;
 	public static WebElement we;
-  
-  @BeforeClass
-  public void assignDriver() 
-  {
-	  RegisterTenant.selectBrowser();
-	try {
-		GammaLogin.login();
-	} catch (InterruptedException | IOException e) {
-		
+
+	@BeforeClass
+	public void assignDriver() {
+		RegisterTenant.selectBrowser();
+		try {
+			GammaLogin.login();
+		} catch (InterruptedException | IOException e) {
+
+		}
+		driver = GammaLogin.getWebDriver();
+		wdWait = new WebDriverWait(driver, 35);
+		Reporter.log("------------------------------Start of Test------------------------------", true);
 	}
-	driver = GammaLogin.getWebDriver();
-	wdWait = new WebDriverWait(driver,35);
-	Reporter.log("------------------------------Start of Test------------------------------",true);
-  }	
- 
-  
-  @Test(priority = 1)
-  public static void switchListView() throws InterruptedException 
-  {
 
-	  
-	  we = wdWait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".option_wrapper .dropdown_container:nth-child(2) .dropdown_arrow")));
-	  we.click(); 
-	  
-	  
-	  we = wdWait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".dropDown_list li:nth-child(2) li:nth-child(1)")));
-	  we.click();
-	  
-	  we = wdWait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".option_button_wrapper div.button_small:nth-child(1)")));
-	  we.click();
+	@Test(priority = 1)
+	public static void switchListView() throws InterruptedException {
 
-	driver.quit();
-  }
-  
+		we = wdWait.until(ExpectedConditions.elementToBeClickable(
+				By.cssSelector(".option_wrapper .dropdown_container:nth-child(2) .dropdown_arrow")));
+		we.click();
+
+		we = wdWait.until(ExpectedConditions
+				.elementToBeClickable(By.cssSelector(".dropDown_list li:nth-child(2) li:nth-child(1)")));
+		we.click();
+
+		we = wdWait.until(ExpectedConditions
+				.elementToBeClickable(By.cssSelector(".option_button_wrapper div.button_small:nth-child(1)")));
+		we.click();
+
+		driver.quit();
+	}
+
 }

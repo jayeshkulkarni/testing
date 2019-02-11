@@ -7,7 +7,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 public class GammaLogout {
-	//private static Logger Log = Logger.getLogger(Log.class.getName());
+	// private static Logger Log = Logger.getLogger(Log.class.getName());
 	public static WebDriver driver;
 
 	@Test()
@@ -15,19 +15,18 @@ public class GammaLogout {
 		Thread.sleep(3000);
 		driver = GammaLogin.driver;
 		driver.findElement(By.xpath(".//*[@id='user_management']")).click();
-		
+
 		Thread.sleep(3000);
 		driver.findElement(By.xpath(".//*[@id='log_out']")).click();
-		Reporter.log("Logout Success.....!!!",true);
+		Reporter.log("Logout Success.....!!!", true);
 		Thread.sleep(3000);
 	}
-	
-	@AfterClass() 
-	  public static void close_browser()
-	  { 
-	
-		  Reporter.log("Closing the Browser .......!!!",true);
-		  driver.quit();
-	  
-	  }
+
+	@AfterClass()
+	public static void close_browser() {
+
+		Reporter.log("Closing the Browser .......!!!", true);
+		driver.quit();
+
+	}
 }

@@ -6,16 +6,15 @@ import org.testng.annotations.AfterClass;
 
 public class Teams {
 	@BeforeClass
-	  public void beforeClass() {
-	  }
-	
-  @Test
-  public void f() {
-  }
-  
+	public void beforeClass() {
+	}
 
-  @AfterClass
-  public void afterClass() {
-  }
+	@Test
+	public void f() {
+	}
+
+	@AfterClass
+	public void afterClass() {
+	}
 
 }
