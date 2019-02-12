@@ -12,28 +12,15 @@ public class UserPropertiesWriter {
 
 	public static void main(String[] args) throws IOException {
 
-		/*	
-		 * File rootDir = new File("." + File.separator + "src" + File.separator +
-		 * "main" + File.separator + "resources"); String sourceFile =
-		 * rootDir.getCanonicalPath() + File.separator +
-		 * "apiReportGeneratorConfig.properties";
-		 */		
-		//Skipped above temporarily since user will share the configuration file path as a parameter in terminal.
-		/* String sourceFile= System.getProperty("path.properties"); */
-		
-		//To be done:: Provide static paths from Vagrantfile
-		String sourceFile= "/vagrant/api/resources/apiReportGeneratorConfig.properties";
-		System.out.println("Getting configuration details from: "+sourceFile);
+		String sourceFile = System.getProperty("path.properties");
+		System.out.println("Getting configuration details from: " + sourceFile);
 
-		/*
-		 * String destFilePath = System.getenv("JMETER_HOME"); String destFile =
-		 * destFilePath + File.separator + "bin" + File.separator + "user.properties";
-		 */
-		
-		String destFile = "/vagrant/api/resources/apache-jmeter-5.0/bin/user.properties";
-
-		/* System.out.println("JHOME: "+System.getenv("JMETER_HOME")); */
-		System.out.println("Adding configuration details to: "+destFile);
+		String destFilePath = System.getenv("JMETER_HOME");
+		String destFile = destFilePath + File.separator + "bin" + File.separator + "user.properties";
+		System.out.println("JMETER_HOME: " + System.getenv("JMETER_HOME"));
+		System.out.println("API_TEST_DATA: " + System.getenv("API_TEST_DATA"));
+		System.out.println("API_TEST_REPORT: " + System.getenv("API_TEST_REPORT"));
+		System.out.println("Adding configuration details to: " + destFile);
 
 		File fins = new File(sourceFile);
 		FileInputStream fileInputStream = new FileInputStream(fins);
