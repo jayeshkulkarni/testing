@@ -173,7 +173,6 @@ public class GammaLicense {
 			builder.addHeader("X-Requested-With", "XMLHttpRequest");
 			builder.setContentType("multipart/form-data; boundary=--------------------------739146750418203808470210");
 			RequestSpecification requestSpec = builder.build();
-
 			// Making post request with authentication, leave blank in case there
 			// are no credentials- basic("","")
 			Response response = RestAssured.given().spec(requestSpec)

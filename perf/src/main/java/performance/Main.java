@@ -21,15 +21,18 @@ public class Main implements Callable<Boolean> {
 
 	public static void printUsage() {
 		System.out.println("Usage : java -jar RepoScanner.jar -c <config file>  ");
+		System.out.println("Usage : java -jar RepoScanner.jar -re <config file>  ");
 		System.out.println("Usage : java -jar RepoScanner.jar -p <config file>  ");
 		System.out.println("Usage : java -jar RepoScanner.jar -s <config file1>,<config file2>....<config fileN>  ");
 		System.out.println("Usage : java -jar RepoScanner.jar -f <config file1>,<config file2>....<config fileN>  ");
-		System.out.println("Usage : java -jar RepoScanner.jar -a <gammawebSitebaseURL> <gammawebsiteUserName> <gammawebsitepassword> <gammaURL> <gammaPassword>");
+		System.out.println(
+				"Usage : java -jar RepoScanner.jar -a <gammawebSitebaseURL> <gammawebsiteUserName> <gammawebsitepassword> <gammaURL> <gammaPassword>");
 		System.out.println("Parameter : -c Config file  ");
 		System.out.println("Parameter : -s Sequential execution of Config files  ");
 		System.out.println("Parameter : -f fetching Scan Results  ");
 		System.out.println("Parameter : -p Sequential execution of repos in config file for performance testing.");
 		System.out.println("Parameter : -a Activate Gamma through CLI.");
+		System.out.println("Parameter : -re gamma RE with Jira integration.");
 	}
 
 	public static void main(String args[]) {
@@ -53,6 +56,11 @@ public class Main implements Callable<Boolean> {
 		String[] configFiles = null;
 		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
 		switch (args[0]) {
+		case "-re":
+		case "-RE":
+			executor.submit(new Main(new String[] { "-re", args[1], "false" }));
+			break;
+
 		case "-a":
 		case "-A":
 			new GammaLicense(args[1], args[2], args[3], args[4], args[5]).activateGamma();
@@ -62,11 +70,12 @@ public class Main implements Callable<Boolean> {
 		case "-P":
 			executor.submit(new Main(new String[] { "-p", args[1], "false" }));
 			break;
+
 		case "-c":
 		case "-C":
-
 			executor.submit(new Main(new String[] { "-c", args[1], "false" }));
 			break;
+
 		case "-s":
 		case "-S":
 			List<Future<Boolean>> list = new ArrayList<Future<Boolean>>();
@@ -82,6 +91,7 @@ public class Main implements Callable<Boolean> {
 				}
 			}
 			break;
+
 		case "-f":
 		case "-F":
 			configFiles = args[1].split(",");
@@ -89,6 +99,7 @@ public class Main implements Callable<Boolean> {
 				executor.submit(new Main(new String[] { "-c", configFiles[i], "true" }));
 			}
 			break;
+
 		default:
 			printUsage();
 			System.exit(1);
@@ -134,14 +145,36 @@ public class Main implements Callable<Boolean> {
 				if (st.startsWith("//") || st.trim().length() == 0)
 					continue;
 				String[] parameters = st.split(",");
-				if (parameters.length != 12) {
-					System.out.println(" Invalid number of parameters in config. Please check the configuration file ");
-					System.exit(1);
+				switch (arguments[0]) {
+				case "-c":
+					if (parameters.length != 12) {
+						System.out.println(
+								" Invalid number of parameters in config. It should be 12. Please check the configuration file.");
+						System.exit(1);
+					} else {
+						gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
+								parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],
+								parameters[8], parameters[9], parameters[10], Boolean.parseBoolean(parameters[11]),
+								Boolean.parseBoolean(arguments[2])));
+					}
+					break;
+				case "-re":
+					if (parameters.length != 17) {
+						System.out.println(
+								" Invalid number of parameters in config. It should be 17. Please check the configuration file.");
+						System.exit(1);
+					} else {
+						gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
+								parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],
+								parameters[8], parameters[9], parameters[10], Boolean.parseBoolean(parameters[11]),
+								Boolean.parseBoolean(arguments[2]), parameters[12], parameters[13], parameters[14],
+								parameters[15], Boolean.parseBoolean(parameters[16]), Boolean.parseBoolean("true")));
+					}
+					break;
+				default:
+					System.out.println("Invalid option" + arguments[1]);
 				}
-				gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
-						parameters[3], parameters[4], parameters[5], parameters[6], parameters[7], parameters[8],
-						parameters[9], parameters[10], Boolean.parseBoolean(parameters[11]),
-						Boolean.parseBoolean(arguments[2])));
+
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
