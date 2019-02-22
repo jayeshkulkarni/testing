@@ -1,5 +1,8 @@
 package performance;
 
+import static performance.HttpUtils.httpGet;
+import static performance.HttpUtils.httpPost;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -27,8 +30,6 @@ import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.specification.RequestSpecification;
 
-import groovy.json.JsonException;
-
 public class GammaAPI implements Callable<Boolean> {
 	public static final String GIT = "git";
 	public static final String ZIP = "zip";
@@ -38,7 +39,7 @@ public class GammaAPI implements Callable<Boolean> {
 	public static final String BITBUCKET = "bitbucket";
 	public static final String WINDOWS_GAMMA_SCANNER = "C:\\ProgramData\\Gamma\\corona\\scanboxwrapper\\bin\\gammascanner.bat";
 	public static final String LINUX_GAMMA_SCANNER = "/opt/gamma/corona/scanboxwrapper/bin/gammascanner";
-	private static Semaphore semaphore = new Semaphore(1);
+	public static Semaphore semaphore = new Semaphore(1);
 	private ConcurrentHashMap<String, String> values = new ConcurrentHashMap<>();
 	private String baseUrl;
 	private String language;
@@ -47,7 +48,7 @@ public class GammaAPI implements Callable<Boolean> {
 	private ResultWriter apachePOIExcelWrite;
 	private String userName;
 	private String password;
-	private String gitUrl;
+	protected String gitUrl;
 	private String branch;
 	private String projectName;
 	private String repoName;
@@ -63,7 +64,26 @@ public class GammaAPI implements Callable<Boolean> {
 	private String jiraProjectKey;
 	private boolean enableTaskInsights;
 	private boolean enableRE;
+	
+	public GammaAPI() {
+		
+	}
 
+	public GammaAPI(String baseUrl, String userName, String password, String gitUrl,
+			String repoUserName, String repoPassword, String language, String branch, String projectName,
+			String repoName, String repoType) {
+		this.baseUrl = baseUrl;
+		this.userName = userName;
+		this.password = password;
+		this.gitUrl = gitUrl;
+		this.repoUserName = repoUserName;
+		this.repoPassword = repoPassword;
+		this.language = language;
+		this.branch = branch;
+		this.projectName = projectName;
+		this.repoName = repoName;
+		this.repoType = repoType;
+	}
 	public GammaAPI(String baseUrl, ResultWriter apachePOIExcelWrite, String userName, String password, String gitUrl,
 			String repoUserName, String repoPassword, String language, String branch, String projectName,
 			String repoName, String repoType, boolean incremental,boolean fetchResults,String jiraUserName,String jiraPassword,String jiraUrl,String jiraProjectKey,boolean enableTaskInsights,boolean enableRE) {
@@ -151,12 +171,12 @@ public class GammaAPI implements Callable<Boolean> {
 		}
 	}
 
-	private boolean login() {
+	protected boolean login() {
 		try {
 			String apiurl = null;
 			apiurl = baseUrl + "/api/v1/auth";
 			Response response = httpPost(apiurl,
-					"{\"username\":\"" + userName + "\",\"password\":\"" + password + "\"}");
+					"{\"username\":\"" + userName + "\",\"password\":\"" + password + "\"}",values.get("bearerToken"));
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiurl + " return HTTP Code :" + response.getStatusCode());
 			}
@@ -181,7 +201,7 @@ public class GammaAPI implements Callable<Boolean> {
 					+ "	\"repository_uid\": \"" + values.get("subsystemUUId") + "\",\r\n" + "	\"repository_id\": \"" + values.get("subsystemId")
 					+ "\",\r\n" + "	\"repository_name\": \""+repoName+"\",\r\n" + "	\"taskInsightsCheckoxStatus\": \""+enableTaskInsights
 					+ "\" }";
-			Response response = httpPost(apiurl,json);
+			Response response = httpPost(apiurl,json,values.get("bearerToken"));
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiurl + " return HTTP Code :" + response.getBody().asString());
 				return false;
@@ -198,7 +218,7 @@ public class GammaAPI implements Callable<Boolean> {
 			String apiUrl = null;
 			apiUrl = baseUrl + "/api/v1/projects?sortBy=projectName&orderBy=ASC&searchTerm=" + name
 					+ "&limit=1&offset=0";
-			Response response = httpGet(apiUrl);
+			Response response = httpGet(apiUrl,values.get("bearerToken"));
 			if (response.getStatusCode() != 204 && response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 				return false;
@@ -221,7 +241,7 @@ public class GammaAPI implements Callable<Boolean> {
 			String apiUrl = null;
 			apiUrl = baseUrl + "/api/v1/repositories?sortBy=repositoryName&searchTerm=" + repoName
 					+ "&limit=1&offset=0";
-			Response response = httpGet(apiUrl);
+			Response response = httpGet(apiUrl,values.get("bearerToken"));
 			if (response.getStatusCode() != 204 && response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 				return false;
@@ -239,7 +259,7 @@ public class GammaAPI implements Callable<Boolean> {
 		return false;
 	}
 
-	private boolean addProject() {
+	protected boolean addProject() {
 		try {
 			if (!isProjectExists(projectName)) {
 				String apiUrl = null;
@@ -298,7 +318,7 @@ public class GammaAPI implements Callable<Boolean> {
 				String apiUrl = null;
 				apiUrl = baseUrl + "/api/v1/repositories/" + values.get("subsystemUUId") + "/scans/"
 						+ values.get("scanId");
-				Response response = httpGet(apiUrl);
+				Response response = httpGet(apiUrl,values.get("bearerToken"));
 				if (response.getStatusCode() != 200) {
 					System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 				}
@@ -380,7 +400,7 @@ public class GammaAPI implements Callable<Boolean> {
 
 			apiUrl = baseUrl + "/api/v1/repositories/" + values.get("subsystemUUId") + "/ratings";
 			// System.out.println(apiurl);
-			Response response = httpGet(apiUrl);
+			Response response = httpGet(apiUrl,values.get("bearerToken"));
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 				return false;
@@ -410,7 +430,7 @@ public class GammaAPI implements Callable<Boolean> {
 				String apiUrl = null;
 				apiUrl = baseUrl + "/api/v1/repositories/" + values.get("subsystemUUId") + "/scans/"
 						+ values.get("scanId");
-				Response response = httpGet(apiUrl);
+				Response response = httpGet(apiUrl,values.get("bearerToken"));
 				if (response.getStatusCode() != 200) {
 					System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 				}
@@ -450,7 +470,7 @@ public class GammaAPI implements Callable<Boolean> {
 				String apiUrl = null;
 				apiUrl = baseUrl + "/api/v1/repositories/" + values.get("subsystemUUId")
 						+ "/scans?sortBy=startTime&orderBy=desc";
-				Response response = httpGet(apiUrl);
+				Response response = httpGet(apiUrl,values.get("bearerToken"));
 				if (response.getStatusCode() != 200) {
 					System.out.println("Last repoanalysis:" + " Warning : URL: " + apiUrl + " return HTTP Code :"
 							+ response.getStatusCode());
@@ -472,12 +492,12 @@ public class GammaAPI implements Callable<Boolean> {
 		}
 	}
 
-	private boolean getSubsystems() {
+	protected boolean getSubsystems() {
 		try {
 			String apiUrl = null;
 			apiUrl = baseUrl + "/api/v1/projects/" + values.get("projectId")
 					+ "/repositories?sortBy=repositoryName&orderBy=ASC&searchTerm=&offset=0&limit=1000";
-			Response response = httpGet(apiUrl);
+			Response response = httpGet(apiUrl,values.get("bearerToken"));
 			if (response.getStatusCode() != 204 && response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 				return false;
@@ -505,7 +525,7 @@ public class GammaAPI implements Callable<Boolean> {
 		try {
 			String apiUrl = null;
 			apiUrl = baseUrl + "/api/v1/repositories/" + values.get("subsystemUUId") + "/snapshots";
-			Response response = httpGet(apiUrl);
+			Response response = httpGet(apiUrl,values.get("bearerToken"));
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 				return false;
@@ -526,7 +546,7 @@ public class GammaAPI implements Callable<Boolean> {
 		try {
 			String apiUrl = null;
 			apiUrl = baseUrl + "/api/v1/versioncontrolaccounts";
-			Response response = httpGet(apiUrl);
+			Response response = httpGet(apiUrl,values.get("bearerToken"));
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 				return false;
@@ -552,7 +572,7 @@ public class GammaAPI implements Callable<Boolean> {
 		try {
 			String apiUrl = null;
 			apiUrl = baseUrl + "/api/v1/versioncontrolaccounts";
-			Response response = httpPost(apiUrl, json);
+			Response response = httpPost(apiUrl, json,values.get("bearerToken"));
 			if (response.getStatusCode() != 201) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 				return false;
@@ -572,7 +592,7 @@ public class GammaAPI implements Callable<Boolean> {
 					+ "/breadcrumb?repositoryId=" + values.get("subsystemId") + "&nodeId=-1&snapshotId="
 					+ values.get("snapshotId");
 
-			Response response = httpGet(apiUrl);
+			Response response = httpGet(apiUrl,values.get("bearerToken"));
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 				return false;
@@ -583,7 +603,7 @@ public class GammaAPI implements Callable<Boolean> {
 			apiUrl = baseUrl + "/api/views/repositories/" + values.get("subsystemUUId")
 					+ "/summary/locandcomponents?repositoryId=" + values.get("subsystemId") + "&nodeId="
 					+ values.get("nodeId") + "&snapshotId=" + values.get("snapshotId");
-			response = httpGet(apiUrl);
+			response = httpGet(apiUrl,values.get("bearerToken"));
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 				return false;
@@ -599,11 +619,11 @@ public class GammaAPI implements Callable<Boolean> {
 		}
 	}
 
-	private boolean getSubsystemUUID() {
+	protected boolean getSubsystemUUID() {
 		try {
 			String apiUrl = baseUrl + "/api/v1/projects/" + values.get("projectId")
 					+ "/repositories?sortBy=repositoryName&orderBy=ASC&searchTerm=" + repoName + "&offset=0&limit=1";
-			Response response = httpGet(apiUrl);
+			Response response = httpGet(apiUrl,values.get("bearerToken"));
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 			}
@@ -619,7 +639,7 @@ public class GammaAPI implements Callable<Boolean> {
 		}
 	}
 
-	private boolean scanRepo() {
+	protected boolean scanRepo() {
 		if(enableRE) {
 			integrateJira();
 		}
@@ -632,14 +652,14 @@ public class GammaAPI implements Callable<Boolean> {
 				Response response = httpPost(apiUrl,
 						"{\r\n" + "	\"commitId\": \"\",\r\n" + "	\"repoBranchOrTag\": \"" + branch + "\",\r\n"
 								+ "	\"snapshotLabel\" : \"" + branch + "\",\r\n" + "	\"enableFastScan\": \""
-								+ incremental + "\"\r\n" + "}");
+								+ incremental + "\"\r\n" + "}",values.get("bearerToken"));
 				if (response.getStatusCode() != 200) {
 					System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 				} else {
 					System.out.println("Scan started for repo : " + repoName);
 				}
 				apiUrl = baseUrl + "/api/v1/repositories/scans";
-				response = httpGet(apiUrl);
+				response = httpGet(apiUrl,values.get("bearerToken"));
 				if (response.getStatusCode() != 200) {
 					System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 					System.out.println("Scan halted for repo : " + repoName);
@@ -659,7 +679,7 @@ public class GammaAPI implements Callable<Boolean> {
 
 	}
 
-	private boolean linkProjectwithRepo() {
+	protected boolean linkProjectwithRepo() {
 		try {
 			String apiurl = null;
 			apiurl = baseUrl + "/api/v1/projects/" + values.get("projectId") + "/repositories/link";
@@ -698,7 +718,7 @@ public class GammaAPI implements Callable<Boolean> {
 		}
 	}
 
-	private boolean addRepoToProject() {
+	protected boolean addRepoToProject() {
 		try {
 			if (!isRepoExists()) {
 				String apiurl = null;
@@ -833,7 +853,7 @@ public class GammaAPI implements Callable<Boolean> {
 		try {
 
 			String apiUrl = baseUrl + "/gamma/api/project/deleteproject?project_id=" + values.get("projectId");
-			Response response = httpGet(apiUrl);
+			Response response = httpGet(apiUrl,values.get("bearerToken"));
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 				return false;
@@ -845,64 +865,7 @@ public class GammaAPI implements Callable<Boolean> {
 		}
 	}
 
-	private Response httpGet(String APIUrl) throws JsonException, InterruptedException {
 
-		// Building request using requestSpecBuilder
-		RequestSpecBuilder builder = new RequestSpecBuilder();
-
-		if (values.get("bearerToken") != null) {
-			builder.addHeader("Authorization", values.get("bearerToken"));
-			builder.addHeader("Connection", "keep-alive");
-		}
-		// Setting content type as application/json or application/xml
-		builder.setContentType("application/json; charset=UTF-8");
-
-		RequestSpecification requestSpec = builder.build();
-
-		// Making post request with authentication, leave blank in case there
-		// are no credentials- basic("","")
-		return RestAssured.given().spec(requestSpec).when().get(APIUrl);
-	}
-
-	private Response httpPost(String APIUrl, String APIBody) throws JsonException, InterruptedException {
-
-		// Building request using requestSpecBuilder
-		RequestSpecBuilder builder = new RequestSpecBuilder();
-
-		// Setting API's body
-		builder.setBody(APIBody);
-		if (values.get("bearerToken") != null) {
-			builder.addHeader("Authorization", values.get("bearerToken"));
-			builder.addHeader("Connection", "keep-alive");
-		}
-		// Setting content type as application/json or application/xml
-		builder.setContentType("application/json; charset=UTF-8");
-
-		RequestSpecification requestSpec = builder.build();
-
-		// Making post request with authentication, leave blank in case there
-		// are no credentials- basic("","")
-		return RestAssured.given().spec(requestSpec).when().post(APIUrl);
-	}
-
-	private Response httpPut(String APIUrl, String APIBody) throws JsonException, InterruptedException {
-
-		// Building request using requestSpecBuilder
-		RequestSpecBuilder builder = new RequestSpecBuilder();
-
-		// Setting API's body
-		builder.setBody(APIBody);
-
-		// Setting content type as application/json or application/xml
-		builder.setContentType("application/json; charset=UTF-8");
-
-		RequestSpecification requestSpec = builder.build();
-
-		// Making post request with authentication, leave blank in case there
-		// are no credentials- basic("","")
-		return RestAssured.given().spec(requestSpec).when().put(APIUrl);
-
-	}
 
 	private boolean fileUpload(String filePath) {
 		try {
@@ -971,7 +934,7 @@ public class GammaAPI implements Callable<Boolean> {
 	private boolean startRemoteScan() {
 		try {
 			String apiUrl = baseUrl + "/api/v1/repositories/" + values.get("subsystemUUId") + "/scans/config/download";
-			Response response = httpGet(apiUrl);
+			Response response = httpGet(apiUrl,values.get("bearerToken"));
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 			}

@@ -56,6 +56,10 @@ public class Main implements Callable<Boolean> {
 		String[] configFiles = null;
 		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
 		switch (args[0]) {
+		case "-pr":
+		case "-PR":
+			executor.submit(new Main(new String[] { "-pr", args[1] }));
+			break;
 		case "-re":
 		case "-RE":
 			executor.submit(new Main(new String[] { "-re", args[1], "false" }));
@@ -158,6 +162,18 @@ public class Main implements Callable<Boolean> {
 								Boolean.parseBoolean(arguments[2])));
 					}
 					break;
+				case "-pr":
+					if (parameters.length != 14) {
+						System.out.println(
+								" Invalid number of parameters in config. It should be 14. Please check the configuration file.");
+						System.exit(1);
+					} else {
+						gammaList.add(new PullRequest(parameters[0], parameters[1], parameters[2], parameters[3],
+								parameters[4], parameters[5], parameters[6], parameters[7], parameters[8],
+								parameters[9], parameters[10], parameters[11], parameters[12],
+								Boolean.parseBoolean(parameters[13])));
+					}
+					break;
 				case "-re":
 					if (parameters.length != 17) {
 						System.out.println(
@@ -173,6 +189,7 @@ public class Main implements Callable<Boolean> {
 					break;
 				default:
 					System.out.println("Invalid option" + arguments[1]);
+					System.exit(1);
 				}
 
 			}
@@ -208,7 +225,9 @@ public class Main implements Callable<Boolean> {
 				e.printStackTrace();
 			}
 		}
-		apachePOIExcelWrite.storeResultsInCSVFormat();
+		if (!arguments[0].equalsIgnoreCase("-pr")) {
+			apachePOIExcelWrite.storeResultsInCSVFormat();
+		}
 		executor.shutdown();
 	}
 
