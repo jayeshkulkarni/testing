@@ -7,20 +7,24 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 public class UserPropertiesWriter {
 
 	public static void main(String[] args) throws IOException {
 
+		LogManager logManager = LogManager.getLogManager(); 
+		Logger logger = logManager.getLogger(Logger.GLOBAL_LOGGER_NAME);
+		
 		String sourceFile = System.getProperty("path.properties");
-		System.out.println("Getting configuration details from: " + sourceFile);
+		logger.log(Level.INFO, "Getting configuration details from: " + sourceFile);
 
-		String destFilePath = System.getenv("JMETER_HOME");
-		String destFile = destFilePath + File.separator + "bin" + File.separator + "user.properties";
-		System.out.println("JMETER_HOME: " + System.getenv("JMETER_HOME"));
-		System.out.println("API_TEST_DATA: " + System.getenv("API_TEST_DATA"));
-		System.out.println("API_TEST_REPORT: " + System.getenv("API_TEST_REPORT"));
-		System.out.println("Adding configuration details to: " + destFile);
+		String destFile = System.getenv("JMETER_HOME") + File.separator + "bin" + File.separator + "user.properties";
+		
+		logger.log(Level.INFO, "JMETER_HOME: " + System.getenv("JMETER_HOME") +"\n"+"API_TEST_DATA: " + System.getenv("API_TEST_DATA")+"\n"+"API_TEST_REPORT: " + System.getenv("API_TEST_REPORT"));
+		logger.log(Level.INFO, "Adding configuration details to: " + destFile);
 
 		File fins = new File(sourceFile);
 		FileInputStream fileInputStream = new FileInputStream(fins);
