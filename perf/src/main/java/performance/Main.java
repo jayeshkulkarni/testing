@@ -159,19 +159,24 @@ public class Main implements Callable<Boolean> {
 						gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
 								parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],
 								parameters[8], parameters[9], parameters[10], Boolean.parseBoolean(parameters[11]),
-								Boolean.parseBoolean(arguments[2])));
+								Boolean.parseBoolean(arguments[0]), "-c"));
 					}
 					break;
 				case "-pr":
-					if (parameters.length != 14) {
-						System.out.println(
-								" Invalid number of parameters in config. It should be 14. Please check the configuration file.");
-						System.exit(1);
-					} else {
+					if (parameters.length == 14) {
 						gammaList.add(new PullRequest(parameters[0], parameters[1], parameters[2], parameters[3],
 								parameters[4], parameters[5], parameters[6], parameters[7], parameters[8],
 								parameters[9], parameters[10], parameters[11], parameters[12],
-								Boolean.parseBoolean(parameters[13])));
+								Integer.parseInt(parameters[13]), "-pr"));
+					} else if (parameters.length == 12) {
+						gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
+								parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],
+								parameters[8], parameters[9], parameters[10], Boolean.parseBoolean(parameters[11]),
+								Boolean.parseBoolean(arguments[0]), "-pr"));
+					} else {
+						System.out.println(
+								" Invalid number of parameters in config. It should be 14 for creation and 12 for normal scan. Please check the configuration file.");
+						System.exit(1);
 					}
 					break;
 				case "-re":
@@ -184,7 +189,8 @@ public class Main implements Callable<Boolean> {
 								parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],
 								parameters[8], parameters[9], parameters[10], Boolean.parseBoolean(parameters[11]),
 								Boolean.parseBoolean(arguments[2]), parameters[12], parameters[13], parameters[14],
-								parameters[15], Boolean.parseBoolean(parameters[16]), Boolean.parseBoolean("true")));
+								parameters[15], Boolean.parseBoolean(parameters[16]), Boolean.parseBoolean("true"),
+								"-re"));
 					}
 					break;
 				default:
