@@ -56,6 +56,10 @@ public class Main implements Callable<Boolean> {
 		String[] configFiles = null;
 		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
 		switch (args[0]) {
+		case "-pr":
+		case "-PR":
+			executor.submit(new Main(new String[] { "-pr", args[1] }));
+			break;
 		case "-re":
 		case "-RE":
 			executor.submit(new Main(new String[] { "-re", args[1], "false" }));
@@ -155,7 +159,24 @@ public class Main implements Callable<Boolean> {
 						gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
 								parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],
 								parameters[8], parameters[9], parameters[10], Boolean.parseBoolean(parameters[11]),
-								Boolean.parseBoolean(arguments[2])));
+								Boolean.parseBoolean(arguments[0]), "-c"));
+					}
+					break;
+				case "-pr":
+					if (parameters.length == 14) {
+						gammaList.add(new PullRequest(parameters[0], parameters[1], parameters[2], parameters[3],
+								parameters[4], parameters[5], parameters[6], parameters[7], parameters[8],
+								parameters[9], parameters[10], parameters[11], parameters[12],
+								Integer.parseInt(parameters[13]), "-pr"));
+					} else if (parameters.length == 12) {
+						gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
+								parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],
+								parameters[8], parameters[9], parameters[10], Boolean.parseBoolean(parameters[11]),
+								Boolean.parseBoolean(arguments[0]), "-pr"));
+					} else {
+						System.out.println(
+								" Invalid number of parameters in config. It should be 14 for creation and 12 for normal scan. Please check the configuration file.");
+						System.exit(1);
 					}
 					break;
 				case "-re":
@@ -168,11 +189,13 @@ public class Main implements Callable<Boolean> {
 								parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],
 								parameters[8], parameters[9], parameters[10], Boolean.parseBoolean(parameters[11]),
 								Boolean.parseBoolean(arguments[2]), parameters[12], parameters[13], parameters[14],
-								parameters[15], Boolean.parseBoolean(parameters[16]), Boolean.parseBoolean("true")));
+								parameters[15], Boolean.parseBoolean(parameters[16]), Boolean.parseBoolean("true"),
+								"-re"));
 					}
 					break;
 				default:
 					System.out.println("Invalid option" + arguments[1]);
+					System.exit(1);
 				}
 
 			}
@@ -208,7 +231,9 @@ public class Main implements Callable<Boolean> {
 				e.printStackTrace();
 			}
 		}
-		apachePOIExcelWrite.storeResultsInCSVFormat();
+		if (!arguments[0].equalsIgnoreCase("-pr")) {
+			apachePOIExcelWrite.storeResultsInCSVFormat();
+		}
 		executor.shutdown();
 	}
 
