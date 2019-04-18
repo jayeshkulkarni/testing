@@ -159,7 +159,7 @@ public class Main implements Callable<Boolean> {
 						gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
 								parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],
 								parameters[8], parameters[9], parameters[10], Boolean.parseBoolean(parameters[11]),
-								Boolean.parseBoolean(arguments[0]), "-c"));
+								Boolean.parseBoolean(arguments[2]), "-c"));
 					}
 					break;
 				case "-pr":
@@ -172,7 +172,7 @@ public class Main implements Callable<Boolean> {
 						gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
 								parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],
 								parameters[8], parameters[9], parameters[10], Boolean.parseBoolean(parameters[11]),
-								Boolean.parseBoolean(arguments[0]), "-pr"));
+								Boolean.parseBoolean(arguments[2]), "-pr"));
 					} else {
 						System.out.println(
 								" Invalid number of parameters in config. It should be 14 for creation and 12 for normal scan. Please check the configuration file.");

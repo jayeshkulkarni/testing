@@ -19,7 +19,7 @@ public class ResultWriter {
 	private final static String FILE_NAME = "Gamma_Scan_Report";
 	private Object[][] results;
 	private int count = 0, rowNum = 0;
-	public static int columnCount = 28;
+	public static int columnCount = 31;
 	private int repoSize = 0;
 
 	ResultWriter(int repoSize) {
@@ -48,12 +48,14 @@ public class ResultWriter {
 		results[0][20] = "totalLoc";
 		results[0][21] = "eloc";
 		results[0][22] = "components";
-		
-		results[0][23] = "Scan_Result";
-		results[0][24] = "Machine_IP";
-		results[0][25] = "Gamma_UserName";
-		results[0][26] = "Gamma_Password";
-		results[0][27] = "SubsystemUID";
+		results[0][23] = "Code Issues";
+		results[0][24] = "Design Issues";		
+		results[0][25] = "Duplication Loc";		
+		results[0][26] = "Scan_Result";
+		results[0][27] = "Machine_IP";
+		results[0][28] = "Gamma_UserName";
+		results[0][29] = "Gamma_Password";
+		results[0][30] = "SubsystemUID";
 		this.count++;
 	}
 
