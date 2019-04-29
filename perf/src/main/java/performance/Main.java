@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -27,29 +28,67 @@ public class Main implements Callable<Boolean> {
 		System.out.println("Usage : java -jar RepoScanner.jar -f <config file1>,<config file2>....<config fileN>  ");
 		System.out.println(
 				"Usage : java -jar RepoScanner.jar -a <gammawebSitebaseURL> <gammawebsiteUserName> <gammawebsitepassword> <gammaURL> <gammaPassword>");
+		System.out.println("Usage : java -jar RepoScanner.jar -verifybuild  ");
 		System.out.println("Parameter : -c Config file  ");
 		System.out.println("Parameter : -s Sequential execution of Config files  ");
 		System.out.println("Parameter : -f fetching Scan Results  ");
 		System.out.println("Parameter : -p Sequential execution of repos in config file for performance testing.");
 		System.out.println("Parameter : -a Activate Gamma through CLI.");
 		System.out.println("Parameter : -re gamma RE with Jira integration.");
+		System.out.println(
+				"Parameter : -verifybuild verfies the build.properties stored at default location with github commitid for particular branch.");
 	}
 
-	public static void main(String args[]) {
-		if (args.length < 2) {
+	public static void processNonScanFlow(String[] args) throws IOException {
+		switch (args[0]) {
+		case "-verifybuild":
+			ArrayList<String> branchNames = new ArrayList<String>();
+			System.out.println("is Branch-name for GWS,CORONA,GAMMA_UI Same? Y/N : ");
+			String isBranchNameSame = new Scanner(System.in).next();
+			if (isBranchNameSame.equalsIgnoreCase("Y")) {
+				System.out.println("Enter the branch to be verified : ");
+				branchNames.add(new Scanner(System.in).next());
+			} else {
+				System.out.println("Enter Corona branch to be verified : ");
+				branchNames.add(new Scanner(System.in).next());
+				System.out.println("Enter GammaUI branch to be verified : ");
+				branchNames.add(new Scanner(System.in).next());
+				System.out.println("Enter GWS branch to be verified : ");
+				branchNames.add(new Scanner(System.in).next());
+			}
+			new GammaBuild().verifyBuild(branchNames);
+			break;
+		case "-a":
+		case "-A":
+			new GammaLicense(args[1], args[2], args[3], args[4], args[5]).activateGamma();
+			break;
+
+		default:
+			printInvalidOptionMessage(args);
+			break;
+		}
+	}
+
+	public static void printInvalidOptionMessage(String args[]) {
+		System.out.println("Invalid option" + args[0]);
+		printUsage();
+		System.exit(1);
+	}
+
+	public static void main(String args[]) throws IOException {
+		if (args.length < 1) {
 			printUsage();
 			System.exit(1);
 		}
-		if (args[0].equalsIgnoreCase("-a")) {
-			if (args.length != 6) {
-				printUsage();
-				System.exit(1);
-			}
-		} else {
-			if (args.length != 2) {
-				printUsage();
-				System.exit(1);
-			}
+
+		if (args.length == 1 || args.length == 6) {
+			processNonScanFlow(args);
+			System.exit(1);
+		}
+
+		if (args.length != 2) {
+			printUsage();
+			System.exit(1);
 		}
 
 		ThreadPoolExecutor executor = null;
@@ -63,11 +102,6 @@ public class Main implements Callable<Boolean> {
 		case "-re":
 		case "-RE":
 			executor.submit(new Main(new String[] { "-re", args[1], "false" }));
-			break;
-
-		case "-a":
-		case "-A":
-			new GammaLicense(args[1], args[2], args[3], args[4], args[5]).activateGamma();
 			break;
 
 		case "-p":
@@ -105,8 +139,7 @@ public class Main implements Callable<Boolean> {
 			break;
 
 		default:
-			printUsage();
-			System.exit(1);
+			printInvalidOptionMessage(args);
 			break;
 		}
 		if (executor != null)
@@ -150,6 +183,7 @@ public class Main implements Callable<Boolean> {
 					continue;
 				String[] parameters = st.split(",");
 				switch (arguments[0]) {
+				case "-p":
 				case "-c":
 					if (parameters.length != 12) {
 						System.out.println(
@@ -194,8 +228,7 @@ public class Main implements Callable<Boolean> {
 					}
 					break;
 				default:
-					System.out.println("Invalid option" + arguments[1]);
-					System.exit(1);
+					printInvalidOptionMessage(arguments);
 				}
 
 			}
