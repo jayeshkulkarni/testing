@@ -1,0 +1,52 @@
+#Vagrant plugin install vagrant-disksize
+Vagrant.configure("2") do |config|
+  config.disksize.size = '30GB'
+  
+  	config.vm.define "1621-gamma-native" do |gamma1621|
+      gamma1621.vm.box = "ubuntu/xenial64"
+      gamma1621.vm.hostname = '1621-gamma-native'
+      gamma1621.vm.box_url = "ubuntu/xenial64"
+      gamma1621.vm.network :private_network, ip: "192.168.99.199"
+	  # For CentOS:     gamma.vm.box = "bento/centos-7.5"
+      # For RedHat: 	gamma.vm.box = "generic/rhel7"
+      # For Ubuntu: 	gamma.vm.box = "ubuntu/xenial64"
+      gamma1621.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", "6144"]
+      v.customize ["modifyvm", :id, "--name", "1621-gamma-native"]
+	  v.customize ["modifyvm", :id, "--cpus", "2"]
+    end
+	
+	 gamma1621.vm.provision "shell", inline: <<-SHELL
+     apt-get update
+	 mkdir installer && cd installer
+     gamma_url=http://192.168.1.13:8080/job/Release_Jobs/job/Master_Release/lastSuccessfulBuild/artifact/build/gamma_ubuntu_with_dependencies_1.6.2.1.run
+     curl "$gamma_url" -o gamma_ubuntu_with_dependencies_1.6.2.1.run
+     sudo chmod 755 gamma_ubuntu_with_dependencies_1.6.2.1.run
+     sudo ./gamma_ubuntu_with_dependencies_1.6.2.1.run agree install_default
+	 java -jar /vagrant/RepoScanner.jar -a https://gamma-staging.com ubuntu@embold.io admin1234 http://192.168.99.199:3000 admin1234
+	 sudo chmod +x /opt/gamma/corona/scanboxwrapper/bin/gammascanner
+	 export CORONA_HOME=/opt/gamma/corona
+	 sudo su
+	 cp /vagrant/pg_hba.conf /etc/postgresql/9.6/main/ 
+	 cp /vagrant/postgresql.conf /etc/postgresql/9.6/main/
+	 service postgresql restart
+	 
+	 #Run API Suite
+	 chmod 755 -R /vagrant/api/
+	 cd /vagrant/api/resources/
+	 wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.1.tgz
+	 tar -xf apache-jmeter-5.1.tgz
+	. ./setJmeterEnv.sh
+	 java -Dpath.properties=/vagrant/api/resources/apiReportGeneratorConfig.properties -jar JMeterConfig.jar  
+	 $JMETER_HOME/bin/./jmeter -n  -JGammaIP=192.168.99.199 -JGammaPort=3000 -JGammaUser=ubuntu@embold.io -JGammaPass=admin1234 -t /vagrant/api/resources/GammaAPIs.jmx -l $API_TEST_REPORT/APIs-TestStatus-Data.csv -e -o $API_TEST_REPORT/HTML_REPORT -f
+	 
+	 #Run Performance Suite
+	 cd /vagrant
+	 java -jar /vagrant/RepoScanner.jar -c /vagrant/gamma_sanity.csv
+	 cp Gamma_Scan_Report*.csv /vagrant/
+   
+  SHELL
+  end
+  
+end

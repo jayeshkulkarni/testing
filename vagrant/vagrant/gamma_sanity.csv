@@ -1,0 +1,16 @@
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,<bitbucket_repo_url>,<bitbucket_username>,<bitbucket_password>,cpp,refs/heads/master,Bitbucket-VCA,bitbucketrepo,bitbucket,FALSE
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,https://github.com/1shekhar/goldenorb.git,1shekhar,a55dca22945741dd791f3048c4e04c08a8dd9757,java,refs/heads/master,Git-VCA,githubrepo,github,FALSE
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,https://github.com/acellere/gammatestautomation.git,<git_username>,<git_password>,java,refs/heads/master,PrivateGit,<Repo_Name>,github,FALSE
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,https://github.com/1shekhar/react-move,,,javascript,refs/heads/master,JAVASCRIPT,react-move,git,FALSE
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,https://github.com/1shekhar/learning-solidity,,,solidity,refs/heads/master,SOLIDITY,learning-solidity,git,FALSE
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,https://github.com/1shekhar/utPLSQL,,,sql,refs/heads/master,SQL,utPLSQL,git,FALSE
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,https://github.com/1shekhar/kotlin_anko,,,kotlin,refs/heads/master,KOTLIN,kotlin_anko,git,FALSE
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,https://github.com/1shekhar/flask,,,python,refs/heads/master,PYTHON,pallets_flask,git,FALSE
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,https://github.com/1shekhar/go,,,go,refs/heads/master,GO,go,git,FALSE
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,https://github.com/1shekhar/CodeIgniter,,,php,refs/heads/master,PHP,CodeIgniter,git,FALSE
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,https://github.com/1shekhar/MJRefresh,,,objective_c,refs/heads/master,OBJECTIVE_C,MJRefresh,git,FALSE
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,https://github.com/1shekhar/goldenorb,,,java,refs/heads/master,JAVA,goldenorb,git,FALSE
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,https://github.com/1shekhar/ts_mobx,,,typescript,refs/heads/master,TYPESCRIPT,ts_mobx,git,FALSE
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,https://github.com/1shekhar/libsodium,,,cpp,refs/heads/master,CPP,libsodium,git,FALSE
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,https://github.com/1shekhar/C-Sharp-Algorithms,,,c_sharp,refs/heads/master,C-Sharp,c-sharp-algorithms,git,FALSE
+http://192.168.99.199:3000,ubuntu@embold.io,admin1234,https://aclgamma.svn.cloudforge.com/ejbca,bhakti1050,bhakti1050,java,refs/heads/master,SVN,svnrepo,svn,FALSE
