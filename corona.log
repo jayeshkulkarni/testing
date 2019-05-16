@@ -8113,3 +8113,7 @@ Issues
 2017-07-27 18:50:53,177 INFO  [main] org.apache.commons.logging.Log - Registering Tenant User
 2017-07-27 18:51:01,438 INFO  [main] org.apache.commons.logging.Log - Creating Project
 2017-07-27 18:51:02,478 INFO  [main] org.apache.commons.logging.Log - Project already Exists
+2019-02-17 20:04:31,811 INFO  [main] org.apache.http.impl.client.DefaultHttpClient - I/O exception (java.net.SocketException) caught when connecting to {}->http://192.168.2.236:3000: Invalid argument or cannot assign requested address
+2019-02-17 20:04:31,829 INFO  [main] org.apache.http.impl.client.DefaultHttpClient - Retrying connect to {}->http://192.168.2.236:3000
+2019-02-19 22:27:36,206 INFO  [main] org.apache.http.impl.client.DefaultHttpClient - I/O exception (java.net.SocketException) caught when connecting to {}->http://192.168.2.236:3000: Invalid argument or cannot assign requested address
+2019-02-19 22:27:36,208 INFO  [main] org.apache.http.impl.client.DefaultHttpClient - Retrying connect to {}->http://192.168.2.236:3000
