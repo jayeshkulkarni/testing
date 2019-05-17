@@ -1,0 +1,1 @@
+This folder will contain the test report in both formats >> CSV and HTML
