@@ -9073,35 +9073,6 @@ vars.put(&quot;dueDate&quot;, dueDate);</stringProp>
               <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
             </JSONPostProcessor>
             <hashTree/>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="false">
-              <stringProp name="RegexExtractor.useHeaders">code</stringProp>
-              <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
-              <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
-              <stringProp name="RegexExtractor.template">$1$</stringProp>
-              <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
-              <stringProp name="RegexExtractor.match_number">1</stringProp>
-            </RegexExtractor>
-            <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 201 Assertion" enabled="false">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="49587">201</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-              <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="false">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="49586">200</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-              <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
           </hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET Task Details" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
@@ -9121,389 +9092,10 @@ vars.put(&quot;dueDate&quot;, dueDate);</stringProp>
             <stringProp name="HTTPSampler.connect_timeout"></stringProp>
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
-          <hashTree>
-            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Extract Status" enabled="true">
-              <stringProp name="JSONPostProcessor.referenceNames">task_status</stringProp>
-              <stringProp name="JSONPostProcessor.jsonPathExprs">$..status</stringProp>
-              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
-              <stringProp name="Sample.scope">all</stringProp>
-              <stringProp name="JSONPostProcessor.defaultValues">Unable to extract task status</stringProp>
-              <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
-            </JSONPostProcessor>
-            <hashTree/>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="false">
-              <stringProp name="RegexExtractor.useHeaders">code</stringProp>
-              <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
-              <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
-              <stringProp name="RegexExtractor.template">$1$</stringProp>
-              <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
-              <stringProp name="RegexExtractor.match_number">1</stringProp>
-            </RegexExtractor>
-            <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 201 Assertion" enabled="false">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="49587">201</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-              <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="false">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="49586">200</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-              <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-          </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Edit Task" enabled="true">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="issueTitle" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">${issueTitle}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">issueTitle</stringProp>
-                </elementProp>
-                <elementProp name="taskDesc" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">${taskDesc}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">taskDesc</stringProp>
-                </elementProp>
-                <elementProp name="linkedIssueId" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">0</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">linkedIssueId</stringProp>
-                </elementProp>
-                <elementProp name="taskType" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">1</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">taskType</stringProp>
-                </elementProp>
-                <elementProp name="priority" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">1</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">priority</stringProp>
-                </elementProp>
-                <elementProp name="nodeId" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">${node_id}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">nodeId</stringProp>
-                </elementProp>
-                <elementProp name="subsystemId" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">${_repositoryID}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">subsystemId</stringProp>
-                </elementProp>
-                <elementProp name="projectId" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">${_newProjectId}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">projectId</stringProp>
-                </elementProp>
-                <elementProp name="projectCode" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">Neha</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">projectCode</stringProp>
-                </elementProp>
-                <elementProp name="dueDate" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">${dueDate}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">dueDate</stringProp>
-                </elementProp>
-                <elementProp name="task_hash" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">eyJpZCI6MTU1OTEyNjMxMDA5OSwicGx1Z2luX2lkIjoidGFza3MiLCJvbGRfcGx1Z2luX2lkIjoidGFza3MiLCJzdWJzeXN0ZW1faWQiOiI4MyIsInN1YnN5c3RlbV91aWQiOiI4YzA1YTliYWIwYmEyYmRlOTE5MmU1ZmI4YzRlMjlkNyIsInN1YnN5c3RlbV9uYW1lIjoiZ29sZGVybk9yYl9fMDQ6MDU6NTUiLCJwcm9qZWN0X25hbWUiOiIyOS8wNS8yMDE5IDA0OjA1OjU1IiwicHJvamVjdF9pZCI6IjQzIiwiYnJlYWRjcnVtYiI6eyJub2RlX2lkIjo1MTU0ODQsIm5vZGVfbmFtZSI6ImdvbGRlcm5PcmJfXzA0OjA1OjU1In0sInJlcXVlc3RfZGF0YSI6eyJwcm9qZWN0X2lkIjoiODMiLCJub2RlX2lkIjo1MTU0ODQsInRpbWVzdGFtcCI6MTU1OTEyNjMxMDA5Mywic25hcHNob3RfaWQiOjExN30sImNvbnRleHQiOiJzdWJzeXN0ZW1zIiwicGx1Z2luX29wdGlvbnMiOnsibW9kdWxlX25hbWUiOiJnYW1tYSIsInNob3dfZGV0YWlscyI6dHJ1ZSwic2VsZWN0ZWRfdGFza19pZCI6MTQsInRhc2tzX21ldGFfZGF0YSI6eyJjcml0aWNhbGl0eSI6W3siaWQiOjEsIm5hbWUiOiJibG9ja2VyIiwidmFsdWUiOiJibG9ja2VyIiwidGl0bGUiOiJCbG9ja2VyIiwiaWNvbiI6ImljLWlzc3VlLWJsb2NrZXIifSx7ImlkIjoyLCJuYW1lIjoiY3JpdGljYWwiLCJ2YWx1ZSI6ImNyaXRpY2FsIiwidGl0bGUiOiJDcml0aWNhbCIsImljb24iOiJpYy1pc3N1ZS1jcml0aWNhbCJ9LHsiaWQiOjMsIm5hbWUiOiJtYWpvciIsInZhbHVlIjoibWFqb3IiLCJ0aXRsZSI6Ik1ham9yIiwiaWNvbiI6ImljLWlzc3VlLW1ham9yIn0seyJpZCI6NCwibmFtZSI6Im1pbm9yIiwidmFsdWUiOiJtaW5vciIsInRpdGxlIjoiTWlub3IiLCJpY29uIjoiaWMtaXNzdWUtbWlub3IifV0sInR5cGUiOlt7ImlkIjoxLCJuYW1lIjoicmVmYWN0b3JpbmciLCJ2YWx1ZSI6InJlZmFjdG9yaW5nIiwidGl0bGUiOiJSZWZhY3RvcmluZyIsInRhc2tfdHlwZV9jb2xvciI6IiNiNjRhNjMifSx7ImlkIjoyLCJuYW1lIjoiZmVhdHVyZSIsInZhbHVlIjoiZmVhdHVyZSIsInRpdGxlIjoiRmVhdHVyZSIsInRhc2tfdHlwZV9jb2xvciI6IiNmZmFjYWMifSx7ImlkIjozLCJuYW1lIjoiaW1wcm92ZW1lbnQiLCJ2YWx1ZSI6ImltcHJvdmVtZW50IiwidGl0bGUiOiJJbXByb3ZlbWVudCIsInRhc2tfdHlwZV9jb2xvciI6IiNmZjhjYjUifSx7ImlkIjo0LCJuYW1lIjoiYnVnIiwidmFsdWUiOiJidWciLCJ0aXRsZSI6IkJ1ZyIsInRhc2tfdHlwZV9jb2xvciI6IiNmZjdlNWYifSx7ImlkIjo1LCJuYW1lIjoidGFzayIsInZhbHVlIjoidGFzayIsInRpdGxlIjoiVGFzayIsInRhc2tfdHlwZV9jb2xvciI6IiNmZmIwOWYifV0sInN0YXR1cyI6W3siaWQiOjEsIm5hbWUiOiJvcGVuIiwidmFsdWUiOiJvcGVuIiwidGl0bGUiOiJPcGVuIn0seyJpZCI6MiwibmFtZSI6InJlYWR5X3RvX3Rlc3QiLCJ2YWx1ZSI6InJlYWR5X3RvX3Rlc3QiLCJ0aXRsZSI6IlJlYWR5IHRvIFRlc3QifSx7ImlkIjozLCJuYW1lIjoicmVvcGVuZWQiLCJ2YWx1ZSI6InJlb3BlbmVkIiwidGl0bGUiOiJSZW9wZW5lZCJ9LHsiaWQiOjQsIm5hbWUiOiJjbG9zZWQiLCJ2YWx1ZSI6ImNsb3NlZCIsInRpdGxlIjoiQ2xvc2VkIn1dLCJhc3NpZ25lZSI6W3siaWQiOjEsIm5hbWUiOiJFbWJvbGQgSW5jbCIsInZhbHVlIjoxLCJ0aXRsZSI6IkVtYm9sZCBJbmNsIn0seyJpZCI6MywibmFtZSI6IldpbmRvd3MgMTAiLCJ2YWx1ZSI6MywidGl0bGUiOiJXaW5kb3dzIDEwIn1dL</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">task_hash</stringProp>
-                </elementProp>
-                <elementProp name="status" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">1</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">status</stringProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain"></stringProp>
-            <stringProp name="HTTPSampler.port"></stringProp>
-            <stringProp name="HTTPSampler.protocol"></stringProp>
-            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repositoryUID}/tasks/${task_id}</stringProp>
-            <stringProp name="HTTPSampler.method">PUT</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          </HTTPSamplerProxy>
-          <hashTree>
-            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
-              <stringProp name="filename"></stringProp>
-              <stringProp name="parameters"></stringProp>
-              <boolProp name="resetInterpreter">false</boolProp>
-              <stringProp name="script">import java.text.SimpleDateFormat;
-import java.util.*;
-
-String issueTitle = &quot;Refactor_&quot;+&quot;${__Random(1,100)}&quot;;
-vars.put(&quot;issueTitle&quot;,issueTitle);
-
-String taskDesc = &quot;Refactor&quot;+&quot;${__Random(1,100)}&quot;;
-vars.put(&quot;taskDesc&quot;,taskDesc);
-
-String pattern = &quot;yyyy-MM-dd&quot;;
-SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-String dueDate = simpleDateFormat.format(new Date());
-vars.put(&quot;dueDate&quot;, dueDate);</stringProp>
-            </BeanShellPreProcessor>
-            <hashTree/>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="false">
-              <stringProp name="RegexExtractor.useHeaders">code</stringProp>
-              <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
-              <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
-              <stringProp name="RegexExtractor.template">$1$</stringProp>
-              <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
-              <stringProp name="RegexExtractor.match_number">1</stringProp>
-            </RegexExtractor>
-            <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 201 Assertion" enabled="false">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="49587">201</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-              <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="false">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="49586">200</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-              <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-          </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Task comment" enabled="true">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="comment_text" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                  <stringProp name="Argument.value">${comment}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">comment_text</stringProp>
-                </elementProp>
-                <elementProp name="task_hash" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                  <stringProp name="Argument.value">eyJpZCI6MTU1OTEyMTkxNjM5NywicGx1Z2luX2lkIjoidGFza3MiLCJvbGRfcGx1Z2luX2lkIjoidGFza3MiLCJzdWJzeXN0ZW1faWQiOiIzMyIsInN1YnN5c3RlbV91aWQiOiIzNzY0MzI0Mjg5ZGU1MjE2Njk4NDFmNmE0ZWUxMjAyZCIsInN1YnN5c3RlbV9uYW1lIjoiY2hlbnNodW8vbXVkdW8uZ2l0IiwicHJvamVjdF9uYW1lIjoiQysrIiwicHJvamVjdF9pZCI6IjIzIiwiYnJlYWRjcnVtYiI6e30sInJlcXVlc3RfZGF0YSI6eyJwcm9qZWN0X2lkIjoiMzMiLCJ0aW1lc3RhbXAiOjE1NTkxMjE5MTYzOTMsInNuYXBzaG90X2lkIjo1N30sImNvbnRleHQiOiJzdWJzeXN0ZW1zIiwicGx1Z2luX29wdGlvbnMiOnsibW9kdWxlX25hbWUiOiJnYW1tYSIsInNob3dfZGV0YWlscyI6dHJ1ZSwic2VsZWN0ZWRfdGFza19pZCI6IjMiLCJ0YXNrc19tZXRhX2RhdGEiOnsiY3JpdGljYWxpdHkiOlt7ImlkIjoxLCJuYW1lIjoiYmxvY2tlciIsInZhbHVlIjoiYmxvY2tlciIsInRpdGxlIjoiQmxvY2tlciIsImljb24iOiJpYy1pc3N1ZS1ibG9ja2VyIn0seyJpZCI6MiwibmFtZSI6ImNyaXRpY2FsIiwidmFsdWUiOiJjcml0aWNhbCIsInRpdGxlIjoiQ3JpdGljYWwiLCJpY29uIjoiaWMtaXNzdWUtY3JpdGljYWwifSx7ImlkIjozLCJuYW1lIjoibWFqb3IiLCJ2YWx1ZSI6Im1ham9yIiwidGl0bGUiOiJNYWpvciIsImljb24iOiJpYy1pc3N1ZS1tYWpvciJ9LHsiaWQiOjQsIm5hbWUiOiJtaW5vciIsInZhbHVlIjoibWlub3IiLCJ0aXRsZSI6Ik1pbm9yIiwiaWNvbiI6ImljLWlzc3VlLW1pbm9yIn1dLCJ0eXBlIjpbeyJpZCI6MSwibmFtZSI6InJlZmFjdG9yaW5nIiwidmFsdWUiOiJyZWZhY3RvcmluZyIsInRpdGxlIjoiUmVmYWN0b3JpbmciLCJ0YXNrX3R5cGVfY29sb3IiOiIjYjY0YTYzIn0seyJpZCI6MiwibmFtZSI6ImZlYXR1cmUiLCJ2YWx1ZSI6ImZlYXR1cmUiLCJ0aXRsZSI6IkZlYXR1cmUiLCJ0YXNrX3R5cGVfY29sb3IiOiIjZmZhY2FjIn0seyJpZCI6MywibmFtZSI6ImltcHJvdmVtZW50IiwidmFsdWUiOiJpbXByb3ZlbWVudCIsInRpdGxlIjoiSW1wcm92ZW1lbnQiLCJ0YXNrX3R5cGVfY29sb3IiOiIjZmY4Y2I1In0seyJpZCI6NCwibmFtZSI6ImJ1ZyIsInZhbHVlIjoiYnVnIiwidGl0bGUiOiJCdWciLCJ0YXNrX3R5cGVfY29sb3IiOiIjZmY3ZTVmIn0seyJpZCI6NSwibmFtZSI6InRhc2siLCJ2YWx1ZSI6InRhc2siLCJ0aXRsZSI6IlRhc2siLCJ0YXNrX3R5cGVfY29sb3IiOiIjZmZiMDlmIn1dLCJzdGF0dXMiOlt7ImlkIjoxLCJuYW1lIjoib3BlbiIsInZhbHVlIjoib3BlbiIsInRpdGxlIjoiT3BlbiJ9LHsiaWQiOjIsIm5hbWUiOiJyZWFkeV90b190ZXN0IiwidmFsdWUiOiJyZWFkeV90b190ZXN0IiwidGl0bGUiOiJSZWFkeSB0byBUZXN0In0seyJpZCI6MywibmFtZSI6InJlb3BlbmVkIiwidmFsdWUiOiJyZW9wZW5lZCIsInRpdGxlIjoiUmVvcGVuZWQifSx7ImlkIjo0LCJuYW1lIjoiY2xvc2VkIiwidmFsdWUiOiJjbG9zZWQiLCJ0aXRsZSI6IkNsb3NlZCJ9XSwiYXNzaWduZWUiOlt7ImlkIjoxLCJuYW1lIjoiRW1ib2xkIEluY2wiLCJ2YWx1ZSI6MSwidGl0bGUiOiJFbWJvbGQgSW5jbCJ9LHsiaWQiOjMsIm5hbWUiOiJXaW5kb3dzIDEwIiwidmFsdWUiOjMsInRpdGxlIjoiV2luZG93cyAxMCJ9XSwiYXNzaWduZXIiOltdfSwiaXNUYXNrSW5zaWdodEVuYWJsZWQiOmZhbHNlfSwibW9kZSI6ImV4cGxvcmVyIn0=</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">task_hash</stringProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain"></stringProp>
-            <stringProp name="HTTPSampler.port"></stringProp>
-            <stringProp name="HTTPSampler.protocol"></stringProp>
-            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">${BASE_URL}/repositories/${_repositoryUID}/tasks/${task_id}/comments</stringProp>
-            <stringProp name="HTTPSampler.method">POST</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          </HTTPSamplerProxy>
-          <hashTree>
-            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
-              <boolProp name="resetInterpreter">false</boolProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="script">String comment = &quot;comment_&quot;+&quot;${__Random(1,100)}&quot;;
-vars.put(&quot;comment&quot;,comment);</stringProp>
-            </BeanShellPreProcessor>
-            <hashTree/>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="false">
-              <stringProp name="RegexExtractor.useHeaders">code</stringProp>
-              <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
-              <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
-              <stringProp name="RegexExtractor.template">$1$</stringProp>
-              <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
-              <stringProp name="RegexExtractor.match_number">1</stringProp>
-            </RegexExtractor>
-            <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 201 Assertion" enabled="false">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="49587">201</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-              <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="false">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="49586">200</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-              <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-          </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Change Task Status" enabled="true">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="status" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">4</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">status</stringProp>
-                </elementProp>
-                <elementProp name="task_hash" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">eyJpZCI6MTU1OTEyNzU5NzkzOSwicGx1Z2luX2lkIjoidGFza3MiLCJvbGRfcGx1Z2luX2lkIjoidGFza3MiLCJzdWJzeXN0ZW1faWQiOiIzMyIsInN1YnN5c3RlbV91aWQiOiIzNzY0MzI0Mjg5ZGU1MjE2Njk4NDFmNmE0ZWUxMjAyZCIsInN1YnN5c3RlbV9uYW1lIjoiY2hlbnNodW8vbXVkdW8uZ2l0IiwicHJvamVjdF9uYW1lIjoiQysrIiwicHJvamVjdF9pZCI6IjIzIiwiYnJlYWRjcnVtYiI6e30sInJlcXVlc3RfZGF0YSI6eyJwcm9qZWN0X2lkIjoiMzMiLCJ0aW1lc3RhbXAiOjE1NTkxMjc1OTc5MzYsInNuYXBzaG90X2lkIjo1N30sImNvbnRleHQiOiJzdWJzeXN0ZW1zIiwicGx1Z2luX29wdGlvbnMiOnsibW9kdWxlX25hbWUiOiJnYW1tYSIsInNob3dfZGV0YWlscyI6dHJ1ZSwic2VsZWN0ZWRfdGFza19pZCI6IjMiLCJ0YXNrc19tZXRhX2RhdGEiOnsiY3JpdGljYWxpdHkiOlt7ImlkIjoxLCJuYW1lIjoiYmxvY2tlciIsInZhbHVlIjoiYmxvY2tlciIsInRpdGxlIjoiQmxvY2tlciIsImljb24iOiJpYy1pc3N1ZS1ibG9ja2VyIn0seyJpZCI6MiwibmFtZSI6ImNyaXRpY2FsIiwidmFsdWUiOiJjcml0aWNhbCIsInRpdGxlIjoiQ3JpdGljYWwiLCJpY29uIjoiaWMtaXNzdWUtY3JpdGljYWwifSx7ImlkIjozLCJuYW1lIjoibWFqb3IiLCJ2YWx1ZSI6Im1ham9yIiwidGl0bGUiOiJNYWpvciIsImljb24iOiJpYy1pc3N1ZS1tYWpvciJ9LHsiaWQiOjQsIm5hbWUiOiJtaW5vciIsInZhbHVlIjoibWlub3IiLCJ0aXRsZSI6Ik1pbm9yIiwiaWNvbiI6ImljLWlzc3VlLW1pbm9yIn1dLCJ0eXBlIjpbeyJpZCI6MSwibmFtZSI6InJlZmFjdG9yaW5nIiwidmFsdWUiOiJyZWZhY3RvcmluZyIsInRpdGxlIjoiUmVmYWN0b3JpbmciLCJ0YXNrX3R5cGVfY29sb3IiOiIjYjY0YTYzIn0seyJpZCI6MiwibmFtZSI6ImZlYXR1cmUiLCJ2YWx1ZSI6ImZlYXR1cmUiLCJ0aXRsZSI6IkZlYXR1cmUiLCJ0YXNrX3R5cGVfY29sb3IiOiIjZmZhY2FjIn0seyJpZCI6MywibmFtZSI6ImltcHJvdmVtZW50IiwidmFsdWUiOiJpbXByb3ZlbWVudCIsInRpdGxlIjoiSW1wcm92ZW1lbnQiLCJ0YXNrX3R5cGVfY29sb3IiOiIjZmY4Y2I1In0seyJpZCI6NCwibmFtZSI6ImJ1ZyIsInZhbHVlIjoiYnVnIiwidGl0bGUiOiJCdWciLCJ0YXNrX3R5cGVfY29sb3IiOiIjZmY3ZTVmIn0seyJpZCI6NSwibmFtZSI6InRhc2siLCJ2YWx1ZSI6InRhc2siLCJ0aXRsZSI6IlRhc2siLCJ0YXNrX3R5cGVfY29sb3IiOiIjZmZiMDlmIn1dLCJzdGF0dXMiOlt7ImlkIjoxLCJuYW1lIjoib3BlbiIsInZhbHVlIjoib3BlbiIsInRpdGxlIjoiT3BlbiJ9LHsiaWQiOjIsIm5hbWUiOiJyZWFkeV90b190ZXN0IiwidmFsdWUiOiJyZWFkeV90b190ZXN0IiwidGl0bGUiOiJSZWFkeSB0byBUZXN0In0seyJpZCI6MywibmFtZSI6InJlb3BlbmVkIiwidmFsdWUiOiJyZW9wZW5lZCIsInRpdGxlIjoiUmVvcGVuZWQifSx7ImlkIjo0LCJuYW1lIjoiY2xvc2VkIiwidmFsdWUiOiJjbG9zZWQiLCJ0aXRsZSI6IkNsb3NlZCJ9XSwiYXNzaWduZWUiOlt7ImlkIjoxLCJuYW1lIjoiRW1ib2xkIEluY2wiLCJ2YWx1ZSI6MSwidGl0bGUiOiJFbWJvbGQgSW5jbCJ9LHsiaWQiOjMsIm5hbWUiOiJXaW5kb3dzIDEwIiwidmFsdWUiOjMsInRpdGxlIjoiV2luZG93cyAxMCJ9XSwiYXNzaWduZXIiOlt7ImlkIjoxLCJuYW1lIjoiRW1ib2xkIEluY2wiLCJ2YWx1ZSI6MSwidGl0bGUiOiJFbWJvbGQgSW5jbCJ9XX0sImlzVGFza0luc2lnaHRFbmFibGVkIjpmYWxzZX0sIm1vZGUiOiJleHBsb3JlciJ9 status /api/v1/repositories/3764324289de521669841f6a4ee1202d/tasks/3 </stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">task_hash</stringProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain"></stringProp>
-            <stringProp name="HTTPSampler.port"></stringProp>
-            <stringProp name="HTTPSampler.protocol"></stringProp>
-            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/${BASE_URL}/repositories/${_repositoryUID}/tasks/${task_id}/status</stringProp>
-            <stringProp name="HTTPSampler.method">POST</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          </HTTPSamplerProxy>
-          <hashTree>
-            <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="Wait-Til-Task-status-changes" enabled="false">
-              <boolProp name="resetInterpreter">false</boolProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="script">String changestatus = &quot;${__time()}&quot;;
-
-vars.put(&quot;changestatus&quot;,changestatus);
-
-Thread.sleep(20000);
-</stringProp>
-            </BeanShellPostProcessor>
-            <hashTree/>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="false">
-              <stringProp name="RegexExtractor.useHeaders">code</stringProp>
-              <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
-              <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
-              <stringProp name="RegexExtractor.template">$1$</stringProp>
-              <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
-              <stringProp name="RegexExtractor.match_number">1</stringProp>
-            </RegexExtractor>
-            <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 201 Assertion" enabled="false">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="49587">201</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-              <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="false">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="49586">200</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-              <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="false">
-              <stringProp name="RegexExtractor.useHeaders">code</stringProp>
-              <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
-              <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
-              <stringProp name="RegexExtractor.template">$1$</stringProp>
-              <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
-              <stringProp name="RegexExtractor.match_number">1</stringProp>
-            </RegexExtractor>
-            <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 201 Assertion" enabled="false">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="49587">201</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-              <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="false">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="49586">200</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.custom_message"></stringProp>
-              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-              <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">16</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-          </hashTree>
+          <hashTree/>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Delete Task" enabled="true">
-            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">{&quot;task_id&quot;:&quot;${task_id}&quot;,&quot;timestamp&quot;:&quot;${__time()}&quot;}&#xd;
-&#xd;
-&#xd;
-</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                </elementProp>
-              </collectionProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
             </elementProp>
             <stringProp name="HTTPSampler.domain"></stringProp>
             <stringProp name="HTTPSampler.port"></stringProp>
@@ -9697,51 +9289,6 @@ else
             <hashTree/>
           </hashTree>
         </hashTree>
-<<<<<<< HEAD
-        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>true</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <sentBytes>true</sentBytes>
-              <url>true</url>
-              <threadCounts>true</threadCounts>
-              <idleTime>true</idleTime>
-              <connectTime>true</connectTime>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
-        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="true">
-          <boolProp name="displayJMeterProperties">false</boolProp>
-          <boolProp name="displayJMeterVariables">true</boolProp>
-          <boolProp name="displaySystemProperties">false</boolProp>
-        </DebugSampler>
-        <hashTree/>
-=======
         <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Tags" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
           <boolProp name="TransactionController.parent">false</boolProp>
@@ -9828,8 +9375,162 @@ else
             </BeanShellPostProcessor>
             <hashTree/>
           </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="get category data" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="timestamp" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${__time()}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">timestamp</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/${BASE_URL}/tags/tagsandcategories</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">tagId</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$..id</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">0</stringProp>
+              <stringProp name="Sample.scope">all</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">Unable_tofetch_tagID</stringProp>
+              <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+            </JSONPostProcessor>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Edit existing tagcategory" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="categoryName" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${categoryName}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">categoryName</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/${BASE_URL}/tags/tagcategories/${tagId}</stringProp>
+            <stringProp name="HTTPSampler.method">PUT</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="false">
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="script">String categoryName = &quot;CreateTagCategory_&quot;+&quot;${__Random(1,4450)}&quot;;
+vars.put(&quot;categoryName&quot;,categoryName);</stringProp>
+            </BeanShellPreProcessor>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Status Code 200 Assertion" enabled="false">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49586">200</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.custom_message"></stringProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">16</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract Response Code" enabled="false">
+              <stringProp name="RegexExtractor.useHeaders">code</stringProp>
+              <stringProp name="RegexExtractor.refname">Response_Code</stringProp>
+              <stringProp name="RegexExtractor.regex">(\d+)</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default">Unable_To_Extract_Response_Code</stringProp>
+              <stringProp name="RegexExtractor.match_number">1</stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="false">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">if(${Response_Code}==200)
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Pass&quot;);
+	vars.put(&quot;Jira_Comment&quot;, &quot; Test Case executed successfully.&quot;);
+}
+else
+{
+	vars.put(&quot;Jira_Status&quot;,&quot;Fail&quot;);
+	vars.put(&quot;Jira_Comment&quot;,&quot;Test Case is failed. Status Code: ${Response_Code} &amp;&amp; Message_Code: ${Code_ResponseBody} &amp;&amp; Details: ${Details_ResponseBody}&quot;);
+}
+</stringProp>
+            </BeanShellPostProcessor>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="get category data" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="timestamp" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${__time()}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">timestamp</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/${BASE_URL}/tags/tagsandcategories</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">tagId</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$..id</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">0</stringProp>
+              <stringProp name="Sample.scope">all</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">Unable_tofetch_tagID</stringProp>
+              <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">tagName</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$..name</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">0</stringProp>
+              <stringProp name="Sample.scope">all</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues">Unable_tofetch_tagID</stringProp>
+              <boolProp name="JSONPostProcessor.compute_concat">true</boolProp>
+            </JSONPostProcessor>
+            <hashTree/>
+          </hashTree>
         </hashTree>
->>>>>>> 5cde5eb887017b9ddb673419a3fc61a493e59aa3
       </hashTree>
     </hashTree>
   </hashTree>
