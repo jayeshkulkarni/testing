@@ -1,0 +1,2 @@
+repoType,repoName,repoUrl,repoBranchOrTag,repoLanguage,username,password,authMode,projectPath,sshKey,passphrase,accountId,projectKey,testCycleKey
+git,goldernOrb_,https://github.com/1shekhar/goldenorb.git,refs/heads/master,java,username,,P,,,,,GPR,GPR-R7
