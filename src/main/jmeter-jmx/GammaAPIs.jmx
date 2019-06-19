@@ -29,7 +29,7 @@
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="filename">C:\Users\vikrant\Downloads\apache-jmeter-5.1.1\api\test-data\testdata.csv</stringProp>
+          <stringProp name="filename">${__BeanShell(System.getenv().get(&quot;API_TEST_DATA&quot;))}/testdata.csv</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
           <boolProp name="quotedData">false</boolProp>
           <boolProp name="recycle">true</boolProp>
@@ -7150,7 +7150,7 @@ else
           </ResultCollector>
           <hashTree/>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="PDF Validator" enabled="false">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="PDF Validator" enabled="true">
           <boolProp name="TransactionController.parent">true</boolProp>
         </TransactionController>
         <hashTree>
