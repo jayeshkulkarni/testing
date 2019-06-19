@@ -18,7 +18,9 @@ public class ProcessExec {
 			DefaultExecutor executor = new DefaultExecutor();
 			executor.setStreamHandler(streamHandler);
 			executor.execute(cmdLine);
+			System.out.println(" Executable: "+executable+" arg 1: "+args[0]+" arg 2: "+args[1]+" Log file : "+outFile);
 		} catch (IOException e) {
+			System.out.println("Exception occured during execution of "+executable);
 		} finally {
 			if (os != null) {
 				try {

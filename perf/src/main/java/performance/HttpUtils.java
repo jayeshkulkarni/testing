@@ -12,7 +12,12 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.InvalidRemoteException;
+import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.transport.RemoteConfig;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.builder.RequestSpecBuilder;
@@ -109,42 +114,42 @@ public class HttpUtils {
 	}
 
 	public static boolean cloneRepository(String gitUrl, File file, String userName, String password) {
-//		try {
-//			Git git;
-//			if (!file.exists()) {
-//				file.mkdirs();
-//				if (userName.length() == 0 || password.length() == 0) {
-//					git=Git.cloneRepository().setURI(gitUrl)
-//							.setDirectory(new File(file.getAbsolutePath())).call();
-//					List<RemoteConfig> remotes = git.remoteList().call();
-//					for (RemoteConfig remote : remotes) {
-//						git.fetch().setRemote(remote.getName()).setRefSpecs(remote.getFetchRefSpecs())
-//								.call();
-//					}
-//				} else {
-//					git=Git.cloneRepository().setURI(gitUrl)
-//							.setCredentialsProvider(new UsernamePasswordCredentialsProvider(userName, password))
-//							.setDirectory(new File(file.getAbsolutePath())).call();
-//					List<RemoteConfig> remotes = git.remoteList().call();
-//					for (RemoteConfig remote : remotes) {
-//						git.fetch().setRemote(remote.getName()).setRefSpecs(remote.getFetchRefSpecs())
-//								.setCredentialsProvider(new UsernamePasswordCredentialsProvider(userName, password)).call();
-//					}
-//
-//				}
-//			} else {
-//				Git.open(file);
-//			}
-//			return true;
-//		} catch (InvalidRemoteException e) {
-//			e.printStackTrace();
-//		} catch (TransportException e) {
-//			e.printStackTrace();
-//		} catch (GitAPIException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			Git git;
+			if (!file.exists()) {
+				file.mkdirs();
+				if (userName.length() == 0 || password.length() == 0) {
+					git=Git.cloneRepository().setURI(gitUrl)
+							.setDirectory(new File(file.getAbsolutePath())).call();
+					List<RemoteConfig> remotes = git.remoteList().call();
+					for (RemoteConfig remote : remotes) {
+						git.fetch().setRemote(remote.getName()).setRefSpecs(remote.getFetchRefSpecs())
+								.call();
+					}
+				} else {
+					git=Git.cloneRepository().setURI(gitUrl)
+							.setCredentialsProvider(new UsernamePasswordCredentialsProvider(userName, password))
+							.setDirectory(new File(file.getAbsolutePath())).call();
+					List<RemoteConfig> remotes = git.remoteList().call();
+					for (RemoteConfig remote : remotes) {
+						git.fetch().setRemote(remote.getName()).setRefSpecs(remote.getFetchRefSpecs())
+								.setCredentialsProvider(new UsernamePasswordCredentialsProvider(userName, password)).call();
+					}
+
+				}
+			} else {
+				Git.open(file);
+			}
+			return true;
+		} catch (InvalidRemoteException e) {
+			e.printStackTrace();
+		} catch (TransportException e) {
+			e.printStackTrace();
+		} catch (GitAPIException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

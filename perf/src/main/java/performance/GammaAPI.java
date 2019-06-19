@@ -950,7 +950,7 @@ public class GammaAPI implements Callable<Boolean> {
 				System.out.println("clonning failed for zip creation : " + gitUrl);
 			}
 			if (createZip(sourcePath.getAbsolutePath(), zipPath.getAbsolutePath())) {
-				System.out.println("zip creation done : " + gitUrl);
+				System.out.println("zip creation done at : " + zipPath.getAbsolutePath());
 			} else {
 				System.out.println("zip creation failed : " + gitUrl);
 			}
