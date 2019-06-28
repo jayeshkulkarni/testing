@@ -351,7 +351,7 @@ public class PullRequest extends GammaAPI implements Callable<Boolean> {
 					return false;
 				}
 				apiUrl = response.getHeader("Link").split(";")[0].replace("<", "").replace(">", "").replace("2", "");
-				Headers headers=response.getHeaders();
+				Headers headers = response.getHeaders();
 				jsonpath = new JsonPath(response.getBody().asString());
 				List<String> commits = jsonpath.getList("sha");
 				commitsIdsHash.addAll(commits);
@@ -506,18 +506,15 @@ public class PullRequest extends GammaAPI implements Callable<Boolean> {
 			createBranchOnCloud(branchName, commitsIdsHash.get(commitNumber));
 			createPullRequest(parentBranch, branchName);
 		}
-	
+
 		System.out.println(
 				"Pull requests created. Starting phase 2: create repository in gamma and starting gamma scan.");
 		semaphore.acquire();
 		login();
 		addProject();
-		if (addRepoToProject()) {
-			getSubsystems();
-			linkProjectwithRepo();
-		} else {
-			getSubsystemUUID();
-		}
+		addRepoToProject();
+		getSubsystems();
+		linkProjectwithRepo();
 		semaphore.release();
 		scanRepo();
 

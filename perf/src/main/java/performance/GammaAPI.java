@@ -66,7 +66,7 @@ public class GammaAPI implements Callable<Boolean> {
 	private String jiraPassword;
 	private String jiraUrl;
 	private String jiraProjectKey;
-	private boolean enableTaskInsights;
+	private boolean isToken;
 	private boolean enableRE;
 	protected String commandLineOption;
 	private File logFileHandler;
@@ -95,8 +95,8 @@ public class GammaAPI implements Callable<Boolean> {
 	public GammaAPI(String baseUrl, ResultWriter resultWriter, String userName, String password, String gitUrl,
 			String repoUserName, String repoPassword, String language, String branch, String projectName,
 			String repoName, String repoType, boolean incremental, boolean fetchResults, String jiraUserName,
-			String jiraPassword, String jiraUrl, String jiraProjectKey, boolean enableTaskInsights, boolean enableRE,
-			String commandLineOption) {
+			String jiraPassword, String jiraUrl, String jiraProjectKey, boolean enableRE, String commandLineOption,
+			boolean isToken) {
 		this.baseUrl = baseUrl;
 		this.resultWriter = resultWriter;
 		this.userName = userName;
@@ -115,14 +115,15 @@ public class GammaAPI implements Callable<Boolean> {
 		this.jiraPassword = jiraPassword;
 		this.jiraUrl = jiraUrl;
 		this.jiraProjectKey = jiraProjectKey;
-		this.enableTaskInsights = enableTaskInsights;
+		this.isToken = isToken;
 		this.enableRE = enableRE;
 		this.commandLineOption = commandLineOption;
 	}
 
 	public GammaAPI(String baseUrl, ResultWriter resultWriter, String userName, String password, String gitUrl,
 			String repoUserName, String repoPassword, String language, String branch, String projectName,
-			String repoName, String repoType, boolean incremental, boolean fetchResults, String commandLineOption) {
+			String repoName, String repoType, boolean incremental, boolean fetchResults, String commandLineOption,
+			boolean isToken) {
 		this.baseUrl = baseUrl;
 		this.resultWriter = resultWriter;
 		this.userName = userName;
@@ -138,6 +139,7 @@ public class GammaAPI implements Callable<Boolean> {
 		this.incremental = incremental;
 		this.fetchResults = fetchResults;
 		this.commandLineOption = commandLineOption;
+		this.isToken = isToken;
 	}
 
 	@Override
@@ -146,12 +148,9 @@ public class GammaAPI implements Callable<Boolean> {
 			semaphore.acquire();
 			login();
 			addProject();
-			if (addRepoToProject()) {
-				getSubsystems();
-				linkProjectwithRepo();
-			} else {
-				getSubsystemUUID();
-			}
+			addRepoToProject();
+			getSubsystems();
+			linkProjectwithRepo();
 			semaphore.release();
 			if (!fetchResults) {
 				if (scanRepo()) {
@@ -185,6 +184,10 @@ public class GammaAPI implements Callable<Boolean> {
 	}
 
 	protected boolean login() {
+		if (isToken) {
+			values.put("bearerToken", "Bearer " + password);
+			return true;
+		}
 		try {
 			String apiurl = null;
 			apiurl = baseUrl + "/api/v1/auth";
@@ -213,7 +216,7 @@ public class GammaAPI implements Callable<Boolean> {
 					+ "\",\r\n" + "	\"type\": \"restricted\",\r\n" + "	\"repository_uid\": \""
 					+ values.get("subsystemUUId") + "\",\r\n" + "	\"repository_id\": \"" + values.get("subsystemId")
 					+ "\",\r\n" + "	\"repository_name\": \"" + repoName + "\",\r\n"
-					+ "	\"taskInsightsCheckoxStatus\": \"" + enableTaskInsights + "\" }";
+					+ "	\"taskInsightsCheckoxStatus\": \"false\" }";
 			Response response = httpPost(apiurl, json, values.get("bearerToken"));
 			if (response.getStatusCode() != 200) {
 				System.out.println(" Warning : URL: " + apiurl + " return HTTP Code :" + response.getBody().asString());
@@ -255,15 +258,17 @@ public class GammaAPI implements Callable<Boolean> {
 			apiUrl = baseUrl + "/api/v1/repositories?sortBy=repositoryName&searchTerm=" + repoName
 					+ "&limit=11&offset=0";
 			Response response = httpGet(apiUrl, values.get("bearerToken"));
-			if (response.getStatusCode() != 204 && response.getStatusCode() != 200) {
-				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
+			if (response.getStatusCode() == 204 && response.getStatusCode() != 200) {
+				if (response.getStatusCode() != 204) {
+					System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
+				}
 				return false;
 			}
 			JsonPath jsonpath = new JsonPath(response.getBody().asString());
 			repos = jsonpath.getList("repositoryName");
 			if (repos.contains(repoName)) {
-				values.put("subsystemId", jsonpath.getString("repositoryId"));
-				values.put("subsystemUUId", jsonpath.getString("repositoryUid"));
+				values.put("subsystemId", jsonpath.getString("repositoryId").replaceAll("\\[|\\]", ""));
+				values.put("subsystemUUId", jsonpath.getString("uid").replaceAll("\\[|\\]", ""));
 				return true;
 			}
 		} catch (Exception e) {
@@ -637,26 +642,6 @@ public class GammaAPI implements Callable<Boolean> {
 		}
 	}
 
-	protected boolean getSubsystemUUID() {
-		try {
-			String apiUrl = baseUrl + "/api/v1/projects/" + values.get("projectId")
-					+ "/repositories?sortBy=repositoryName&orderBy=ASC&searchTerm=" + repoName + "&offset=0&limit=1";
-			Response response = httpGet(apiUrl, values.get("bearerToken"));
-			if (response.getStatusCode() != 200) {
-				System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
-			}
-			JsonPath jsonpath = new JsonPath(response.getBody().asString());
-			List<String> subsystemUIds = jsonpath.getList("uid");
-			List<String> subsystemIds = jsonpath.getList("repositoryId");
-			values.put("subsystemUUId", subsystemUIds.get(0));
-			values.put("subsystemId", String.valueOf(subsystemIds.get(0)));
-			return true;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return false;
-		}
-	}
-
 	protected boolean scanRepo() {
 		if (enableRE) {
 			integrateJira();
@@ -682,6 +667,7 @@ public class GammaAPI implements Callable<Boolean> {
 				if (response.getStatusCode() != 200) {
 					System.out.println(" Warning : URL: " + apiUrl + " return HTTP Code :" + response.getStatusCode());
 					System.out.println("Scan halted for repo : " + repoName);
+					return false;
 				}
 				JsonPath jsonpath = new JsonPath(response.getBody().asString());
 				List<String> repoUids = jsonpath.getList("repoUid");
@@ -724,10 +710,13 @@ public class GammaAPI implements Callable<Boolean> {
 			} else {
 				repoList = values.get("subSystemIds") + "," + values.get("subsystemUUId");
 			}
-			Response response = RestAssured.given().spec(requestSpec).formParam("repositoryUids", repoList).when()
-					.post(apiurl);
+			// repoList=repoList.substring(1, repoList.length()-1);
+			// System.out.println(repoList);
+			Response response = RestAssured.given().spec(requestSpec).formParam("repositoryUids", repoList.toString())
+					.when().post(apiurl);
 			if (response.getStatusCode() != 200) {
-				System.out.println(" Warning : URL: " + apiurl + " return HTTP Code :" + response.getStatusCode());
+				System.out.println(" Warning : URL: " + apiurl + " return HTTP Code :" + response.getStatusCode()
+						+ response.getBody().asString());
 				return false;
 			}
 			return true;

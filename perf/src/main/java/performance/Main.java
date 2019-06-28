@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -21,131 +20,250 @@ public class Main implements Callable<Boolean> {
 	}
 
 	public static void printUsage() {
+		System.out.println("----------------------------------------------------------------------------------------");
 		System.out.println("Usage : java -jar RepoScanner.jar -c <config file>  ");
 		System.out.println("Usage : java -jar RepoScanner.jar -re <config file>  ");
 		System.out.println("Usage : java -jar RepoScanner.jar -p <config file>  ");
-		System.out.println("Usage : java -jar RepoScanner.jar -s <config file1>,<config file2>....<config fileN>  ");
 		System.out.println("Usage : java -jar RepoScanner.jar -f <config file1>,<config file2>....<config fileN>  ");
 		System.out.println(
 				"Usage : java -jar RepoScanner.jar -a <gammawebSitebaseURL> <gammawebsiteUserName> <gammawebsitepassword> <gammaURL> <gammaPassword>");
-		System.out.println("Usage : java -jar RepoScanner.jar -verifybuild  ");
-		System.out.println("Parameter : -c Config file  ");
-		System.out.println("Parameter : -s Sequential execution of Config files  ");
-		System.out.println("Parameter : -f fetching Scan Results  ");
-		System.out.println("Parameter : -p Sequential execution of repos in config file for performance testing.");
-		System.out.println("Parameter : -a Activate Gamma through CLI.");
-		System.out.println("Parameter : -re gamma RE with Jira integration.");
+		System.out.println("Usage : java -jar RepoScanner.jar -verifybuild <branch-Name> <gitusername> <gitPassword> ");
 		System.out.println(
-				"Parameter : -verifybuild verfies the build.properties stored at default location with github commitid for particular branch.");
+				"Usage : java -jar RepoScanner.jar -sanity <gamma-url with port> <gammaUsername> <gammaPassword> <isIncremental:booleanvalue> <optional paramater:repo_prefix>");
+		System.out.println(
+				"Usage : java -jar RepoScanner.jar -sanitywithaccessstoken <gamma-url with port> <gammaAccessToken> <isIncremental:booleanvalue> <optional paramater:repo_prefix>");
+		System.out.println(
+				"Usage : java -jar RepoScanner.jar -incrementalsanity <gamma-url with port> <gammaUsername> <gammaPassword> <optional paramater:repo_prefix>");
+		System.out.println(
+				"Usage : java -jar RepoScanner.jar -incrementalsanitywithaccesstoken <gamma-url with port> <gammaAccessToken> <optional paramater:repo_prefix>");
+		System.out.println("Usage : java -jar RepoScanner.jar -downloadsanityfile  ");
+		System.out.println("Usage : java -jar RepoScanner.jar -downloadincrementalsanityfile  ");
+		System.out.println(
+				"Usage : java -jar RepoScanner.jar -override <config-file> <gamma-url with port> <gammaUsername> <gammaPassword> <isIncremental:booleanvalue> ");
+		System.out.println("Parameter : -c => executes the given config file");
+		System.out.println("Parameter : -f => fetching Scan Results from given config file");
+		System.out.println("Parameter : -p => Sequential execution of repos in config file for performance testing.");
+		System.out.println("Parameter : -a => activate Gamma through CLI.");
+		System.out.println("Parameter : -re => gamma RE with Jira integration/Redmine Integration.");
+		System.out.println(
+				"Parameter : -verifybuild => verfies the build.properties stored at default location with github commitid for particular branch.");
+		System.out.println("Parameter : -sanity| sanitywithaccessstoken => runs inbuild set of repos for sanity .");
+		System.out.println(
+				"Parameter : -incrementalsanity | incrementalsanitywithaccesstoken => runs inbuild set of repos for incremental sanity .");
+		System.out.println("Parameter : -downloadsanityfile  => download default sanity file for reference.");
+		System.out.println(
+				"Parameter : -downloadincrementalsanityfile  => download default incremental sanity file for reference.");
+		System.out.println(
+				"Parameter : -override  => It replaces <gamma-url with port> <gammaUsername> <gammaPassword> <isIncremental:booleanvalue> in given config file  .");
+		System.out.println("----------------------------------------------------------------------------------------");
 	}
 
-	public static void processNonScanFlow(String[] args) throws IOException {
-		switch (args[0]) {
-		case "-verifybuild":
-			ArrayList<String> branchNames = new ArrayList<String>();
-			System.out.println("is Branch-name for GWS,CORONA,GAMMA_UI Same? Y/N : ");
-			String isBranchNameSame = new Scanner(System.in).next();
-			if (isBranchNameSame.equalsIgnoreCase("Y")) {
-				System.out.println("Enter the branch to be verified : ");
-				branchNames.add(new Scanner(System.in).next());
-			} else {
-				System.out.println("Enter Corona branch to be verified : ");
-				branchNames.add(new Scanner(System.in).next());
-				System.out.println("Enter GammaUI branch to be verified : ");
-				branchNames.add(new Scanner(System.in).next());
-				System.out.println("Enter GWS branch to be verified : ");
-				branchNames.add(new Scanner(System.in).next());
+	public static void printInvalidOptionMessage(String args[], boolean InvalidOption) {
+		System.out.println("");
+		if (InvalidOption) {
+			if (args.length > 0) {
+				System.out.println("Invalid option : " + args[0]);
 			}
-			new GammaBuild().verifyBuild(branchNames);
-			break;
-		case "-a":
-		case "-A":
-			new GammaLicense(args[1], args[2], args[3], args[4], args[5]).activateGamma();
-			break;
-
-		default:
-			printInvalidOptionMessage(args);
-			break;
+		} else {
+			System.out.println("Invalid number of parameters for option : " + args[0]);
 		}
-	}
-
-	public static void printInvalidOptionMessage(String args[]) {
-		System.out.println("Invalid option" + args[0]);
 		printUsage();
 		System.exit(1);
 	}
 
+	public static boolean validateParameters(String args[], int[] paramCount) {
+		for (int i = 0; i < paramCount.length; i++) {
+			if (args.length == paramCount[i]) {
+				return true;
+			}
+		}
+		printInvalidOptionMessage(args, false);
+		return false;
+	}
+
+	public static boolean validateParameters(String args[], int paramCount) {
+		if (args.length == paramCount) {
+			return true;
+		} else {
+			printInvalidOptionMessage(args, false);
+			return false;
+		}
+	}
+
 	public static void main(String args[]) throws IOException {
-		if (args.length < 1) {
-			printUsage();
-			System.exit(1);
+		if (args.length == 0) {
+			printInvalidOptionMessage(args, true);
 		}
-
-		if (args.length == 1 || args.length == 6) {
-			processNonScanFlow(args);
-			System.exit(1);
-		}
-
-		if (args.length != 2) {
-			printUsage();
-			System.exit(1);
-		}
-
 		ThreadPoolExecutor executor = null;
-		String[] configFiles = null;
 		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+		File file = null;
+		Configurator configurator = new Configurator();
 		switch (args[0]) {
+		case "-sanitywithaccesstoken":
+			int[] paramCount1 = { 4, 5 };
+			if (validateParameters(args, paramCount1)) {
+				if (args.length == 4) {
+					String sample1[] = { args[0], args[1], "", args[2], args[3], "" };
+					file = configurator.createDefaultConfigFile("defaultconfig.txt", sample1);
+				} else {
+					String sample1[] = { args[0], args[1], "", args[2], args[3], args[4] };
+					file = configurator.createDefaultConfigFile("defaultconfig.txt", sample1);
+				}
+				if (file != null) {
+					System.out.println("Default Config file created for reference at :" + file.getAbsolutePath());
+					executor.submit(new Main(new String[] { "-c", file.getAbsolutePath(), "false", "true" }));
+				} else {
+					System.out.println("Error occured during default config file creation.");
+				}
+			}
+			break;
+
+		case "-incrementalsanitywithaccesstoken":
+			int[] paramCount2 = { 3, 4 };
+			if (validateParameters(args, paramCount2)) {
+				if (args.length == 3) {
+					String sample1[] = { args[0], args[1], "", args[2], "" };
+					file = configurator.createDefaultIncrementalConfigFile("defaultconfig.txt", sample1);
+				} else {
+					String sample1[] = { args[0], args[1], "", args[2], args[3] };
+					file = configurator.createDefaultIncrementalConfigFile("defaultconfig.txt", sample1);
+				}
+				if (file != null) {
+					System.out.println(
+							"Default Incremental Config file created for reference at :" + file.getAbsolutePath());
+					executor.submit(new Main(new String[] { "-p", file.getAbsolutePath(), "false", "true" }));
+				} else {
+					System.out.println("Error occured during default config file creation.");
+				}
+			}
+			break;
+		case "-incrementalsanity":
+			int[] paramCount3 = { 5, 4 };
+			if (validateParameters(args, paramCount3)) {
+				if (args.length == 4) {
+					args=increaseSizeOfArray(args, 5);
+					args[4] = "";
+				}
+				file = configurator.createDefaultIncrementalConfigFile("defaultconfig.txt", args);
+				if (file != null) {
+					System.out.println(
+							"Default Incremental Config file created for reference at :" + file.getAbsolutePath());
+					executor.submit(new Main(new String[] { "-p", file.getAbsolutePath(), "false", "false" }));
+				} else {
+					System.out.println("Error occured during default config file creation.");
+				}
+			}
+			break;
+
+		case "-override":
+			if (validateParameters(args, 6)) {
+				String sampleArguments1[] = { args[1], args[2], args[3], args[4], args[5] };
+				file = configurator.createOverriddenConfigFile(args[1], sampleArguments1);
+				if (file != null) {
+					System.out.println("Overridden Config file created for reference at :" + file.getAbsolutePath());
+					executor.submit(new Main(new String[] { "-c", file.getAbsolutePath(), "false", "false" }));
+				} else {
+					System.out.println("Error occured during default config file creation.");
+				}
+			}
+			break;
+		case "-downloadincrementalsanityfile":
+			String sampleArguments2[] = { "-downloadincrementalsanityfile", "http://localhost:3000", "<gammausername>",
+					"<gammaPassword>" };
+			file = configurator.createDefaultIncrementalConfigFile("defaultIncrementalconfig.txt", sampleArguments2);
+			if (file != null) {
+				System.out
+						.println("Default Incremental Config file created for reference at :" + file.getAbsolutePath());
+			} else {
+				System.out.println("Error occured during default config file creation.");
+			}
+			break;
+		case "-downloadsanityfile":
+			String sampleArguments3[] = { "-downloadsanityfile", "http://localhost:3000", "<gammausername>",
+					"<gammaPassword>", "<incrementalFlag:true/false>" };
+			file = configurator.createDefaultConfigFile("defaultconfig.txt", sampleArguments3);
+			if (file != null) {
+				System.out.println("Default Config file created for reference at :" + file.getAbsolutePath());
+			} else {
+				System.out.println("Error occured during default config file creation.");
+			}
+			break;
+		case "-sanity":
+			int[] paramCount4 = { 5, 6 };
+			if (validateParameters(args, paramCount4)) {
+				if (args.length == 5) {
+					args=increaseSizeOfArray(args, 6);
+					args[5] = "";
+				}
+				file = configurator.createDefaultConfigFile("defaultconfig.txt", args);
+				if (file != null) {
+					System.out.println("Default Config file created for reference at :" + file.getAbsolutePath());
+					executor.submit(new Main(new String[] { "-c", file.getAbsolutePath(), "false", "false" }));
+				} else {
+					System.out.println("Error occured during default config file creation.");
+				}
+			}
+			break;
+		case "-verifybuild":
+			if (validateParameters(args, 4)) {
+				new GammaBuild().verifyBuild(args[1], args[2], args[3]);
+			}
+			break;
+		case "-a":
+		case "-A":
+			if (validateParameters(args, 6)) {
+				new GammaLicense(args[1], args[2], args[3], args[4], args[5]).activateGamma();
+			}
+			break;
 		case "-pr":
 		case "-PR":
-			executor.submit(new Main(new String[] { "-pr", args[1] }));
+			if (validateParameters(args, 2)) {
+				executor.submit(new Main(new String[] { "-pr", args[1], "false" }));
+			}
 			break;
 		case "-re":
 		case "-RE":
-			executor.submit(new Main(new String[] { "-re", args[1], "false" }));
+			if (validateParameters(args, 2)) {
+				executor.submit(new Main(new String[] { "-re", args[1], "false", "false" }));
+			}
 			break;
 
 		case "-p":
 		case "-P":
-			executor.submit(new Main(new String[] { "-p", args[1], "false" }));
+			if (validateParameters(args, 2)) {
+				executor.submit(new Main(new String[] { "-p", args[1], "false", "false" }));
+			}
 			break;
 
 		case "-c":
 		case "-C":
-			executor.submit(new Main(new String[] { "-c", args[1], "false" }));
-			break;
-
-		case "-s":
-		case "-S":
-			List<Future<Boolean>> list = new ArrayList<Future<Boolean>>();
-			configFiles = args[1].split(",");
-			for (int i = 0; i < configFiles.length; i++) {
-				list.add(executor.submit(new Main(new String[] { "-c", configFiles[i], "false" })));
-			}
-			for (Future<Boolean> fut : list) {
-				try {
-					fut.get();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+			if (validateParameters(args, 2)) {
+				executor.submit(new Main(new String[] { "-c", args[1], "false", "false" }));
 			}
 			break;
 
 		case "-f":
 		case "-F":
-			configFiles = args[1].split(",");
-			for (int i = 0; i < configFiles.length; i++) {
-				executor.submit(new Main(new String[] { "-c", configFiles[i], "true" }));
+			if (validateParameters(args, 2)) {
+				executor.submit(new Main(new String[] { "-c", args[1], "true", "false" }));
 			}
 			break;
-
 		default:
-			printInvalidOptionMessage(args);
+			printInvalidOptionMessage(args, true);
 			break;
 		}
 		if (executor != null)
 			executor.shutdown();
 	}
+	public static String[] increaseSizeOfArray(String args[],int length) {
+		   String temp[] = new String[length];
 
+		   for (int i = 0; i < args.length; i++){
+		      temp[i] = args[i];
+		   }
+		   args = temp;
+		   return args;
+		}
 	public void scan(String arguments[]) {
 		try {
 			System.out.println("path :" + System.getProperty("user.dir"));
@@ -193,7 +311,7 @@ public class Main implements Callable<Boolean> {
 						gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
 								parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],
 								parameters[8], parameters[9], parameters[10], Boolean.parseBoolean(parameters[11]),
-								Boolean.parseBoolean(arguments[2]), "-c"));
+								Boolean.parseBoolean(arguments[2]), "-c", Boolean.parseBoolean(arguments[3])));
 					}
 					break;
 				case "-pr":
@@ -206,7 +324,7 @@ public class Main implements Callable<Boolean> {
 						gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
 								parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],
 								parameters[8], parameters[9], parameters[10], Boolean.parseBoolean(parameters[11]),
-								Boolean.parseBoolean(arguments[2]), "-pr"));
+								Boolean.parseBoolean(arguments[2]), "-pr", Boolean.parseBoolean(arguments[3])));
 					} else {
 						System.out.println(
 								" Invalid number of parameters in config. It should be 14 for creation and 12 for normal scan. Please check the configuration file.");
@@ -214,21 +332,21 @@ public class Main implements Callable<Boolean> {
 					}
 					break;
 				case "-re":
-					if (parameters.length != 17) {
+					if (parameters.length != 16) {
 						System.out.println(
-								" Invalid number of parameters in config. It should be 17. Please check the configuration file.");
+								" Invalid number of parameters in config. It should be 16. Please check the configuration file.");
 						System.exit(1);
 					} else {
 						gammaList.add(new GammaAPI(parameters[0], apachePOIExcelWrite, parameters[1], parameters[2],
 								parameters[3], parameters[4], parameters[5], parameters[6], parameters[7],
 								parameters[8], parameters[9], parameters[10], Boolean.parseBoolean(parameters[11]),
 								Boolean.parseBoolean(arguments[2]), parameters[12], parameters[13], parameters[14],
-								parameters[15], Boolean.parseBoolean(parameters[16]), Boolean.parseBoolean("true"),
-								"-re"));
+								parameters[15], Boolean.parseBoolean("true"), "-re",
+								Boolean.parseBoolean(arguments[3])));
 					}
 					break;
 				default:
-					printInvalidOptionMessage(arguments);
+					printInvalidOptionMessage(arguments, true);
 				}
 
 			}
