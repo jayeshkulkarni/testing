@@ -35,6 +35,8 @@ public class Main implements Callable<Boolean> {
 		System.out.println(
 				"Usage : java -jar RepoScanner.jar -incrementalsanity <gamma-url with port> <gammaUsername> <gammaPassword> <optional paramater:repo_prefix>");
 		System.out.println(
+				"Usage : java -jar RepoScanner.jar -performance <gamma-url with port> <gammaUsername> <gammaPassword> <optional paramater:repo_prefix>");
+		System.out.println(
 				"Usage : java -jar RepoScanner.jar -incrementalsanitywithaccesstoken <gamma-url with port> <gammaAccessToken> <optional paramater:repo_prefix>");
 		System.out.println("Usage : java -jar RepoScanner.jar -downloadsanityfile  ");
 		System.out.println("Usage : java -jar RepoScanner.jar -downloadincrementalsanityfile  ");
@@ -53,6 +55,7 @@ public class Main implements Callable<Boolean> {
 		System.out.println("Parameter : -downloadsanityfile  => download default sanity file for reference.");
 		System.out.println(
 				"Parameter : -downloadincrementalsanityfile  => download default incremental sanity file for reference.");
+		System.out.println("Parameter : -performance  => runs inbuild performance repos sequentially.");
 		System.out.println(
 				"Parameter : -override  => It replaces <gamma-url with port> <gammaUsername> <gammaPassword> <isIncremental:booleanvalue> in given config file  .");
 		System.out.println("----------------------------------------------------------------------------------------");
@@ -99,6 +102,26 @@ public class Main implements Callable<Boolean> {
 		File file = null;
 		Configurator configurator = new Configurator();
 		switch (args[0]) {
+
+		case "-performance":
+			int[] paramCount2 = { 4, 5 };
+			if (validateParameters(args, paramCount2)) {
+				if (args.length == 4) {
+					args = increaseSizeOfArray(args, 5);
+					args[4] = "";
+					file = configurator.createDefaultPerformanceConfigFile("defaultperformanceconfig.txt", args);
+				} else {
+					file = configurator.createDefaultPerformanceConfigFile("defaultperformanceconfig.txt", args);
+					if (file != null) {
+						System.out.println("Default Performance Config file created for reference at :" + file.getAbsolutePath());
+						executor.submit(new Main(new String[] { "-p", file.getAbsolutePath(), "false", "true" }));
+					} else {
+						System.out.println("Error occured during default config file creation.");
+					}
+				}
+			}
+			break;
+
 		case "-sanitywithaccesstoken":
 			int[] paramCount1 = { 4, 5 };
 			if (validateParameters(args, paramCount1)) {
@@ -119,8 +142,8 @@ public class Main implements Callable<Boolean> {
 			break;
 
 		case "-incrementalsanitywithaccesstoken":
-			int[] paramCount2 = { 3, 4 };
-			if (validateParameters(args, paramCount2)) {
+			int[] paramCount3 = { 3, 4 };
+			if (validateParameters(args, paramCount3)) {
 				if (args.length == 3) {
 					String sample1[] = { args[0], args[1], "", args[2], "" };
 					file = configurator.createDefaultIncrementalConfigFile("defaultconfig.txt", sample1);
@@ -138,10 +161,10 @@ public class Main implements Callable<Boolean> {
 			}
 			break;
 		case "-incrementalsanity":
-			int[] paramCount3 = { 5, 4 };
-			if (validateParameters(args, paramCount3)) {
+			int[] paramCount4 = { 5, 4 };
+			if (validateParameters(args, paramCount4)) {
 				if (args.length == 4) {
-					args=increaseSizeOfArray(args, 5);
+					args = increaseSizeOfArray(args, 5);
 					args[4] = "";
 				}
 				file = configurator.createDefaultIncrementalConfigFile("defaultconfig.txt", args);
@@ -169,7 +192,7 @@ public class Main implements Callable<Boolean> {
 			break;
 		case "-downloadincrementalsanityfile":
 			String sampleArguments2[] = { "-downloadincrementalsanityfile", "http://localhost:3000", "<gammausername>",
-					"<gammaPassword>" };
+					"<gammaPassword>","" };
 			file = configurator.createDefaultIncrementalConfigFile("defaultIncrementalconfig.txt", sampleArguments2);
 			if (file != null) {
 				System.out
@@ -180,7 +203,7 @@ public class Main implements Callable<Boolean> {
 			break;
 		case "-downloadsanityfile":
 			String sampleArguments3[] = { "-downloadsanityfile", "http://localhost:3000", "<gammausername>",
-					"<gammaPassword>", "<incrementalFlag:true/false>" };
+					"<gammaPassword>", "<incrementalFlag:true/false>","" };
 			file = configurator.createDefaultConfigFile("defaultconfig.txt", sampleArguments3);
 			if (file != null) {
 				System.out.println("Default Config file created for reference at :" + file.getAbsolutePath());
@@ -189,10 +212,10 @@ public class Main implements Callable<Boolean> {
 			}
 			break;
 		case "-sanity":
-			int[] paramCount4 = { 5, 6 };
-			if (validateParameters(args, paramCount4)) {
+			int[] paramCount5 = { 5, 6 };
+			if (validateParameters(args, paramCount5)) {
 				if (args.length == 5) {
-					args=increaseSizeOfArray(args, 6);
+					args = increaseSizeOfArray(args, 6);
 					args[5] = "";
 				}
 				file = configurator.createDefaultConfigFile("defaultconfig.txt", args);
@@ -255,15 +278,17 @@ public class Main implements Callable<Boolean> {
 		if (executor != null)
 			executor.shutdown();
 	}
-	public static String[] increaseSizeOfArray(String args[],int length) {
-		   String temp[] = new String[length];
 
-		   for (int i = 0; i < args.length; i++){
-		      temp[i] = args[i];
-		   }
-		   args = temp;
-		   return args;
+	public static String[] increaseSizeOfArray(String args[], int length) {
+		String temp[] = new String[length];
+
+		for (int i = 0; i < args.length; i++) {
+			temp[i] = args[i];
 		}
+		args = temp;
+		return args;
+	}
+
 	public void scan(String arguments[]) {
 		try {
 			System.out.println("path :" + System.getProperty("user.dir"));

@@ -555,7 +555,7 @@ public class GammaAPI implements Callable<Boolean> {
 			}
 			JsonPath jsonpath = new JsonPath(response.getBody().asString());
 			List<String> snapshotIds = jsonpath.getList("id");
-			List<String> subsystemIds = jsonpath.getList("subsystemId");
+			List<String> subsystemIds = jsonpath.getList("repositoryId");
 			values.put("snapshotId", String.valueOf(snapshotIds.get(snapshotIds.size() - 1)));
 			values.put("subsystemId", String.valueOf(subsystemIds.get(snapshotIds.size() - 1)));
 			return true;

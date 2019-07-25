@@ -26,11 +26,11 @@ public class Configurator {
 			String projectName = "Sanity_" + calendar.get(Calendar.DAY_OF_MONTH) + "_"
 					+ calendar.get(Calendar.HOUR_OF_DAY);
 			bufferedWriter = new BufferedWriter(new FileWriter((file)));
-			bufferedWriter.write(prefix + "https://github.com/carnegiehall/linked-data.git,,,python,master," + projectName
-					+ ",python_"+repoPostFix+",git," + args[4]);
-			bufferedWriter.newLine();
 			bufferedWriter.write(
 					"//GIT REPO FORMAT ==> GAMMA_URL,GAMMA_USERNAME,GAMMA_PASSWORD,GIT_URL,GIT_USERNAME,GIT_PASSWORD,LANGUAGE,BRANCH/TAG,PROJECTNAME,REPONAME,GIT|SVN|ZIP|REMOTE,INCREMENTAL");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/carnegiehall/linked-data.git,,,python,master," + projectName
+					+ ",python_"+repoPostFix+",git," + args[4]);
 			bufferedWriter.newLine();
 			bufferedWriter.write(prefix + "https://github.com/1shekhar/go.git,,,go,v1.1.5," + projectName
 					+ ",jsongo_zip_"+repoPostFix+",zip," + args[4]);
@@ -101,7 +101,7 @@ public class Configurator {
 					+ calendar.get(Calendar.HOUR_OF_DAY);
 			bufferedWriter = new BufferedWriter(new FileWriter((file)));
 			bufferedWriter.write(
-					"//GIT REPO FORMAT ==> GAMMA_URL,GAMMA_USERNAME,GAMMA_PASSWORD,GIT_URL,GIT_USERNAME,GIT_PASSWORD,LANGUAGE,BRANCH/TAG,PROJECTNAME,REPONAME,GIT,INCREMENTAL,JIRA_USERNAME|JIRA_API_KEY,JIRA_PASSWORD,JIRA_URL,JIRA_PROJECT_CODE");
+					"//GIT REPO FORMAT ==> GAMMA_URL,GAMMA_USERNAME,GAMMA_PASSWORD,GIT_URL,GIT_USERNAME,GIT_PASSWORD,LANGUAGE,BRANCH/TAG,PROJECTNAME,REPONAME,GIT,INCREMENTAL");
 			bufferedWriter.newLine();
 			bufferedWriter.write(
 					prefix + "https://github.com/1shekhar/go.git,,,go,v1.1.5," + projectName + ",jsongo_i_"+repoPostFix+",git,false");
@@ -157,6 +157,108 @@ public class Configurator {
 		}
 	}
 
+	public File createDefaultPerformanceConfigFile(String fileName, String args[]) {
+		BufferedWriter bufferedWriter = null;
+		try {
+			String OS = System.getProperty("os.name").toLowerCase();
+			File file = null;
+			if ((OS.indexOf("win") >= 0)) {
+				file = new File(System.getProperty("user.dir") + "\\" + fileName);
+			} else {
+				file = new File(System.getProperty("user.dir") + "//" + fileName);
+			}
+			String prefix = args[1] + "," + args[2] + "," + args[3] + ",";
+			String repoPostFix=args[4];
+			Calendar calendar = Calendar.getInstance();
+			String projectName = "Sanity_" + calendar.get(Calendar.DAY_OF_MONTH) + "_"
+					+ calendar.get(Calendar.HOUR_OF_DAY);
+			bufferedWriter = new BufferedWriter(new FileWriter((file)));
+			bufferedWriter.write(
+					"//GIT REPO FORMAT ==> GAMMA_URL,GAMMA_USERNAME,GAMMA_PASSWORD,GIT_URL,GIT_USERNAME,GIT_PASSWORD,LANGUAGE,BRANCH/TAG,PROJECTNAME,REPONAME,GIT|SVN|ZIP|REMOTE,INCREMENTAL");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/liferay-portal.git,,,java,master," + projectName
+					+ ",liferay_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/opencv.git,,,cpp,master," + projectName
+					+ ",opencv_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();
+			
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/react-native-maps.git,,,objective_c,master," + projectName
+					+ ",react_native_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/spring-boot.git,,,java,master," + projectName
+					+ ",spring_boot_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/corona_pg.git,,,java,master," + projectName
+					+ ",corona_redmine_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/cassandra.git,,,java,master,"
+					+ projectName + ",cassandra_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/clerezza.git,,,java,master," + projectName
+					+ ",clerezza_japanese_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/kotlin.git,,,kotlin,master," + projectName
+					+ ",kotlin_lang_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/vscode.git,,,typescript,master," + projectName
+					+ ",vscode_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/grafana.git,,,typescript,master," + projectName
+					+ ",grafana_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/TypeScript.git,,,typescript,master," + projectName
+					+ ",typescriptlang_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/tensorflow.git,,,cpp,master,"
+					+ projectName + ",tensorflow_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/phpmyadmin.git,,,php,master," + projectName
+					+ ",myadmin_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/mono.git,,,c_sharp,master," + projectName
+					+ ",mono_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/PowerShell.git,,,c_sharp,master," + projectName
+					+ ",powershell_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/kubernetes.git,,,go,master," + projectName
+					+ ",kubernetes_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();			
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/Quake-III-Arena.git,,,cpp,master," + projectName
+					+ ",quake3_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();			
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/jdk.git,,,java,master," + projectName
+					+ ",openjdk_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();	
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/eclipse.jdt.core.git,,,java,master," + projectName
+					+ ",eclipsecore_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();	
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/eclipse.jdt.ui.git,,,java,master," + projectName
+					+ ",eclipseui_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();	
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/linux.git,,,cpp,master," + projectName
+					+ ",linux_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();	
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/ice.git,,,javascript,master," + projectName
+					+ ",icejs_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();	
+			bufferedWriter.write(prefix + "https://github.com/saurabhacellere/react.git,,,javascript,master," + projectName
+					+ ",reactjs_"+repoPostFix+",git,false");
+			bufferedWriter.newLine();	
+					
+			return file;
+		} catch (Exception e) {
+			System.out.println("Exception occured while creation of default config file." + e.getMessage());
+			return null;
+		} finally {
+			try {
+				bufferedWriter.close();
+			} catch (IOException e) {
+				System.out.println("Exception occured while closing file." + e.getMessage());
+			}
+		}
+	}
 	public File createDefaultPRConfigFile(String fileName, String args[]) {
 		BufferedWriter bufferedWriter = null;
 		try {
