@@ -28,6 +28,9 @@ public class Main implements Callable<Boolean> {
 		System.out.println(
 				"Usage : java -jar RepoScanner.jar -a <gammawebSitebaseURL> <gammawebsiteUserName> <gammawebsitepassword> <gammaURL> <gammaPassword>");
 		System.out.println("Usage : java -jar RepoScanner.jar -verifybuild <branch-Name> <gitusername> <gitPassword> ");
+		System.out.println("Usage : java -jar RepoScanner.jar -generateldif <embold url> <startnumber> <endnumber> ");
+		System.out.println(
+				"Usage : java -jar RepoScanner.jar -ldapbulklogin <embold url> <username with # to be replace with numbers> <password> <startnumber> <endnumber> ");
 		System.out.println(
 				"Usage : java -jar RepoScanner.jar -sanity <gamma-url with port> <gammaUsername> <gammaPassword> <isIncremental:booleanvalue> <optional paramater:repo_prefix>");
 		System.out.println(
@@ -102,6 +105,17 @@ public class Main implements Callable<Boolean> {
 		File file = null;
 		Configurator configurator = new Configurator();
 		switch (args[0]) {
+		case "-generateldif":
+			if (validateParameters(args, 4)) {
+				new LDAP().createLDIFFile(args[1], Integer.parseInt(args[2]), Integer.parseInt(args[3]));
+			}
+			break;
+
+		case "-ldapbulklogin":
+			if (validateParameters(args, 6)) {
+				new LDAP().login(args[1], args[2], args[3], Integer.parseInt(args[4]), Integer.parseInt(args[5]));
+			}
+			break;
 
 		case "-performance":
 			int[] paramCount2 = { 4, 5 };
@@ -113,7 +127,8 @@ public class Main implements Callable<Boolean> {
 				} else {
 					file = configurator.createDefaultPerformanceConfigFile("defaultperformanceconfig.txt", args);
 					if (file != null) {
-						System.out.println("Default Performance Config file created for reference at :" + file.getAbsolutePath());
+						System.out.println(
+								"Default Performance Config file created for reference at :" + file.getAbsolutePath());
 						executor.submit(new Main(new String[] { "-p", file.getAbsolutePath(), "false", "true" }));
 					} else {
 						System.out.println("Error occured during default config file creation.");
@@ -192,7 +207,7 @@ public class Main implements Callable<Boolean> {
 			break;
 		case "-downloadincrementalsanityfile":
 			String sampleArguments2[] = { "-downloadincrementalsanityfile", "http://localhost:3000", "<gammausername>",
-					"<gammaPassword>","" };
+					"<gammaPassword>", "" };
 			file = configurator.createDefaultIncrementalConfigFile("defaultIncrementalconfig.txt", sampleArguments2);
 			if (file != null) {
 				System.out
@@ -203,7 +218,7 @@ public class Main implements Callable<Boolean> {
 			break;
 		case "-downloadsanityfile":
 			String sampleArguments3[] = { "-downloadsanityfile", "http://localhost:3000", "<gammausername>",
-					"<gammaPassword>", "<incrementalFlag:true/false>","" };
+					"<gammaPassword>", "<incrementalFlag:true/false>", "" };
 			file = configurator.createDefaultConfigFile("defaultconfig.txt", sampleArguments3);
 			if (file != null) {
 				System.out.println("Default Config file created for reference at :" + file.getAbsolutePath());
@@ -234,8 +249,16 @@ public class Main implements Callable<Boolean> {
 			break;
 		case "-a":
 		case "-A":
-			if (validateParameters(args, 6)) {
-				new GammaLicense(args[1], args[2], args[3], args[4], args[5]).activateGamma();
+			int[] paramCount6 = { 2, 6 };
+			if (validateParameters(args, paramCount6)) {
+				if (args.length == 2) {
+					new GammaLicense("https://gamma-staging.com", "automation@embold.io", "admin1234", args[2],
+							"gamma123").activateGamma();
+					System.out.println("Your Embold Username: automation@embold.io and password: gamma123.");
+					// Above method is for ease of use.
+				} else {
+					new GammaLicense(args[1], args[2], args[3], args[4], args[5]).activateGamma();
+				}
 			}
 			break;
 		case "-pr":
